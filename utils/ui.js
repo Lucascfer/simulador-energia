@@ -102,7 +102,7 @@ export function updateCardValues(power, tariffType) {
                 pontaDetail.className = 'detail-item';
                 pontaDetail.innerHTML = `
                     <span class="detail-label">Ponta</span>
-                    <span class="detail-value">${TARIFF_VALUES[company].triHorario.peak.toFixed(4)} €/kWh</span>
+                    <span class="detail-value">${TARIFF_VALUES[company].triHorario.ponta.toFixed(4)} €/kWh</span>
                 `;
                 detailsContainer.appendChild(pontaDetail);
 
@@ -110,7 +110,7 @@ export function updateCardValues(power, tariffType) {
                 cheiaDetail.className = 'detail-item';
                 cheiaDetail.innerHTML = `
                     <span class="detail-label">Cheia</span>
-                    <span class="detail-value">${TARIFF_VALUES[company].triHorario.full.toFixed(4)} €/kWh</span>
+                    <span class="detail-value">${TARIFF_VALUES[company].triHorario.cheia.toFixed(4)} €/kWh</span>
                 `;
                 detailsContainer.appendChild(cheiaDetail);
 
@@ -118,7 +118,7 @@ export function updateCardValues(power, tariffType) {
                 vazioDetail.className = 'detail-item';
                 vazioDetail.innerHTML = `
                     <span class="detail-label">Vazio</span>
-                    <span class="detail-value">${TARIFF_VALUES[company].triHorario.off.toFixed(4)} €/kWh</span>
+                    <span class="detail-value">${TARIFF_VALUES[company].triHorario.vazio.toFixed(4)} €/kWh</span>
                 `;
                 detailsContainer.appendChild(vazioDetail);
             }

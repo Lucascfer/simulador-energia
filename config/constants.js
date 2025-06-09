@@ -46,17 +46,17 @@ export const TARIFF_VALUES = {
     'EDP': {
         'simples': 0.1650,
         'biHorario': { vazio: 0.1250, foraVazio: 0.1850 },
-        'triHorario': { peak: 0.20, full: 0.15, off: 0.10 }
+        'triHorario': { vazio: 0.10, ponta: 0.20, cheia: 0.15 }
     },
     'Endesa': {
         'simples': 0.1550,
         'biHorario': { vazio: 0.1150, foraVazio: 0.1750 },
-        'triHorario': { peak: 0.19, full: 0.14, off: 0.09 }
+        'triHorario': { vazio: 0.09, ponta: 0.19, cheia: 0.14 }
     },
     'Repsol': {
         'simples': 0.1750,
         'biHorario': { vazio: 0.1350, foraVazio: 0.1950 },
-        'triHorario': { peak: 0.21, full: 0.16, off: 0.11 }
+        'triHorario': { vazio: 0.11, ponta: 0.21, cheia: 0.16 }
     }
 };
 
