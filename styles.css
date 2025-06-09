@@ -1,0 +1,460 @@
+/* Cores personalizadas */
+:root {
+    --electric: #3B82F6;
+    --electric-dark: #2563EB;
+    --savings: #10B981;
+    --gray-200: #E5E7EB;
+    --gray-300: #D1D5DB;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --orange-500: #F97316;
+    --gas-bg: #FFF5F5;
+    --input-bg: #F3F4F6;
+    --input-bg-filled: #FFFFFF;
+}
+
+/* Classe para esconder elementos */
+.hidden {
+    display: none;
+}
+
+/* Animações */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+/* Efeitos de sombra para cards */
+.card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Efeito de destaque nos inputs */
+.input-highlight {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+    background-color: var(--input-bg);
+    border: 1px solid var(--gray-300);
+}
+
+.input-highlight:focus {
+    border-color: var(--electric);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    background-color: var(--input-bg-filled);
+}
+
+.input-highlight:not(:placeholder-shown) {
+    background-color: var(--input-bg-filled);
+    border-color: var(--electric);
+}
+
+/* Estilos para as opções de tarifário */
+.tariff-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.tariff-option {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: white;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 1px solid var(--gray-200);
+    transition: all 0.3s ease;
+}
+
+.tariff-option:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.tariff-radio {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.tariff-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tariff-circle {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid var(--gray-300);
+    border-radius: 50%;
+    margin-right: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.tariff-circle::after {
+    content: '';
+    width: 0.75rem;
+    height: 0.75rem;
+    background-color: var(--electric);
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.tariff-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-900);
+    transition: all 0.3s ease;
+}
+
+.tariff-radio:checked + .tariff-content .tariff-circle {
+    border-color: var(--electric);
+}
+
+.tariff-radio:checked + .tariff-content .tariff-circle::after {
+    opacity: 1;
+}
+
+.tariff-radio:checked + .tariff-content .tariff-text {
+    color: var(--electric);
+}
+
+.tariff-radio:checked ~ .tariff-option {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: var(--electric);
+    box-shadow: 0 0 0 2px var(--electric);
+}
+
+/* Estilos para o switch */
+.switch-container {
+    background-color: white;
+    border: 1px solid var(--gray-200);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.switch-container:hover {
+    border-color: var(--electric);
+}
+
+.switch-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.switch-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-900);
+}
+
+.switch-option i {
+    font-size: 1rem;
+}
+
+.switch-option i.fa-bolt {
+    color: var(--electric);
+}
+
+.switch-option i.fa-fire {
+    color: var(--orange-500);
+}
+
+/* Estilo do switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 4rem;
+    height: 2rem;
+    cursor: pointer;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--gray-300);
+    transition: .4s;
+    border-radius: 2rem;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.75rem;
+    width: 1.75rem;
+    left: 0.125rem;
+    bottom: 0.125rem;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+    border: 1px solid var(--gray-300);
+}
+
+input:checked + .slider {
+    background-color: var(--electric);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px var(--electric);
+}
+
+input:checked + .slider:before {
+    transform: translateX(2rem);
+}
+
+/* Animação para os cards de resultado */
+.result-card {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease-out;
+}
+
+.result-card.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Estilo para o botão de submit */
+button[type="submit"] {
+    background-color: var(--electric);
+}
+
+button[type="submit"]:hover {
+    background-color: var(--electric-dark);
+}
+
+/* Estilo para os valores de poupança */
+.text-savings {
+    color: var(--savings);
+}
+
+.bg-savings {
+    background-color: var(--savings);
+}
+
+/* Estilo para os valores elétricos */
+.text-electric {
+    color: var(--electric);
+}
+
+.bg-electric {
+    background-color: var(--electric);
+}
+
+/* Estilo para os campos de entrada */
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Estilo para a seção de gás */
+.gas-section {
+    background-color: var(--gas-bg);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    border: 1px solid var(--orange-500);
+    animation: slideIn 0.3s ease-out forwards;
+}
+
+.gas-section.hidden {
+    animation: slideOut 0.3s ease-in forwards;
+    pointer-events: none;
+}
+
+.gas-section h3 {
+    color: var(--orange-500);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.gas-section .input-highlight {
+    background-color: var(--input-bg);
+}
+
+.gas-section .input-highlight:focus {
+    border-color: var(--orange-500);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+    background-color: var(--input-bg-filled);
+}
+
+.gas-section .input-highlight:not(:placeholder-shown) {
+    background-color: var(--input-bg-filled);
+    border-color: var(--orange-500);
+}
+
+/* Cards das Comercializadoras */
+.provider-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+}
+
+.provider-card {
+    background-color: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.provider-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06);
+}
+
+.provider-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.provider-logo {
+    height: 3rem;
+    width: auto;
+    object-fit: contain;
+}
+
+.provider-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--gray-900);
+}
+
+.provider-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    flex-grow: 1;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--gray-200);
+}
+
+.detail-label {
+    color: var(--gray-700);
+    font-size: 0.875rem;
+}
+
+.detail-value {
+    color: var(--gray-900);
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Ajuste do container principal */
+.max-w-4xl {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Ajuste do título */
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+}
+
+/* Estilos para a seção de consumo de kWh */
+.consumption-section {
+    background-color: rgba(59, 130, 246, 0.05);
+    border: 2px solid var(--electric);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.consumption-section h3 {
+    color: var(--electric);
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.consumption-section h3 i {
+    color: var(--electric);
+}
+
+.consumption-section .input-group {
+    margin-bottom: 1rem;
+}
+
+.consumption-section label {
+    color: var(--gray-700);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.consumption-section .input-highlight {
+    background-color: white;
+    border-color: var(--electric);
+}
+
+.consumption-section .input-highlight:focus {
+    border-color: var(--electric-dark);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
