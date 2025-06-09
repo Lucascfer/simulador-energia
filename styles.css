@@ -48,21 +48,36 @@
 
 /* Efeito de destaque nos inputs */
 .input-highlight {
-    transition: all 0.3s ease;
-    border-left: 4px solid transparent;
     background-color: var(--input-bg);
     border: 1px solid var(--gray-300);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    width: 100%;
+    transition: all 0.2s ease;
 }
 
 .input-highlight:focus {
+    outline: none;
     border-color: var(--electric);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     background-color: var(--input-bg-filled);
 }
 
-.input-highlight:not(:placeholder-shown) {
+/* Estilo para inputs vazios */
+.input-highlight:placeholder-shown {
+    background-color: var(--input-bg);
+    border-color: var(--gray-300);
+    color: var(--gray-700);
+    opacity: 0.7;
+}
+
+.input-highlight:placeholder-shown:hover {
+    border-color: var(--gray-400);
+}
+
+.input-highlight:placeholder-shown:focus {
+    opacity: 1;
     background-color: var(--input-bg-filled);
-    border-color: var(--electric);
 }
 
 /* Estilos para as opções de tarifário */
@@ -423,6 +438,20 @@ h1 {
     border-radius: 0.75rem;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.consumption-section::before {
+    content: '\f0e7';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: -0.75rem;
+    left: 1rem;
+    background-color: white;
+    padding: 0 0.5rem;
+    color: var(--electric);
+    font-size: 1rem;
 }
 
 .consumption-section h3 {
@@ -446,15 +475,100 @@ h1 {
 .consumption-section label {
     color: var(--gray-700);
     font-weight: 500;
-    margin-bottom: 0.5rem;
 }
 
 .consumption-section .input-highlight {
     background-color: white;
     border-color: var(--electric);
+    transition: all 0.2s ease;
 }
 
 .consumption-section .input-highlight:focus {
     border-color: var(--electric-dark);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Estilo para inputs vazios dentro da consumption-section */
+.consumption-section .input-highlight:placeholder-shown {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: var(--electric);
+    opacity: 0.5;
+}
+
+.consumption-section .input-highlight:placeholder-shown:hover {
+    opacity: 0.7;
+}
+
+.consumption-section .input-highlight:placeholder-shown:focus {
+    opacity: 1;
+    background-color: white;
+}
+
+/* Estilos para a seção de potência */
+.consumption-power {
+    background-color: rgba(30, 64, 175, 0.05);
+    border: 2px solid #1E40AF;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.consumption-power::before {
+    content: '\f0e7';
+    font-family: 'Font Awesome 5 Free';
+    font-weight: 900;
+    position: absolute;
+    top: -0.75rem;
+    left: 1rem;
+    background-color: white;
+    padding: 0 0.5rem;
+    color: #1E40AF;
+    font-size: 1rem;
+}
+
+.consumption-power label {
+    color: var(--gray-700);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.consumption-power select,
+.consumption-power input {
+    background-color: white;
+    border-color: #1E40AF;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.consumption-power select:focus,
+.consumption-power input:focus {
+    border-color: #1E3A8A;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.2);
+}
+
+.consumption-power select:placeholder-shown,
+.consumption-power input:placeholder-shown {
+    background-color: rgba(255, 255, 255, 0.7);
+    border-color: #1E40AF;
+    opacity: 0.5;
+}
+
+.consumption-power select:placeholder-shown:hover,
+.consumption-power input:placeholder-shown:hover {
+    opacity: 0.7;
+}
+
+.consumption-power select:placeholder-shown:focus,
+.consumption-power input:placeholder-shown:focus {
+    opacity: 1;
+    background-color: white;
+}
+
+.consumption-power .col-span-2 {
+    grid-column: span 2;
 }
