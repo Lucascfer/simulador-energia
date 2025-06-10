@@ -38,44 +38,34 @@ document.addEventListener("DOMContentLoaded", function () {
       const tariffType = this.value;
       switch (tariffType) {
         case "simples":
-          document
-            .getElementById("consumptionSimples")
-            .setAttribute("required", "");
-          document.getElementById("valueSimples").setAttribute("required", "");
+          const consumptionSimples = document.getElementById("consumptionSimples");
+          const valueSimples = document.getElementById("valueSimples");
+          if (consumptionSimples) consumptionSimples.setAttribute("required", "");
+          if (valueSimples) valueSimples.setAttribute("required", "");
           break;
         case "biHorario":
-          document
-            .getElementById("consumptionBiHorarioPonta")
-            .setAttribute("required", "");
-          document
-            .getElementById("consumptionBiHorarioForaPonta")
-            .setAttribute("required", "");
-          document
-            .getElementById("valueBiHorarioPonta")
-            .setAttribute("required", "");
-          document
-            .getElementById("valueBiHorarioForaPonta")
-            .setAttribute("required", "");
+          const consumptionBiHorarioVazio = document.getElementById("consumptionBiHorarioVazio");
+          const consumptionBiHorarioForaVazio = document.getElementById("consumptionBiHorarioForaVazio");
+          const valueBiHorarioVazio = document.getElementById("valueBiHorarioVazio");
+          const valueBiHorarioForaVazio = document.getElementById("valueBiHorarioForaVazio");
+          if (consumptionBiHorarioVazio) consumptionBiHorarioVazio.setAttribute("required", "");
+          if (consumptionBiHorarioForaVazio) consumptionBiHorarioForaVazio.setAttribute("required", "");
+          if (valueBiHorarioVazio) valueBiHorarioVazio.setAttribute("required", "");
+          if (valueBiHorarioForaVazio) valueBiHorarioForaVazio.setAttribute("required", "");
           break;
         case "triHorario":
-          document
-            .getElementById("consumptionTriHorarioPonta")
-            .setAttribute("required", "");
-          document
-            .getElementById("consumptionTriHorarioCheia")
-            .setAttribute("required", "");
-          document
-            .getElementById("consumptionTriHorarioVazio")
-            .setAttribute("required", "");
-          document
-            .getElementById("valueTriHorarioPonta")
-            .setAttribute("required", "");
-          document
-            .getElementById("valueTriHorarioCheia")
-            .setAttribute("required", "");
-          document
-            .getElementById("valueTriHorarioVazio")
-            .setAttribute("required", "");
+          const consumptionTriHorarioPonta = document.getElementById("consumptionTriHorarioPonta");
+          const consumptionTriHorarioCheia = document.getElementById("consumptionTriHorarioCheia");
+          const consumptionTriHorarioVazio = document.getElementById("consumptionTriHorarioVazio");
+          const valueTriHorarioPonta = document.getElementById("valueTriHorarioPonta");
+          const valueTriHorarioCheia = document.getElementById("valueTriHorarioCheia");
+          const valueTriHorarioVazio = document.getElementById("valueTriHorarioVazio");
+          if (consumptionTriHorarioPonta) consumptionTriHorarioPonta.setAttribute("required", "");
+          if (consumptionTriHorarioCheia) consumptionTriHorarioCheia.setAttribute("required", "");
+          if (consumptionTriHorarioVazio) consumptionTriHorarioVazio.setAttribute("required", "");
+          if (valueTriHorarioPonta) valueTriHorarioPonta.setAttribute("required", "");
+          if (valueTriHorarioCheia) valueTriHorarioCheia.setAttribute("required", "");
+          if (valueTriHorarioVazio) valueTriHorarioVazio.setAttribute("required", "");
           break;
       }
 
@@ -145,13 +135,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         case "biHorario":
           consumption = {
-            ponta: {
-              value: getNumericValue("valueBiHorarioPonta"),
-              amount: getNumericValue("consumptionBiHorarioPonta"),
+            vazio: {
+              value: getNumericValue("valueBiHorarioVazio"),
+              amount: getNumericValue("consumptionBiHorarioVazio"),
             },
-            foraPonta: {
-              value: getNumericValue("valueBiHorarioForaPonta"),
-              amount: getNumericValue("consumptionBiHorarioForaPonta"),
+            foraVazio: {
+              value: getNumericValue("valueBiHorarioForaVazio"),
+              amount: getNumericValue("consumptionBiHorarioForaVazio"),
             },
           };
           break;

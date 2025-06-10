@@ -123,35 +123,35 @@ export function createSimulatorForm() {
       <div id="biHorarioFields" class="hidden consumption-section">
         <div class="space-y-4">
           <div class="mb-2">
-            <h4 class="text-md font-semibold text-gray-700">Período Fora de Ponta</h4>
+            <h4 class="text-md font-semibold text-gray-700">Período Fora do Vazio</h4>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="consumptionBiHorarioForaPonta" class="block text-sm font-medium text-gray-700 mb-2">Consumo (kWh)</label>
+              <label for="consumptionBiHorarioForaVazio" class="block text-sm font-medium text-gray-700 mb-2">Consumo (kWh)</label>
               <input
                 type="number"
-                id="consumptionBiHorarioForaPonta"
-                name="consumptionBiHorarioForaPonta"
+                id="consumptionBiHorarioForaVazio"
+                name="consumptionBiHorarioForaVazio"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
             <div>
-              <label for="valueBiHorarioForaPonta" class="block text-sm font-medium text-gray-700 mb-2">Valor (€/kWh)</label>
+              <label for="valueBiHorarioForaVazio" class="block text-sm font-medium text-gray-700 mb-2">Valor (€/kWh)</label>
               <input
                 type="number"
                 step="0.0001"
-                id="valueBiHorarioForaPonta"
-                name="valueBiHorarioForaPonta"
+                id="valueBiHorarioForaVazio"
+                name="valueBiHorarioForaVazio"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
           </div>
           <div class="mt-2">
-            <label for="energyDiscountForaPonta" class="block text-sm font-medium text-gray-700 mb-2">Desconto Fora de Ponta (%)</label>
+            <label for="energyDiscountForaVazio" class="block text-sm font-medium text-gray-700 mb-2">Desconto Fora do Vazio (%)</label>
             <input
               type="number"
-              id="energyDiscountForaPonta"
-              name="energyDiscountForaPonta"
+              id="energyDiscountForaVazio"
+              name="energyDiscountForaVazio"
               min="0"
               max="100"
               step="0.01"
@@ -161,35 +161,35 @@ export function createSimulatorForm() {
           </div>
 
           <div class="mb-2">
-            <h4 class="text-md font-semibold text-gray-700">Período de Ponta</h4>
+            <h4 class="text-md font-semibold text-gray-700">Período de Vazio</h4>
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div>
-              <label for="consumptionBiHorarioPonta" class="block text-sm font-medium text-gray-700 mb-2">Consumo (kWh)</label>
+              <label for="consumptionBiHorarioVazio" class="block text-sm font-medium text-gray-700 mb-2">Consumo (kWh)</label>
               <input
                 type="number"
-                id="consumptionBiHorarioPonta"
-                name="consumptionBiHorarioPonta"
+                id="consumptionBiHorarioVazio"
+                name="consumptionBiHorarioVazio"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
             <div>
-              <label for="valueBiHorarioPonta" class="block text-sm font-medium text-gray-700 mb-2">Valor (€/kWh)</label>
+              <label for="valueBiHorarioVazio" class="block text-sm font-medium text-gray-700 mb-2">Valor (€/kWh)</label>
               <input
                 type="number"
                 step="0.0001"
-                id="valueBiHorarioPonta"
-                name="valueBiHorarioPonta"
+                id="valueBiHorarioVazio"
+                name="valueBiHorarioVazio"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
           </div>
           <div class="mt-2">
-            <label for="energyDiscountPonta" class="block text-sm font-medium text-gray-700 mb-2">Desconto Ponta (%)</label>
+            <label for="energyDiscountVazio" class="block text-sm font-medium text-gray-700 mb-2">Desconto Vazio (%)</label>
             <input
               type="number"
-              id="energyDiscountPonta"
-              name="energyDiscountPonta"
+              id="energyDiscountVazio"
+              name="energyDiscountVazio"
               min="0"
               max="100"
               step="0.01"

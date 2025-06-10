@@ -74,7 +74,7 @@ function calculateSimpleTariffCost(company, consumption, discount) {
 /**
  * Calcula o custo variável para tarifa bi-horária
  * @param {string} company - Nome da empresa
- * @param {Object} consumption - Objeto com consumo ponta e fora ponta
+ * @param {Object} consumption - Objeto com consumo vazio e fora vazio
  * @param {number} discount - Desconto aplicado
  * @returns {number} - Custo variável total
  */

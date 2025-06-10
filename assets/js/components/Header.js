@@ -10,10 +10,10 @@ export function createHeader() {
               class="h-8"
             />
           </div>
-          <nav class="hidden md:flex space-x-8">
-            <a href="#" class="text-gray-600 hover:text-gray-900">Início</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900">Sobre</a>
-            <a href="#" class="text-gray-600 hover:text-gray-900">Contato</a>
+          <nav class="flex space-x-4 md:space-x-8">
+            <a href="#" class="text-gray-600 hover:text-gray-900 text-sm md:text-base">Início</a>
+            <a href="#" class="text-gray-600 hover:text-gray-900 text-sm md:text-base">Sobre</a>
+            <a href="#" class="text-gray-600 hover:text-gray-900 text-sm md:text-base">Contato</a>
           </nav>
         </div>
       </div>

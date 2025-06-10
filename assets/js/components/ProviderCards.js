@@ -1,92 +1,46 @@
+import { TARIFF_VALUES, COMPANIES } from "../constants.js";
+
 export function createProviderCards() {
   return `
     <div class="provider-cards mb-8">
-      <div class="provider-card" id="edpCard">
-        <div class="provider-header">
-          <img
-            src="assets/images/edp_logo.png"
-            alt="EDP Logo"
-            class="provider-logo"
-          />
-          <h3 class="provider-name">EDP</h3>
-        </div>
-        <div class="provider-details">
-          <div class="detail-item">
-            <span class="detail-label">Tarifa Simples</span>
-            <span class="detail-value">0,1650 €/kWh</span>
+      ${COMPANIES.map(company => `
+        <div class="provider-card" id="${company.toLowerCase()}Card">
+          <div class="provider-header">
+            <img
+              src="assets/images/${company.toLowerCase()}_logo.png"
+              alt="${company} Logo"
+              class="provider-logo"
+            />
+            <span class="provider-name">${company}</span>
           </div>
-          <div class="detail-item">
-            <span class="detail-label">Bi-horário (Ponta)</span>
-            <span class="detail-value">0,1850 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Bi-horário (Fora Ponta)</span>
-            <span class="detail-value">0,1250 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Potência (kVA)</span>
-            <span class="detail-value">0,0950 €/kVA/dia</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="provider-card" id="endesaCard">
-        <div class="provider-header">
-          <img
-            src="assets/images/endesa_logo.png"
-            alt="Endesa Logo"
-            class="provider-logo"
-          />
-          <h3 class="provider-name">Endesa</h3>
-        </div>
-        <div class="provider-details">
-          <div class="detail-item">
-            <span class="detail-label">Tarifa Simples</span>
-            <span class="detail-value">0,1550 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Bi-horário (Ponta)</span>
-            <span class="detail-value">0,1750 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Bi-horário (Fora Ponta)</span>
-            <span class="detail-value">0,1150 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Potência (kVA)</span>
-            <span class="detail-value">0,0850 €/kVA/dia</span>
+          <div class="provider-details">
+            <div class="detail-item">
+              <span class="detail-label">Tarifa Simples</span>
+              <span class="detail-value">${TARIFF_VALUES[company].simples.toFixed(4)} €/kWh</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Bi-horário (Vazio)</span>
+              <span class="detail-value">${TARIFF_VALUES[company].biHorario.vazio.toFixed(4)} €/kWh</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Bi-horário (Fora Vazio)</span>
+              <span class="detail-value">${TARIFF_VALUES[company].biHorario.foraVazio.toFixed(4)} €/kWh</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Tri-horário (Vazio)</span>
+              <span class="detail-value">${TARIFF_VALUES[company].triHorario.vazio.toFixed(4)} €/kWh</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Tri-horário (Cheia)</span>
+              <span class="detail-value">${TARIFF_VALUES[company].triHorario.cheia.toFixed(4)} €/kWh</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Tri-horário (Ponta)</span>
+              <span class="detail-value">${TARIFF_VALUES[company].triHorario.ponta.toFixed(4)} €/kWh</span>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="provider-card" id="repsolCard">
-        <div class="provider-header">
-          <img
-            src="assets/images/repsol_logo.png"
-            alt="Repsol Logo"
-            class="provider-logo"
-          />
-          <h3 class="provider-name">Repsol</h3>
-        </div>
-        <div class="provider-details">
-          <div class="detail-item">
-            <span class="detail-label">Tarifa Simples</span>
-            <span class="detail-value">0,1750 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Bi-horário (Ponta)</span>
-            <span class="detail-value">0,1950 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Bi-horário (Fora Ponta)</span>
-            <span class="detail-value">0,1350 €/kWh</span>
-          </div>
-          <div class="detail-item">
-            <span class="detail-label">Potência (kVA)</span>
-            <span class="detail-value">0,1050 €/kVA/dia</span>
-          </div>
-        </div>
-      </div>
+      `).join('')}
     </div>
   `;
-} 
+}

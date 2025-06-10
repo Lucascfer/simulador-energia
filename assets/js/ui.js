@@ -51,109 +51,97 @@ export function updateCardValues(power, tariffType) {
 
   // Update card values
   COMPANIES.forEach((company) => {
-    const cards = document.querySelectorAll(".provider-card");
-    let card = null;
-    for (let i = 0; i < cards.length; i++) {
-      const providerNameElement = cards[i].querySelector(".provider-name");
-      if (
-        providerNameElement &&
-        providerNameElement.textContent.includes(company)
-      ) {
-        card = cards[i];
-        break;
-      }
+    const card = document.getElementById(`${company.toLowerCase()}Card`);
+    if (!card) return;
+
+    const detailsContainer = card.querySelector(".provider-details");
+    if (!detailsContainer) return; // Skip if details container doesn't exist
+
+    // Clear existing details
+    while (detailsContainer.firstChild) {
+      detailsContainer.removeChild(detailsContainer.firstChild);
     }
 
-    if (card) {
-      const detailsContainer = card.querySelector(".provider-details");
-      if (!detailsContainer) return; // Skip if details container doesn't exist
+    // Create details based on tariff type
+    if (tariffType === "simples" && TARIFF_VALUES[company]?.simples) {
+      const simplesDetail = document.createElement("div");
+      simplesDetail.className = "detail-item";
+      simplesDetail.innerHTML = `
+                  <span class="detail-label">Tarifa Simples</span>
+                  <span class="detail-value">${TARIFF_VALUES[
+                    company
+                  ].simples.toFixed(4)} €/kWh</span>
+              `;
+      detailsContainer.appendChild(simplesDetail);
+    } else if (
+      tariffType === "biHorario" &&
+      TARIFF_VALUES[company]?.biHorario
+    ) {
+      const vazioDetail = document.createElement("div");
+      vazioDetail.className = "detail-item";
+      vazioDetail.innerHTML = `
+                  <span class="detail-label">Vazio</span>
+                  <span class="detail-value">${TARIFF_VALUES[
+                    company
+                  ].biHorario.vazio.toFixed(4)} €/kWh</span>
+              `;
+      detailsContainer.appendChild(vazioDetail);
 
-      // Clear existing details
-      while (detailsContainer.firstChild) {
-        detailsContainer.removeChild(detailsContainer.firstChild);
-      }
+      const foraVazioDetail = document.createElement("div");
+      foraVazioDetail.className = "detail-item";
+      foraVazioDetail.innerHTML = `
+                  <span class="detail-label">Fora do Vazio</span>
+                  <span class="detail-value">${TARIFF_VALUES[
+                    company
+                  ].biHorario.foraVazio.toFixed(4)} €/kWh</span>
+              `;
+      detailsContainer.appendChild(foraVazioDetail);
+    } else if (
+      tariffType === "triHorario" &&
+      TARIFF_VALUES[company]?.triHorario
+    ) {
+      const pontaDetail = document.createElement("div");
+      pontaDetail.className = "detail-item";
+      pontaDetail.innerHTML = `
+                  <span class="detail-label">Ponta</span>
+                  <span class="detail-value">${TARIFF_VALUES[
+                    company
+                  ].triHorario.ponta.toFixed(4)} €/kWh</span>
+              `;
+      detailsContainer.appendChild(pontaDetail);
 
-      // Create details based on tariff type
-      if (tariffType === "simples" && TARIFF_VALUES[company]?.simples) {
-        const simplesDetail = document.createElement("div");
-        simplesDetail.className = "detail-item";
-        simplesDetail.innerHTML = `
-                    <span class="detail-label">Tarifa Simples</span>
-                    <span class="detail-value">${TARIFF_VALUES[
-                      company
-                    ].simples.toFixed(4)} €/kWh</span>
-                `;
-        detailsContainer.appendChild(simplesDetail);
-      } else if (
-        tariffType === "biHorario" &&
-        TARIFF_VALUES[company]?.biHorario
-      ) {
-        const vazioDetail = document.createElement("div");
-        vazioDetail.className = "detail-item";
-        vazioDetail.innerHTML = `
-                    <span class="detail-label">Vazio</span>
-                    <span class="detail-value">${TARIFF_VALUES[
-                      company
-                    ].biHorario.vazio.toFixed(4)} €/kWh</span>
-                `;
-        detailsContainer.appendChild(vazioDetail);
+      const cheiaDetail = document.createElement("div");
+      cheiaDetail.className = "detail-item";
+      cheiaDetail.innerHTML = `
+                  <span class="detail-label">Cheia</span>
+                  <span class="detail-value">${TARIFF_VALUES[
+                    company
+                  ].triHorario.cheia.toFixed(4)} €/kWh</span>
+              `;
+      detailsContainer.appendChild(cheiaDetail);
 
-        const foraVazioDetail = document.createElement("div");
-        foraVazioDetail.className = "detail-item";
-        foraVazioDetail.innerHTML = `
-                    <span class="detail-label">Fora do Vazio</span>
-                    <span class="detail-value">${TARIFF_VALUES[
-                      company
-                    ].biHorario.foraVazio.toFixed(4)} €/kWh</span>
-                `;
-        detailsContainer.appendChild(foraVazioDetail);
-      } else if (
-        tariffType === "triHorario" &&
-        TARIFF_VALUES[company]?.triHorario
-      ) {
-        const pontaDetail = document.createElement("div");
-        pontaDetail.className = "detail-item";
-        pontaDetail.innerHTML = `
-                    <span class="detail-label">Ponta</span>
-                    <span class="detail-value">${TARIFF_VALUES[
-                      company
-                    ].triHorario.ponta.toFixed(4)} €/kWh</span>
-                `;
-        detailsContainer.appendChild(pontaDetail);
-
-        const cheiaDetail = document.createElement("div");
-        cheiaDetail.className = "detail-item";
-        cheiaDetail.innerHTML = `
-                    <span class="detail-label">Cheia</span>
-                    <span class="detail-value">${TARIFF_VALUES[
-                      company
-                    ].triHorario.cheia.toFixed(4)} €/kWh</span>
-                `;
-        detailsContainer.appendChild(cheiaDetail);
-
-        const vazioDetail = document.createElement("div");
-        vazioDetail.className = "detail-item";
-        vazioDetail.innerHTML = `
-                    <span class="detail-label">Vazio</span>
-                    <span class="detail-value">${TARIFF_VALUES[
-                      company
-                    ].triHorario.vazio.toFixed(4)} €/kWh</span>
-                `;
-        detailsContainer.appendChild(vazioDetail);
-      }
-
-      // Add power value
-      const powerDetail = document.createElement("div");
-      powerDetail.className = "detail-item";
-      const powerValue = getPowerCost(company, power) || 0;
-      powerDetail.innerHTML = `
-                <span class="detail-label">Potência (kVA)</span>
-                <span class="detail-value">${powerValue.toFixed(
-                  4
-                )} €/kVA/dia</span>
-            `;
-      detailsContainer.appendChild(powerDetail);
+      const vazioDetail = document.createElement("div");
+      vazioDetail.className = "detail-item";
+      vazioDetail.innerHTML = `
+                  <span class="detail-label">Vazio</span>
+                  <span class="detail-value">${TARIFF_VALUES[
+                    company
+                  ].triHorario.vazio.toFixed(4)} €/kWh</span>
+              `;
+      detailsContainer.appendChild(vazioDetail);
     }
+
+    // Add power value
+    const powerDetail = document.createElement("div");
+    powerDetail.className = "detail-item";
+    const powerValue = getPowerCost(company, power) || 0;
+    powerDetail.innerHTML = `
+              <span class="detail-label">Potência (kVA)</span>
+              <span class="detail-value">${powerValue.toFixed(
+                4
+              )} €/kVA/dia</span>
+          `;
+    detailsContainer.appendChild(powerDetail);
   });
 }
 
