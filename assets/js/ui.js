@@ -171,7 +171,6 @@ export function displayResults(
     'input[name="tariffType"]:checked'
   ).value;
   const power = getNumericValue("powerValue");
-  console.log(power)
   let currentConsumption = {};
   let currentEnergyCost = 0;
   let currentGasCost = 0;

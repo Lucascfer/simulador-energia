@@ -24,30 +24,54 @@ document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll('input[name="tariffType"]').forEach((radio) => {
     radio.addEventListener("change", function () {
       // Remove required attribute from all tariff inputs first
-      document.querySelectorAll('[id^="consumption"], [id^="value"]').forEach(input => {
-        input.removeAttribute('required');
-      });
+      document
+        .querySelectorAll('[id^="consumption"], [id^="value"]')
+        .forEach((input) => {
+          input.removeAttribute("required");
+        });
 
       // Add required attribute only to visible inputs
       const tariffType = this.value;
-      switch(tariffType) {
-        case 'simples':
-          document.getElementById('consumptionSimples').setAttribute('required', '');
-          document.getElementById('valueSimples').setAttribute('required', '');
+      switch (tariffType) {
+        case "simples":
+          document
+            .getElementById("consumptionSimples")
+            .setAttribute("required", "");
+          document.getElementById("valueSimples").setAttribute("required", "");
           break;
-        case 'biHorario':
-          document.getElementById('consumptionBiHorarioPonta').setAttribute('required', '');
-          document.getElementById('consumptionBiHorarioForaPonta').setAttribute('required', '');
-          document.getElementById('valueBiHorarioPonta').setAttribute('required', '');
-          document.getElementById('valueBiHorarioForaPonta').setAttribute('required', '');
+        case "biHorario":
+          document
+            .getElementById("consumptionBiHorarioPonta")
+            .setAttribute("required", "");
+          document
+            .getElementById("consumptionBiHorarioForaPonta")
+            .setAttribute("required", "");
+          document
+            .getElementById("valueBiHorarioPonta")
+            .setAttribute("required", "");
+          document
+            .getElementById("valueBiHorarioForaPonta")
+            .setAttribute("required", "");
           break;
-        case 'triHorario':
-          document.getElementById('consumptionTriHorarioPonta').setAttribute('required', '');
-          document.getElementById('consumptionTriHorarioCheia').setAttribute('required', '');
-          document.getElementById('consumptionTriHorarioVazio').setAttribute('required', '');
-          document.getElementById('valueTriHorarioPonta').setAttribute('required', '');
-          document.getElementById('valueTriHorarioCheia').setAttribute('required', '');
-          document.getElementById('valueTriHorarioVazio').setAttribute('required', '');
+        case "triHorario":
+          document
+            .getElementById("consumptionTriHorarioPonta")
+            .setAttribute("required", "");
+          document
+            .getElementById("consumptionTriHorarioCheia")
+            .setAttribute("required", "");
+          document
+            .getElementById("consumptionTriHorarioVazio")
+            .setAttribute("required", "");
+          document
+            .getElementById("valueTriHorarioPonta")
+            .setAttribute("required", "");
+          document
+            .getElementById("valueTriHorarioCheia")
+            .setAttribute("required", "");
+          document
+            .getElementById("valueTriHorarioVazio")
+            .setAttribute("required", "");
           break;
       }
 
@@ -57,7 +81,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Initialize required fields for initial tariff type
-  document.querySelector(`input[name="tariffType"][value="${initialTariffType}"]`).dispatchEvent(new Event('change'));
+  document
+    .querySelector(`input[name="tariffType"][value="${initialTariffType}"]`)
+    .dispatchEvent(new Event("change"));
 
   // Initialize card values
   const power = getNumericValue("power");
