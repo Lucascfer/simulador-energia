@@ -3,18 +3,22 @@ import {
   POWER_COSTS,
   TARIFF_VALUES,
   GAS_PRICES,
-} from "./config/constants.js";
-import { getPowerCost, calculateSavings } from "./utils/calculations.js";
+} from "./constants.js";
+import { getPowerCost, calculateSavings } from "./calculations.js";
 import {
   getNumericValue,
   updateTariffFields,
   updateGasSection,
   updateCardValues,
   displayResults,
-} from "./utils/ui.js";
+} from "./ui.js";
+import { createApp } from "./components/App.js";
 
-// Initialize event listeners
+// Inicializa a aplicação
 document.addEventListener("DOMContentLoaded", function () {
+  // Renderiza a aplicação
+  document.body.innerHTML = createApp();
+
   // Initialize tariff fields
   const initialTariffType =
     document.querySelector('input[name="tariffType"]:checked')?.value ||

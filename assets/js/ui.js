@@ -1,4 +1,4 @@
-import { TARIFF_VALUES, COMPANIES } from "../config/constants.js";
+import { TARIFF_VALUES, COMPANIES } from "./constants.js";
 import { getPowerCost } from "./calculations.js";
 
 // Function to validate and get numeric values from inputs

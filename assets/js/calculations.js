@@ -3,7 +3,7 @@ import {
   TARIFF_VALUES,
   GAS_PRICES,
   COMPANIES,
-} from "../config/constants.js";
+} from "./constants.js";
 
 /**
  * Valida se um valor é um número válido e positivo
