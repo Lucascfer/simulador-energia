@@ -153,80 +153,11 @@ export function displayResults(
   gasDiscount
 ) {
   const container = document.getElementById("resultsContainer");
+  if (!container) return;
 
-  // Get current values from form
-  const tariffType = document.querySelector(
-    'input[name="tariffType"]:checked'
-  ).value;
-  const power = getNumericValue("powerValue");
-  let currentConsumption = {};
-  let currentEnergyCost = 0;
-  let currentGasCost = 0;
-
-  // Calculate current energy consumption based on tariff type
-  switch (tariffType) {
-    case "simples":
-      currentConsumption = {
-        simples: {
-          value: getNumericValue("valueSimples"),
-          amount: getNumericValue("consumptionSimples"),
-        },
-      };
-      currentEnergyCost =
-        currentConsumption.simples.amount * currentConsumption.simples.value;
-      break;
-    case "biHorario":
-      currentConsumption = {
-        vazio: {
-          value: getNumericValue("valueBiHorarioVazio"),
-          amount: getNumericValue("consumptionBiHorarioVazio"),
-        },
-        foraVazio: {
-          value: getNumericValue("valueBiHorarioForaVazio"),
-          amount: getNumericValue("consumptionBiHorarioForaVazio"),
-        },
-      };
-      currentEnergyCost =
-        currentConsumption.vazio.amount * currentConsumption.vazio.value +
-        currentConsumption.foraVazio.amount *
-          currentConsumption.foraVazio.value;
-      break;
-    case "triHorario":
-      currentConsumption = {
-        ponta: {
-          value: getNumericValue("valueTriHorarioPonta"),
-          amount: getNumericValue("consumptionTriHorarioPonta"),
-        },
-        cheia: {
-          value: getNumericValue("valueTriHorarioCheia"),
-          amount: getNumericValue("consumptionTriHorarioCheia"),
-        },
-        vazio: {
-          value: getNumericValue("valueTriHorarioVazio"),
-          amount: getNumericValue("consumptionTriHorarioVazio"),
-        },
-      };
-      currentEnergyCost =
-        currentConsumption.ponta.amount * currentConsumption.ponta.value +
-        currentConsumption.cheia.amount * currentConsumption.cheia.value +
-        currentConsumption.vazio.amount * currentConsumption.vazio.value;
-      break;
-  }
-
-  // Calculate current gas cost if applicable
-  const includeGas = document.getElementById("simulationType")?.checked;
-  if (includeGas) {
-    const gasConsumption = getNumericValue("gasConsumption");
-    const gasValue = getNumericValue("gasValue");
-    currentGasCost = gasConsumption * gasValue;
-  }
-
-  // Calculate power cost
-  const powerCost = power * calculationDays;
-  currentEnergyCost += powerCost;
-
-  // Calculate total current cost
-  const currentTotal = currentEnergyCost + currentGasCost;
+  // Find current values from results
+  const currentResult = results.find(result => result.isCurrent);
+  if (!currentResult) return;
 
   // Create HTML for results
   let html = `
@@ -257,23 +188,19 @@ export function displayResults(
                         <div class="flex items-center">
                             <span class="font-bold text-gray-800">Valores Atuais</span>
                         </div>
-                        <div class="text-lg font-bold">€${currentTotal.toFixed(
-                          2
-                        )}</div>
+                        <div class="text-lg font-bold">€${currentResult.total.toFixed(2)}</div>
                     </div>
                     <div class="flex justify-between items-center text-sm text-gray-600">
                         <div>
                             <i class="fas fa-bolt mr-1"></i>
-                            <span>Energia: €${currentEnergyCost.toFixed(
-                              2
-                            )}</span>
+                            <span>Energia: €${currentResult.energyCost.toFixed(2)}</span>
                         </div>
                         ${
-                          currentGasCost > 0
+                          currentResult.gasCost > 0
                             ? `
                         <div>
                             <i class="fas fa-fire mr-1"></i>
-                            <span>Gás: €${currentGasCost.toFixed(2)}</span>
+                            <span>Gás: €${currentResult.gasCost.toFixed(2)}</span>
                         </div>
                         `
                             : ""
@@ -286,8 +213,9 @@ export function displayResults(
     `;
 
   results.forEach((result, index) => {
-    const savings = currentTotal - result.total;
-    const savingsPercentage = ((savings / currentTotal) * 100).toFixed(1);
+    if (result.isCurrent) return;
+    const savings = currentResult.total - result.total;
+    const savingsPercentage = ((savings / currentResult.total) * 100).toFixed(1);
     const isSaving = savings > 0;
 
     html += `

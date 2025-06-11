@@ -13,6 +13,7 @@ import {
   displayResults,
 } from "./ui.js";
 import { createApp } from "./components/App.js";
+import { calculateFormValues } from "./formCalculations.js";
 
 // Inicializa a aplicação
 document.addEventListener("DOMContentLoaded", function () {
@@ -147,9 +148,34 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       const tariffType = tariffTypeRadio ? tariffTypeRadio.value : "simples";
       const power = getNumericValue("power");
+      const powerValue = getNumericValue("powerValue");
+      const powerDiscount = getNumericValue("powerDiscount");
       const calculationDays = getNumericValue("calculationDays", 30);
-      const energyDiscount = getNumericValue("energyDiscount");
-      const gasDiscount = getNumericValue("gasDiscount");
+
+      const TARIFF_DISCOUNT_FIELDS = {
+        simples: "energyDiscount",
+        biHorario: {
+          vazio: "energyDiscountVazio",
+          foraVazio: "energyDiscountForaVazio",
+        },
+        triHorario: {
+          ponta: "energyDiscountPonta",
+          cheia: "energyDiscountCheia",
+          vazio: "energyDiscountVazio",
+        },
+      };
+
+      const energyDiscount =
+        typeof TARIFF_DISCOUNT_FIELDS[tariffType] === "object"
+          ? Object.entries(TARIFF_DISCOUNT_FIELDS[tariffType]).reduce(
+              (acc, [key, field]) => {
+                acc[key] = getNumericValue(field, 0);
+                return acc;
+              },
+              {}
+            )
+          : getNumericValue(TARIFF_DISCOUNT_FIELDS[tariffType], 0);
+      const gasDiscount = getNumericValue("gasDiscount", 0);
       const includeGas =
         document.getElementById("simulationType")?.checked || false;
 
@@ -196,15 +222,45 @@ document.addEventListener("DOMContentLoaded", function () {
           break;
       }
 
-      // Calculate and display results
-      const results = calculateSavings(
+      // Get gas values if included
+      const gasConsumption = includeGas ? getNumericValue("gasConsumption") : 0;
+      const gasValue = includeGas ? getNumericValue("gasValue") : 0;
+
+      // Calculate current values using the new function
+      const currentValues = calculateFormValues({
+        tariffType,
+        power,
+        powerValue,
+        powerDiscount,
+        calculationDays,
+        energyDiscount,
+        gasDiscount,
+        consumption,
+        gasConsumption,
+        gasValue,
+      });
+
+      // Calculate results for other companies without discounts
+      const otherCompaniesResults = calculateSavings(
         consumption,
         tariffType,
         power,
-        calculationDays,
-        energyDiscount,
-        gasDiscount
+        calculationDays
       );
+
+      // Add current values to the results
+      const results = otherCompaniesResults.map((result) => ({
+        ...result,
+        isCurrent: false,
+      }));
+      results.push({
+        company: "Atual",
+        total: currentValues.totalCost,
+        energyCost: currentValues.energyCost + currentValues.powerCost,
+        gasCost: currentValues.gasCost,
+        isCurrent: true,
+      });
+
       displayResults(results, calculationDays, energyDiscount, gasDiscount);
     });
   }

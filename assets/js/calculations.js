@@ -122,12 +122,12 @@ export function calculateSavings(
           calculateSimpleTariffCost(
             company,
             consumption.simples.amount,
-            energyDiscount
+            0
           ),
         biHorario: () =>
-          calculateBiHorarioCost(company, consumption, energyDiscount),
+          calculateBiHorarioCost(company, consumption, 0),
         triHorario: () =>
-          calculateTriHorarioCost(company, consumption, energyDiscount),
+          calculateTriHorarioCost(company, consumption, 0),
       };
 
       const fixedCost = calculateFixedCost(company, power, calculationDays);
@@ -140,7 +140,7 @@ export function calculateSavings(
         company,
         consumption.gas?.amount || 0,
         0,
-        gasDiscount
+        0
       );
       const totalCost = energyCost + fixedCost + gasCost;
 
