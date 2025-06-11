@@ -4,4 +4,4 @@ export function createResultsContainer() {
       <!-- Os resultados serão inseridos aqui via JavaScript -->
     </div>
   `;
-} 
+}

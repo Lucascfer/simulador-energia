@@ -38,34 +38,66 @@ document.addEventListener("DOMContentLoaded", function () {
       const tariffType = this.value;
       switch (tariffType) {
         case "simples":
-          const consumptionSimples = document.getElementById("consumptionSimples");
+          const consumptionSimples =
+            document.getElementById("consumptionSimples");
           const valueSimples = document.getElementById("valueSimples");
-          if (consumptionSimples) consumptionSimples.setAttribute("required", "");
+          if (consumptionSimples)
+            consumptionSimples.setAttribute("required", "");
           if (valueSimples) valueSimples.setAttribute("required", "");
           break;
         case "biHorario":
-          const consumptionBiHorarioVazio = document.getElementById("consumptionBiHorarioVazio");
-          const consumptionBiHorarioForaVazio = document.getElementById("consumptionBiHorarioForaVazio");
-          const valueBiHorarioVazio = document.getElementById("valueBiHorarioVazio");
-          const valueBiHorarioForaVazio = document.getElementById("valueBiHorarioForaVazio");
-          if (consumptionBiHorarioVazio) consumptionBiHorarioVazio.setAttribute("required", "");
-          if (consumptionBiHorarioForaVazio) consumptionBiHorarioForaVazio.setAttribute("required", "");
-          if (valueBiHorarioVazio) valueBiHorarioVazio.setAttribute("required", "");
-          if (valueBiHorarioForaVazio) valueBiHorarioForaVazio.setAttribute("required", "");
+          const consumptionBiHorarioVazio = document.getElementById(
+            "consumptionBiHorarioVazio"
+          );
+          const consumptionBiHorarioForaVazio = document.getElementById(
+            "consumptionBiHorarioForaVazio"
+          );
+          const valueBiHorarioVazio = document.getElementById(
+            "valueBiHorarioVazio"
+          );
+          const valueBiHorarioForaVazio = document.getElementById(
+            "valueBiHorarioForaVazio"
+          );
+          if (consumptionBiHorarioVazio)
+            consumptionBiHorarioVazio.setAttribute("required", "");
+          if (consumptionBiHorarioForaVazio)
+            consumptionBiHorarioForaVazio.setAttribute("required", "");
+          if (valueBiHorarioVazio)
+            valueBiHorarioVazio.setAttribute("required", "");
+          if (valueBiHorarioForaVazio)
+            valueBiHorarioForaVazio.setAttribute("required", "");
           break;
         case "triHorario":
-          const consumptionTriHorarioPonta = document.getElementById("consumptionTriHorarioPonta");
-          const consumptionTriHorarioCheia = document.getElementById("consumptionTriHorarioCheia");
-          const consumptionTriHorarioVazio = document.getElementById("consumptionTriHorarioVazio");
-          const valueTriHorarioPonta = document.getElementById("valueTriHorarioPonta");
-          const valueTriHorarioCheia = document.getElementById("valueTriHorarioCheia");
-          const valueTriHorarioVazio = document.getElementById("valueTriHorarioVazio");
-          if (consumptionTriHorarioPonta) consumptionTriHorarioPonta.setAttribute("required", "");
-          if (consumptionTriHorarioCheia) consumptionTriHorarioCheia.setAttribute("required", "");
-          if (consumptionTriHorarioVazio) consumptionTriHorarioVazio.setAttribute("required", "");
-          if (valueTriHorarioPonta) valueTriHorarioPonta.setAttribute("required", "");
-          if (valueTriHorarioCheia) valueTriHorarioCheia.setAttribute("required", "");
-          if (valueTriHorarioVazio) valueTriHorarioVazio.setAttribute("required", "");
+          const consumptionTriHorarioPonta = document.getElementById(
+            "consumptionTriHorarioPonta"
+          );
+          const consumptionTriHorarioCheia = document.getElementById(
+            "consumptionTriHorarioCheia"
+          );
+          const consumptionTriHorarioVazio = document.getElementById(
+            "consumptionTriHorarioVazio"
+          );
+          const valueTriHorarioPonta = document.getElementById(
+            "valueTriHorarioPonta"
+          );
+          const valueTriHorarioCheia = document.getElementById(
+            "valueTriHorarioCheia"
+          );
+          const valueTriHorarioVazio = document.getElementById(
+            "valueTriHorarioVazio"
+          );
+          if (consumptionTriHorarioPonta)
+            consumptionTriHorarioPonta.setAttribute("required", "");
+          if (consumptionTriHorarioCheia)
+            consumptionTriHorarioCheia.setAttribute("required", "");
+          if (consumptionTriHorarioVazio)
+            consumptionTriHorarioVazio.setAttribute("required", "");
+          if (valueTriHorarioPonta)
+            valueTriHorarioPonta.setAttribute("required", "");
+          if (valueTriHorarioCheia)
+            valueTriHorarioCheia.setAttribute("required", "");
+          if (valueTriHorarioVazio)
+            valueTriHorarioVazio.setAttribute("required", "");
           break;
       }
 

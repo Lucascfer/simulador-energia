@@ -79,12 +79,6 @@ function calculateSimpleTariffCost(company, consumption, discount) {
  * @returns {number} - Custo variável total
  */
 function calculateBiHorarioCost(company, consumption, discount) {
-  console.log("calculateBiHorarioCost - Input:", {
-    company,
-    consumption,
-    discount,
-  });
-
   if (!consumption?.vazio?.amount || !consumption?.foraVazio?.amount) {
     throw new Error("Consumo inválido para tarifa bi-horária");
   }
@@ -96,15 +90,7 @@ function calculateBiHorarioCost(company, consumption, discount) {
     consumption.foraVazio.amount *
     (TARIFF_VALUES[company].biHorario.foraVazio * (1 - discount / 100));
 
-  console.log("calculateBiHorarioCost - Intermediate values:", {
-    consumptionVazio,
-    consumptionForaVazio,
-    vazioTariff: TARIFF_VALUES[company].biHorario.vazio,
-    foraVazioTariff: TARIFF_VALUES[company].biHorario.foraVazio,
-  });
-
   const result = consumptionVazio + consumptionForaVazio;
-  console.log("calculateBiHorarioCost - Result:", result);
   return result;
 }
 
@@ -116,12 +102,6 @@ function calculateBiHorarioCost(company, consumption, discount) {
  * @returns {number} - Custo variável total
  */
 function calculateTriHorarioCost(company, consumption, discount) {
-  console.log("calculateTriHorarioCost - Input:", {
-    company,
-    consumption,
-    discount,
-  });
-
   if (
     !consumption?.ponta?.amount ||
     !consumption?.cheia?.amount ||
@@ -140,17 +120,7 @@ function calculateTriHorarioCost(company, consumption, discount) {
     consumption.vazio.amount *
     (TARIFF_VALUES[company].triHorario.vazio * (1 - discount / 100));
 
-  console.log("calculateTriHorarioCost - Intermediate values:", {
-    pontaCost,
-    cheiaCost,
-    vazioCost,
-    pontaTariff: TARIFF_VALUES[company].triHorario.ponta,
-    cheiaTariff: TARIFF_VALUES[company].triHorario.cheia,
-    vazioTariff: TARIFF_VALUES[company].triHorario.vazio,
-  });
-
   const result = pontaCost + cheiaCost + vazioCost;
-  console.log("calculateTriHorarioCost - Result:", result);
   return result;
 }
 
@@ -163,15 +133,7 @@ function calculateTriHorarioCost(company, consumption, discount) {
  * @returns {number} - Custo do gás
  */
 function calculateGasCost(company, consumption, value = 0, discount = 0) {
-  console.log("calculateGasCost - Input:", {
-    company,
-    consumption,
-    value,
-    discount,
-  });
-
   if (!isValidNumber(consumption) || consumption === 0) {
-    console.log("calculateGasCost - No gas consumption");
     return 0;
   }
 
@@ -182,7 +144,6 @@ function calculateGasCost(company, consumption, value = 0, discount = 0) {
     gasCost *= 1 - discount / 100;
   }
 
-  console.log("calculateGasCost - Result:", gasCost);
   return gasCost;
 }
 
@@ -204,15 +165,6 @@ export function calculateSavings(
   energyDiscount = 0,
   gasDiscount = 0
 ) {
-  console.log("calculateSavings - Input:", {
-    consumption,
-    tariffType,
-    power,
-    calculationDays,
-    energyDiscount,
-    gasDiscount,
-  });
-
   if (!isValidNumber(calculationDays)) {
     throw new Error("Número de dias inválido");
   }
@@ -224,8 +176,6 @@ export function calculateSavings(
   const results = [];
 
   for (const company of COMPANIES) {
-    console.log("\nProcessing company:", company);
-
     // Valida se a empresa é válida
     if (!TARIFF_VALUES[company] || !POWER_COSTS[company]) {
       throw new Error(`Empresa inválida: ${company}`);
@@ -272,14 +222,6 @@ export function calculateSavings(
     );
     const totalCost = energyCost + fixedCost + gasCost;
 
-    console.log("Company calculation results:", {
-      company,
-      fixedCost,
-      energyCost,
-      gasCost,
-      totalCost,
-    });
-
     results.push({
       company,
       total: parseFloat(totalCost.toFixed(2)),
@@ -291,6 +233,5 @@ export function calculateSavings(
 
   // Ordena por custo total (ascendente)
   const sortedResults = results.sort((a, b) => a.total - b.total);
-  console.log("\nFinal sorted results:", sortedResults);
   return sortedResults;
 }

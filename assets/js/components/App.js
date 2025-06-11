@@ -1,7 +1,7 @@
-import { createHeader } from './Header.js';
-import { createProviderCards } from './ProviderCards.js';
-import { createSimulatorForm } from './SimulatorForm.js';
-import { createResultsContainer } from './Results.js';
+import { createHeader } from "./Header.js";
+import { createProviderCards } from "./ProviderCards.js";
+import { createSimulatorForm } from "./SimulatorForm.js";
+import { createResultsContainer } from "./Results.js";
 
 export function createApp() {
   return `
@@ -54,4 +54,4 @@ export function createApp() {
       </body>
     </html>
   `;
-} 
+}
