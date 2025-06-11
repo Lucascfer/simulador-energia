@@ -608,7 +608,7 @@ h1 {
 .billing-services-section {
     background-color: var(--billing-section-bg);
     border-radius: 1rem;
-    padding: 1.5rem;
+    padding: 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all 0.3s ease-out;
     margin-bottom: 1.5rem;
@@ -619,13 +619,11 @@ h1 {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--gray-200);
-    margin-bottom: 1rem;
 }
 
 .billing-services-section .section-header label {
     margin-bottom: 0;
+    font-size: 1rem;
 }
 
 .billing-services-section .toggle-icon {
@@ -637,6 +635,7 @@ h1 {
     transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
     max-height: 500px; /* Valor arbitrário grande para altura máxima */
     opacity: 1;
+    margin-top: 1rem;
 }
 
 .billing-services-section .section-content.hidden {

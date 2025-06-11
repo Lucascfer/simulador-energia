@@ -2,52 +2,7 @@ export function createSimulatorForm() {
   return `
     <form id="simulatorForm" class="space-y-6">
       <!-- Configurações de Fatura e Serviços (Collapsible Section) -->
-      <div class="billing-services-section">
-        <div class="section-header" id="billingServicesHeader">
-          <label class="block text-lg font-semibold text-gray-900">Configurações de Fatura e Serviços</label>
-          <i class="fas fa-chevron-right toggle-icon"></i>
-        </div>
-        <div class="section-content space-y-4 mb-6 hidden">
-          <div class="switch-container">
-            <div class="switch-content">
-              <div class="switch-option">
-                <i class="fas fa-credit-card"></i>
-                <span>Débito Direto</span>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="directDebit" checked />
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="switch-container">
-            <div class="switch-content">
-              <div class="switch-option">
-                <i class="fas fa-envelope"></i>
-                <span>Fatura Eletrónica</span>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="electronicInvoice" checked />
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <div class="switch-container">
-            <div class="switch-content">
-              <div class="switch-option">
-                <i class="fas fa-concierge-bell"></i>
-                <span>Serviços Adicionais</span>
-              </div>
-              <label class="switch">
-                <input type="checkbox" id="additionalServices" checked />
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
+      
 
       <!-- Tipo de Simulação -->
       <div>
@@ -78,18 +33,22 @@ export function createSimulatorForm() {
         <div class="mb-4">
           <label class="block text-sm font-medium text-gray-700 mb-2">Escalão</label>
           <div class="flex gap-4">
-            ${[1, 2, 3, 4].map(escalao => `
+            ${[1, 2, 3, 4]
+              .map(
+                (escalao) => `
               <label class="inline-flex items-center">
                 <input
                   type="radio"
                   name="gasEscalao"
                   value="${escalao}"
                   class="form-radio h-4 w-4 text-electric"
-                  ${escalao === 1 ? 'checked' : ''}
+                  ${escalao === 1 ? "checked" : ""}
                 />
                 <span class="ml-2">${escalao}</span>
               </label>
-            `).join('')}
+            `
+              )
+              .join("")}
           </div>
         </div>
 
@@ -460,6 +419,53 @@ export function createSimulatorForm() {
           class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
           required
         />
+      </div>
+
+      <div class="billing-services-section">
+        <div class="section-header" id="billingServicesHeader">
+          <label class="block text-lg font-semibold text-gray-900">Configurações de Fatura e Serviços</label>
+          <i class="fas fa-chevron-right toggle-icon"></i>
+        </div>
+        <div class="section-content space-y-4 mb-6 hidden">
+          <div class="switch-container">
+            <div class="switch-content">
+              <div class="switch-option">
+                <i class="fas fa-credit-card"></i>
+                <span>Débito Direto</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="directDebit" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="switch-container">
+            <div class="switch-content">
+              <div class="switch-option">
+                <i class="fas fa-envelope"></i>
+                <span>Fatura Eletrónica</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="electronicInvoice" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="switch-container">
+            <div class="switch-content">
+              <div class="switch-option">
+                <i class="fas fa-concierge-bell"></i>
+                <span>Serviços Adicionais</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="additionalServices" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
 
       <button
