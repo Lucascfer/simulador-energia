@@ -672,3 +672,8 @@ h1 {
     opacity: 0;
     margin-bottom: 0; /* Garante que não haja espaço extra quando escondido */
 }
+
+.text-discounted {
+    background-color: #ffd9009e; /* Gold color */
+    color: #111827;
+}
