@@ -32,7 +32,9 @@ export function updateGasSection(includeGas) {
     if (includeGas) {
       gasSection.classList.remove("hidden");
       // Get the current selected escalão
-      const selectedEscalao = document.querySelector('input[name="gasEscalao"]:checked')?.value || "1";
+      const selectedEscalao =
+        document.querySelector('input[name="gasEscalao"]:checked')?.value ||
+        "1";
       // Update gas values in provider cards
       window.updateGasEscalao(selectedEscalao);
     } else {
@@ -43,136 +45,177 @@ export function updateGasSection(includeGas) {
         const element = document.getElementById(field);
         if (element) element.value = "";
       });
+
       // Hide gas details in provider cards
-      const gasDetails = document.querySelectorAll('.gas-details');
-      gasDetails.forEach(detail => {
-        detail.style.display = 'none';
+      const gasDetails = document.querySelectorAll(".gas-details, .gas-termo-fixo-details");
+      gasDetails.forEach((detail) => {
+        detail.style.display = "none";
       });
+
+      // Atualizar os cards para remover os detalhes do gás
+      const power = document.getElementById('power')?.value || 0;
+      const tariffType = document.querySelector('input[name="tariffType"]:checked')?.value || 'simples';
+      updateCardValues(power, tariffType);
     }
   }
 }
 
-// Function to update card values
+// Helper function to create detail element
+function createDetailElement(label, value, unit) {
+  const detail = document.createElement("div");
+  detail.className = "detail-item";
+  detail.innerHTML = `
+    <span class="detail-label">${label}</span>
+    <span class="detail-value">${value.toFixed(4)} ${unit}</span>
+  `;
+  return detail;
+}
+
+// Helper function to validate and format numeric value
+function formatNumericValue(value, defaultValue = 0) {
+  const numValue = parseFloat(value);
+  return isNaN(numValue) ? defaultValue : numValue;
+}
+
+// Helper function to get gas details
+function getGasDetails(company, selectedEscalao) {
+  const escalaoIndex = parseInt(selectedEscalao) - 1;
+  if (!GAS_PRICES[company] || !GAS_PRICES[company][escalaoIndex]) {
+    console.warn(
+      `Gas prices not found for company: ${company} and escalao: ${selectedEscalao}`
+    );
+    return null;
+  }
+
+  const gasPrices = GAS_PRICES[company][escalaoIndex];
+  return {
+    energia: formatNumericValue(gasPrices.energia),
+    termoFixo: formatNumericValue(gasPrices.termoFixo),
+  };
+}
+
+// Helper function to create gas details elements
+function createGasDetailsElements(company, selectedEscalao, gasDetails) {
+  const gasContainer = document.createElement("div");
+  gasContainer.className = "gas-details-container";
+
+  const gasEnergyDetail = document.createElement("div");
+  gasEnergyDetail.className = "detail-item gas-details";
+  gasEnergyDetail.innerHTML = `
+    <span class="detail-label">Gás Natural (Escalão <span class="gas-escalao">${selectedEscalao}</span>)</span>
+    <span class="detail-value gas-energia">${gasDetails.energia.toFixed(
+      4
+    )} €/kWh</span>
+  `;
+  gasContainer.appendChild(gasEnergyDetail);
+
+  const gasFixedTermDetail = document.createElement("div");
+  gasFixedTermDetail.className = "detail-item gas-termo-fixo-details";
+  gasFixedTermDetail.innerHTML = `
+    <span class="detail-label">Termo Fixo Gás</span>
+    <span class="detail-value gas-termo-fixo">${gasDetails.termoFixo.toFixed(
+      4
+    )} €/mês</span>
+  `;
+  gasContainer.appendChild(gasFixedTermDetail);
+
+  return gasContainer;
+}
+
+// Helper function to get tariff details
+function getTariffDetails(company, tariffType) {
+  if (!TARIFF_VALUES[company]) {
+    console.warn(`Tariff values not found for company: ${company}`);
+    return null;
+  }
+
+  const tariffs = TARIFF_VALUES[company];
+  switch (tariffType) {
+    case "simples":
+      return tariffs.simples
+        ? [{ label: "Tarifa Simples", value: tariffs.simples }]
+        : null;
+    case "biHorario":
+      return tariffs.biHorario
+        ? [
+            { label: "Vazio", value: tariffs.biHorario.vazio },
+            { label: "Fora do Vazio", value: tariffs.biHorario.foraVazio },
+          ]
+        : null;
+    case "triHorario":
+      return tariffs.triHorario
+        ? [
+            { label: "Ponta", value: tariffs.triHorario.ponta },
+            { label: "Cheia", value: tariffs.triHorario.cheia },
+            { label: "Vazio", value: tariffs.triHorario.vazio },
+          ]
+        : null;
+    default:
+      return null;
+  }
+}
+
 export function updateCardValues(power, tariffType) {
-  // Add null checks for parameters
-  power = power || 0;
+  // Validate and set default values
+  power = formatNumericValue(power);
   tariffType = tariffType || "simples";
 
   // Update card values
   COMPANIES.forEach((company) => {
     const card = document.getElementById(`${company.toLowerCase()}Card`);
-    if (!card) return;
+    if (!card) {
+      console.warn(`Card not found for company: ${company}`);
+      return;
+    }
 
     const detailsContainer = card.querySelector(".provider-details");
-    if (!detailsContainer) return; // Skip if details container doesn't exist
-
-    // Clear existing details
-    while (detailsContainer.firstChild) {
-      detailsContainer.removeChild(detailsContainer.firstChild);
+    if (!detailsContainer) {
+      console.warn(`Details container not found for company: ${company}`);
+      return;
     }
 
-    // Create details based on tariff type
-    if (tariffType === "simples" && TARIFF_VALUES[company]?.simples) {
-      const simplesDetail = document.createElement("div");
-      simplesDetail.className = "detail-item";
-      simplesDetail.innerHTML = `
-                  <span class="detail-label">Tarifa Simples</span>
-                  <span class="detail-value">${TARIFF_VALUES[
-                    company
-                  ].simples.toFixed(4)} €/kWh</span>
-              `;
-      detailsContainer.appendChild(simplesDetail);
-    } else if (
-      tariffType === "biHorario" &&
-      TARIFF_VALUES[company]?.biHorario
-    ) {
-      const vazioDetail = document.createElement("div");
-      vazioDetail.className = "detail-item";
-      vazioDetail.innerHTML = `
-                  <span class="detail-label">Vazio</span>
-                  <span class="detail-value">${TARIFF_VALUES[
-                    company
-                  ].biHorario.vazio.toFixed(4)} €/kWh</span>
-              `;
-      detailsContainer.appendChild(vazioDetail);
+    // Create document fragment for better performance
+    const fragment = document.createDocumentFragment();
 
-      const foraVazioDetail = document.createElement("div");
-      foraVazioDetail.className = "detail-item";
-      foraVazioDetail.innerHTML = `
-                  <span class="detail-label">Fora do Vazio</span>
-                  <span class="detail-value">${TARIFF_VALUES[
-                    company
-                  ].biHorario.foraVazio.toFixed(4)} €/kWh</span>
-              `;
-      detailsContainer.appendChild(foraVazioDetail);
-    } else if (
-      tariffType === "triHorario" &&
-      TARIFF_VALUES[company]?.triHorario
-    ) {
-      const pontaDetail = document.createElement("div");
-      pontaDetail.className = "detail-item";
-      pontaDetail.innerHTML = `
-                  <span class="detail-label">Ponta</span>
-                  <span class="detail-value">${TARIFF_VALUES[
-                    company
-                  ].triHorario.ponta.toFixed(4)} €/kWh</span>
-              `;
-      detailsContainer.appendChild(pontaDetail);
-
-      const cheiaDetail = document.createElement("div");
-      cheiaDetail.className = "detail-item";
-      cheiaDetail.innerHTML = `
-                  <span class="detail-label">Cheia</span>
-                  <span class="detail-value">${TARIFF_VALUES[
-                    company
-                  ].triHorario.cheia.toFixed(4)} €/kWh</span>
-              `;
-      detailsContainer.appendChild(cheiaDetail);
-
-      const vazioDetail = document.createElement("div");
-      vazioDetail.className = "detail-item";
-      vazioDetail.innerHTML = `
-                  <span class="detail-label">Vazio</span>
-                  <span class="detail-value">${TARIFF_VALUES[
-                    company
-                  ].triHorario.vazio.toFixed(4)} €/kWh</span>
-              `;
-      detailsContainer.appendChild(vazioDetail);
+    // Add tariff details first
+    const tariffDetails = getTariffDetails(company, tariffType);
+    if (tariffDetails) {
+      tariffDetails.forEach((detail) => {
+        fragment.appendChild(
+          createDetailElement(detail.label, detail.value, "€/kWh")
+        );
+      });
     }
 
-    // Add power value
-    const powerDetail = document.createElement("div");
-    powerDetail.className = "detail-item";
+    // Add power value second
     const powerValue = getPowerCost(company, power) || 0;
-    powerDetail.innerHTML = `
-              <span class="detail-label">Potência (kVA)</span>
-              <span class="detail-value">${powerValue.toFixed(
-                4
-              )} €/kVA/dia</span>
-          `;
-    detailsContainer.appendChild(powerDetail);
-
-    // Add gas details if gas is enabled
-    if (document.getElementById('simulationType')?.checked) {
-      const selectedEscalao = document.querySelector('input[name="gasEscalao"]:checked')?.value || "1";
-      const escalaoIndex = parseInt(selectedEscalao) - 1;
-
-      const gasEnergyDetail = document.createElement("div");
-      gasEnergyDetail.className = "detail-item gas-details";
-      gasEnergyDetail.innerHTML = `
-        <span class="detail-label">Gás Natural (Escalão <span class="gas-escalao">${selectedEscalao}</span>)</span>
-        <span class="detail-value gas-energia">${GAS_PRICES[company][escalaoIndex].energia.toFixed(4)} €/kWh</span>
-      `;
-      detailsContainer.appendChild(gasEnergyDetail);
-
-      const gasFixedTermDetail = document.createElement("div");
-      gasFixedTermDetail.className = "detail-item gas-termo-fixo-details";
-      gasFixedTermDetail.innerHTML = `
-        <span class="detail-label">Termo Fixo Gás</span>
-        <span class="detail-value gas-termo-fixo">${GAS_PRICES[company][escalaoIndex].termoFixo.toFixed(4)} €/mês</span>
-      `;
-      detailsContainer.appendChild(gasFixedTermDetail);
+    if (powerValue !== undefined) {
+      fragment.appendChild(
+        createDetailElement("Potência (kVA)", powerValue, "€/kVA/dia")
+      );
     }
+
+    // Add gas details last if enabled
+    const simulationType = document.getElementById("simulationType");
+    if (simulationType?.checked) {
+      const selectedEscalao =
+        document.querySelector('input[name="gasEscalao"]:checked')?.value ||
+        "1";
+      const gasDetails = getGasDetails(company, selectedEscalao);
+      
+      if (gasDetails) {
+        const gasContainer = createGasDetailsElements(
+          company,
+          selectedEscalao,
+          gasDetails
+        );
+        fragment.appendChild(gasContainer);
+      }
+    }
+
+    // Clear and update container
+    detailsContainer.innerHTML = "";
+    detailsContainer.appendChild(fragment);
   });
 }
 
@@ -187,7 +230,7 @@ export function displayResults(
   if (!container) return;
 
   // Find current values from results
-  const currentResult = results.find(result => result.isCurrent);
+  const currentResult = results.find((result) => result.isCurrent);
   if (!currentResult) return;
 
   // Create HTML for results
@@ -219,19 +262,25 @@ export function displayResults(
                         <div class="flex items-center">
                             <span class="font-bold text-gray-800">Valores Atuais</span>
                         </div>
-                        <div class="text-lg font-bold">€${currentResult.total.toFixed(2)}</div>
+                        <div class="text-lg font-bold">€${currentResult.total.toFixed(
+                          2
+                        )}</div>
                     </div>
                     <div class="flex justify-between items-center text-sm text-gray-600">
                         <div>
                             <i class="fas fa-bolt mr-1"></i>
-                            <span>Energia: €${currentResult.energyCost.toFixed(2)}</span>
+                            <span>Energia: €${currentResult.energyCost.toFixed(
+                              2
+                            )}</span>
                         </div>
                         ${
                           currentResult.gasCost > 0
                             ? `
                         <div>
                             <i class="fas fa-fire mr-1"></i>
-                            <span>Gás: €${currentResult.gasCost.toFixed(2)}</span>
+                            <span>Gás: €${currentResult.gasCost.toFixed(
+                              2
+                            )}</span>
                         </div>
                         `
                             : ""
@@ -246,7 +295,9 @@ export function displayResults(
   results.forEach((result, index) => {
     if (result.isCurrent) return;
     const savings = currentResult.total - result.total;
-    const savingsPercentage = ((savings / currentResult.total) * 100).toFixed(1);
+    const savingsPercentage = ((savings / currentResult.total) * 100).toFixed(
+      1
+    );
     const isSaving = savings > 0;
 
     html += `

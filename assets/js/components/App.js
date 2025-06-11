@@ -32,10 +32,6 @@ export function createApp() {
           </div>
 
           <div class="max-w-4xl mx-auto p-6">
-            <h1 class="text-3xl font-bold text-center mb-8">
-              Simulador de Custos de Energia
-            </h1>
-
             ${createProviderCards()}
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
