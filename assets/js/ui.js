@@ -1,5 +1,5 @@
 import { TARIFF_VALUES, COMPANIES, GAS_PRICES } from "./constants.js";
-import { getPowerCost } from "./calculations.js";
+import { getPowerCost, calculateDiscountAmount } from "./calculations.js";
 
 // Function to validate and get numeric values from inputs
 export function getNumericValue(elementId, defaultValue = 0) {
@@ -47,14 +47,18 @@ export function updateGasSection(includeGas) {
       });
 
       // Hide gas details in provider cards
-      const gasDetails = document.querySelectorAll(".gas-details, .gas-termo-fixo-details");
+      const gasDetails = document.querySelectorAll(
+        ".gas-details, .gas-termo-fixo-details"
+      );
       gasDetails.forEach((detail) => {
         detail.style.display = "none";
       });
 
       // Atualizar os cards para remover os detalhes do gás
-      const power = document.getElementById('power')?.value || 0;
-      const tariffType = document.querySelector('input[name="tariffType"]:checked')?.value || 'simples';
+      const power = document.getElementById("power")?.value || 0;
+      const tariffType =
+        document.querySelector('input[name="tariffType"]:checked')?.value ||
+        "simples";
       updateCardValues(power, tariffType);
     }
   }
@@ -155,10 +159,35 @@ function getTariffDetails(company, tariffType) {
   }
 }
 
+// Helper function to create discount element
+function createDiscountElement(discount) {
+  if (!discount || (discount.luz === 0 && discount.gas === 0)) return null;
+
+  const discountContainer = document.createElement("div");
+  discountContainer.className = "discount-badge";
+  
+  let discountText = "";
+  if (discount.luz > 0) {
+    discountText += `<span class="discount-item"><i class="fas fa-bolt"></i> ${discount.luz}%</span>`;
+  }
+  if (discount.gas > 0) {
+    discountText += `<span class="discount-item"><i class="fas fa-fire"></i> ${discount.gas}%</span>`;
+  }
+
+  discountContainer.innerHTML = discountText;
+  return discountContainer;
+}
+
 export function updateCardValues(power, tariffType) {
   // Validate and set default values
   power = formatNumericValue(power);
   tariffType = tariffType || "simples";
+
+  // Get discount conditions
+  const directDebit = document.getElementById("directDebit")?.checked || false;
+  const electronicInvoice = document.getElementById("electronicInvoice")?.checked || false;
+  const additionalServices = document.getElementById("additionalServices")?.checked || false;
+  const luzGas = document.getElementById("simulationType")?.checked || false;
 
   // Update card values
   COMPANIES.forEach((company) => {
@@ -174,10 +203,52 @@ export function updateCardValues(power, tariffType) {
       return;
     }
 
+    // Remove any existing discount badge before updating
+    const existingBadge = card.querySelector('.discount-badge');
+    if (existingBadge) {
+      existingBadge.remove();
+    }
+
     // Create document fragment for better performance
     const fragment = document.createDocumentFragment();
 
-    // Add tariff details first
+    // Calculate discounts first
+    let hasDiscount = false;
+    try {
+      const discount = calculateDiscountAmount(
+        company,
+        tariffType,
+        power,
+        directDebit,
+        electronicInvoice,
+        additionalServices,
+        luzGas
+      );
+      
+      // Add discount badge if there are any discounts
+      if (discount && (discount.luz > 0 || discount.gas > 0)) {
+        hasDiscount = true;
+        const discountElement = createDiscountElement(discount);
+        if (discountElement) {
+          // Add discount badge to the header
+          const header = card.querySelector('.provider-header');
+          if (header) {
+            header.appendChild(discountElement);
+          }
+        }
+      }
+    } catch (error) {
+      console.warn(`Error calculating discount for ${company}:`, error);
+    }
+
+    // Update card style based on discounts
+    if (hasDiscount) {
+      card.classList.add('has-discount');
+    } else {
+      card.classList.remove('has-discount');
+    }
+
+    // Add tariff details
     const tariffDetails = getTariffDetails(company, tariffType);
     if (tariffDetails) {
       tariffDetails.forEach((detail) => {
@@ -187,7 +258,7 @@ export function updateCardValues(power, tariffType) {
       });
     }
 
-    // Add power value second
+    // Add power value
     const powerValue = getPowerCost(company, power) || 0;
     if (powerValue !== undefined) {
       fragment.appendChild(
@@ -385,3 +456,62 @@ export function displayResults(
     }, i * 150);
   });
 }
+
+// Initialize event listeners for form changes
+document.addEventListener('DOMContentLoaded', () => {
+  const powerInput = document.getElementById('power');
+  const tariffTypeRadios = document.querySelectorAll('input[name="tariffType"]');
+  const directDebitCheckbox = document.getElementById('directDebit');
+  const electronicInvoiceCheckbox = document.getElementById('electronicInvoice');
+  const additionalServicesCheckbox = document.getElementById('additionalServices');
+  const simulationTypeCheckbox = document.getElementById('simulationType');
+  const gasEscalaoRadios = document.querySelectorAll('input[name="gasEscalao"]');
+  const includeGasCheckbox = document.getElementById('includeGas');
+
+  const updateFormValues = () => {
+    const currentPower = powerInput?.value || 0;
+    const currentTariffType = document.querySelector('input[name="tariffType"]:checked')?.value || 'simples';
+    updateCardValues(currentPower, currentTariffType);
+  };
+
+  if (powerInput) {
+    powerInput.addEventListener('input', updateFormValues);
+  }
+
+  tariffTypeRadios.forEach(radio => {
+    radio.addEventListener('change', updateFormValues);
+  });
+
+  if (directDebitCheckbox) {
+    directDebitCheckbox.addEventListener('change', updateFormValues);
+  }
+
+  if (electronicInvoiceCheckbox) {
+    electronicInvoiceCheckbox.addEventListener('change', updateFormValues);
+  }
+
+  if (additionalServicesCheckbox) {
+    additionalServicesCheckbox.addEventListener('change', updateFormValues);
+  }
+
+  if (simulationTypeCheckbox) {
+    simulationTypeCheckbox.addEventListener('change', () => {
+      updateGasSection(simulationTypeCheckbox.checked);
+      updateFormValues();
+    });
+  }
+
+  gasEscalaoRadios.forEach(radio => {
+    radio.addEventListener('change', updateFormValues);
+  });
+
+  if (includeGasCheckbox) {
+    includeGasCheckbox.addEventListener('change', () => {
+      updateGasSection(includeGasCheckbox.checked);
+      updateFormValues();
+    });
+  }
+
+  // Initial call to populate cards on load
+  updateFormValues();
+});

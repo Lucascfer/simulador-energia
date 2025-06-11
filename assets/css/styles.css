@@ -356,10 +356,11 @@ input[type="number"]::-webkit-inner-spin-button {
     margin-bottom: 2rem;
 }
 
+/* Provider Cards Base Styles */
 .provider-card {
     background: white;
     border-radius: 1rem;
-    overflow: hidden;
+    overflow: visible;
     transition: all 0.3s ease;
 }
 
@@ -446,6 +447,34 @@ input[type="number"]::-webkit-inner-spin-button {
     background: rgba(59, 130, 246, 0.1);
     padding: 0.25rem 0.75rem;
     border-radius: 1rem;
+}
+
+/* Discount badge styles */
+.discount-badge {
+    position: absolute;
+    top: -12px;
+    left: 12px;
+    background: #3b82f6;
+    color: #fff;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    z-index: 1;
+}
+
+.discount-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.discount-item i {
+    font-size: 0.875rem;
 }
 
 /* Ajuste do container principal */
