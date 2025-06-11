@@ -257,7 +257,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Get gas values if included
       const gasConsumption = includeGas ? getNumericValue("gasConsumption") : 0;
+      const gasEscalao = includeGas ? document.querySelector('input[name="gasEscalao"]:checked')?.value || "1" : "1";
       const gasValue = includeGas ? getNumericValue("gasValue") : 0;
+      const gasFixedTerm = includeGas ? getNumericValue("gasFixedTerm") : 0;
 
       // Calculate current values using the new function
       const currentValues = calculateFormValues({
@@ -271,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
         consumption,
         gasConsumption,
         gasValue,
+        gasFixedTerm
       });
 
       // Calculate results for other companies without discounts
@@ -278,7 +281,9 @@ document.addEventListener("DOMContentLoaded", function () {
         consumption,
         tariffType,
         power,
-        calculationDays
+        calculationDays,
+        gasConsumption,
+        gasEscalao
       );
 
       // Add current values to the results

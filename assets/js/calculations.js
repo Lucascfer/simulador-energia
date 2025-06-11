@@ -82,26 +82,35 @@ function calculateTriHorarioCost(company, consumption, discount = 0) {
   return result;
 }
 
-function calculateGasCost(company, consumption, value = 0, discount = 0) {
-  if (!isValidNumber(consumption) || consumption === 0) {
+function calculateGasCost(company, consumption, escalao, discount = 0, days = 30) {
+  if (!isValidNumber(consumption) || consumption === 0 || !escalao) {
     return 0;
   }
 
-  let gasCost =
-    value > 0 ? consumption * value : consumption * GAS_PRICES[company];
-
+  const escalaoIndex = parseInt(escalao) - 1;
+  const gasPrices = GAS_PRICES[company][escalaoIndex];
+  
+  if (!gasPrices) return 0;
+  
+  const energyCost = consumption * gasPrices.energia;
+  const fixedTermCost = gasPrices.termoFixo * days;
+  
+  let totalCost = energyCost + fixedTermCost;
+  
   if (isValidNumber(discount) && discount > 0) {
-    gasCost *= 1 - discount / 100;
+    totalCost *= 1 - discount / 100;
   }
 
-  return gasCost;
+  return totalCost;
 }
 
 export function calculateSavings(
   consumption,
   tariffType,
   power,
-  calculationDays
+  calculationDays,
+  gasConsumption = 0,
+  gasEscalao = "1"
 ) {
   if (
     !isValidNumber(calculationDays) ||
@@ -130,9 +139,10 @@ export function calculateSavings(
         })();
       const gasCost = calculateGasCost(
         company,
-        consumption.gas?.amount || 0,
+        gasConsumption,
+        gasEscalao,
         0,
-        0
+        calculationDays
       );
       const totalCost = energyCost + fixedCost + gasCost;
 

@@ -1,3 +1,5 @@
+import { GAS_PRICES } from "./constants.js";
+
 // Função para calcular o valor total com desconto
 function calculateValueWithDiscount(value, discount = 0) {
   if (!value || value <= 0) return 0;
@@ -70,10 +72,20 @@ export function calculatePowerCost(
 }
 
 // Função para calcular o custo do gás
-export function calculateGasCost(consumption, value, discount = 0) {
-  if (!consumption || !value) return 0;
-  const valueWithDiscount = calculateValueWithDiscount(value, discount);
-  return consumption * valueWithDiscount;
+export function calculateGasCost(
+  consumption,
+  gasValue,
+  gasFixedTerm,
+  discount = 0,
+  days = 30
+) {
+  if (!consumption || !gasValue || !gasFixedTerm) return 0;
+
+  const valueWithDiscount = calculateValueWithDiscount(gasValue, discount);
+  const energyCost = consumption * valueWithDiscount;
+  const fixedTermCost = gasFixedTerm * days;
+
+  return energyCost + fixedTermCost;
 }
 
 // Função principal que calcula todos os valores do formulário
@@ -89,6 +101,7 @@ export function calculateFormValues(formData) {
     consumption,
     gasConsumption,
     gasValue,
+    gasFixedTerm,
   } = formData;
 
   let energyCost = 0;
@@ -119,7 +132,13 @@ export function calculateFormValues(formData) {
   );
 
   // Calcula o custo do gás se aplicável
-  const gasCost = calculateGasCost(gasConsumption, gasValue, gasDiscount);
+  const gasCost = calculateGasCost(
+    gasConsumption,
+    gasValue,
+    gasFixedTerm,
+    gasDiscount,
+    calculationDays
+  );
 
   // Retorna o objeto com todos os cálculos
   return {
