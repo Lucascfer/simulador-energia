@@ -101,9 +101,7 @@ export function calculateSavings(
   consumption,
   tariffType,
   power,
-  calculationDays,
-  energyDiscount = 0,
-  gasDiscount = 0
+  calculationDays
 ) {
   if (
     !isValidNumber(calculationDays) ||
@@ -119,15 +117,9 @@ export function calculateSavings(
     .map((company) => {
       const energyCalculations = {
         simples: () =>
-          calculateSimpleTariffCost(
-            company,
-            consumption.simples.amount,
-            0
-          ),
-        biHorario: () =>
-          calculateBiHorarioCost(company, consumption, 0),
-        triHorario: () =>
-          calculateTriHorarioCost(company, consumption, 0),
+          calculateSimpleTariffCost(company, consumption.simples.amount, 0),
+        biHorario: () => calculateBiHorarioCost(company, consumption, 0),
+        triHorario: () => calculateTriHorarioCost(company, consumption, 0),
       };
 
       const fixedCost = calculateFixedCost(company, power, calculationDays);

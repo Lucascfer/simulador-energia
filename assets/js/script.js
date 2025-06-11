@@ -136,6 +136,30 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Add event for collapsible billing services section
+  const billingServicesHeader = document.getElementById("billingServicesHeader");
+  if (billingServicesHeader) {
+    billingServicesHeader.addEventListener("click", function () {
+      const sectionContent = this.nextElementSibling;
+      const toggleIcon = this.querySelector('.toggle-icon');
+
+      if (sectionContent.classList.contains('hidden')) {
+        sectionContent.classList.remove('hidden');
+        toggleIcon.style.transform = 'rotate(90deg)';
+      } else {
+        sectionContent.classList.add('hidden');
+        toggleIcon.style.transform = 'rotate(0deg)';
+      }
+    });
+
+    // Initial state: ensure icon is pointing right if section is hidden
+    const sectionContent = billingServicesHeader.nextElementSibling;
+    const toggleIcon = billingServicesHeader.querySelector('.toggle-icon');
+    if (sectionContent.classList.contains('hidden')) {
+      toggleIcon.style.transform = 'rotate(0deg)';
+    }
+  }
+
   // Add event for form submission
   const form = document.getElementById("simulatorForm");
   if (form) {

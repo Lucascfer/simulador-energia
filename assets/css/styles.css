@@ -11,6 +11,8 @@
     --gas-bg: #FFF5F5;
     --input-bg: #F3F4F6;
     --input-bg-filled: #FFFFFF;
+    --app-bg: #f4f2ee;
+    --billing-section-bg: #f0f4f8; /* Nova cor de fundo para a seção de faturamento */
 }
 
 /* Classe para esconder elementos */
@@ -169,13 +171,15 @@
 .switch-container {
     background-color: white;
     border: 1px solid var(--gray-200);
-    border-radius: 0.5rem;
-    padding: 1rem;
+    border-radius: 0.75rem;
+    padding: 0.8rem 1rem;
     transition: all 0.3s ease;
+    margin-bottom: 12px;
 }
 
 .switch-container:hover {
     border-color: var(--electric);
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.1);
 }
 
 .switch-content {
@@ -187,14 +191,14 @@
 .switch-option {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
+    gap: 0.6rem;
+    font-size: 0.95rem;
     font-weight: 500;
     color: var(--gray-900);
 }
 
 .switch-option i {
-    font-size: 1rem;
+    font-size: 1.25rem;
 }
 
 .switch-option i.fa-bolt {
@@ -347,74 +351,101 @@ input[type="number"]::-webkit-inner-spin-button {
 /* Cards das Comercializadoras */
 .provider-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
-    padding: 0 1rem;
 }
 
 .provider-card {
-    background-color: white;
-    border-radius: 0.75rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background: white;
+    border-radius: 1rem;
+    overflow: hidden;
     transition: all 0.3s ease;
-    min-height: 300px;
-    display: flex;
-    flex-direction: column;
-}
-
-.provider-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 12px -1px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.06);
 }
 
 .provider-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--gray-200);
+    padding: 1.25rem;
+    background: linear-gradient(to right, #ffffff, #f8fafc);
+    border: 1px solid var(--gray-200);
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.provider-header:hover {
+    border-color: var(--electric);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+    transform: translateY(-2px);
 }
 
 .provider-logo {
+    width: 100%;
     height: 3rem;
-    width: auto;
     object-fit: contain;
+    margin-right: 1rem;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .provider-name {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--gray-900);
+    flex-grow: 1;
+    letter-spacing: -0.025em;
+}
+
+.toggle-icon {
+    font-size: 1rem;
+    color: var(--electric);
+    transition: transform 0.3s ease;
+    background: rgba(59, 130, 246, 0.1);
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
 }
 
 .provider-details {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    flex-grow: 1;
+    padding: 1.5rem;
+    background-color: white;
+    border: 1px solid var(--gray-200);
+    border-top: none;
+    border-radius: 0 0 1rem 1rem;
+    margin-top: -0.5rem;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 4px 6px -1px rgba(0, 0, 0, 0.05);
 }
 
 .detail-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem 0;
+    padding: 0.75rem 0;
     border-bottom: 1px solid var(--gray-200);
 }
 
+.detail-item:last-child {
+    border-bottom: none;
+}
+
 .detail-label {
-    color: var(--gray-700);
     font-size: 0.875rem;
+    color: var(--gray-700);
+    font-weight: 500;
 }
 
 .detail-value {
-    color: var(--gray-900);
+    font-size: 0.875rem;
+    color: var(--electric);
     font-weight: 600;
-    font-size: 1rem;
+    background: rgba(59, 130, 246, 0.1);
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
 }
 
 /* Ajuste do container principal */
@@ -571,4 +602,45 @@ h1 {
 
 .consumption-power .col-span-2 {
     grid-column: span 2;
+}
+
+/* Estilos para a seção de Configurações de Fatura e Serviços */
+.billing-services-section {
+    background-color: var(--billing-section-bg);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-out;
+    margin-bottom: 1.5rem;
+}
+
+.billing-services-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--gray-200);
+    margin-bottom: 1rem;
+}
+
+.billing-services-section .section-header label {
+    margin-bottom: 0;
+}
+
+.billing-services-section .toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.billing-services-section .section-content {
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    max-height: 500px; /* Valor arbitrário grande para altura máxima */
+    opacity: 1;
+}
+
+.billing-services-section .section-content.hidden {
+    max-height: 0;
+    opacity: 0;
+    margin-bottom: 0; /* Garante que não haja espaço extra quando escondido */
 }

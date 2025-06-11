@@ -6,13 +6,15 @@ export function createProviderCards() {
       ${COMPANIES.map(
         (company) => `
         <div class="provider-card" id="${company.toLowerCase()}Card">
-          <div class="provider-header">
+          <div class="provider-header" onclick="toggleProviderCard('${company.toLowerCase()}Card')">
             <img
               src="assets/images/${company.toLowerCase()}_logo.png"
               alt="${company} Logo"
               class="provider-logo"
-            />          </div>
-          <div class="provider-details">
+            />
+            <span class="toggle-icon">▼</span>
+          </div>
+          <div class="provider-details" style="display: none;">
             <div class="detail-item">
               <span class="detail-label">Tarifa Simples</span>
               <span class="detail-value">${TARIFF_VALUES[
@@ -56,3 +58,18 @@ export function createProviderCards() {
     </div>
   `;
 }
+
+// Add this function to handle the card toggle
+window.toggleProviderCard = function(cardId) {
+  const card = document.getElementById(cardId);
+  const details = card.querySelector('.provider-details');
+  const toggleIcon = card.querySelector('.toggle-icon');
+  
+  if (details.style.display === 'none') {
+    details.style.display = 'block';
+    toggleIcon.textContent = '▲';
+  } else {
+    details.style.display = 'none';
+    toggleIcon.textContent = '▼';
+  }
+};

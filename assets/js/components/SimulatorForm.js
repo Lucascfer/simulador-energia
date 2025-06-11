@@ -1,9 +1,57 @@
 export function createSimulatorForm() {
   return `
     <form id="simulatorForm" class="space-y-6">
+      <!-- Configurações de Fatura e Serviços (Collapsible Section) -->
+      <div class="billing-services-section">
+        <div class="section-header" id="billingServicesHeader">
+          <label class="block text-lg font-semibold text-gray-900">Configurações de Fatura e Serviços</label>
+          <i class="fas fa-chevron-right toggle-icon"></i>
+        </div>
+        <div class="section-content space-y-4 mb-6 hidden">
+          <div class="switch-container">
+            <div class="switch-content">
+              <div class="switch-option">
+                <i class="fas fa-credit-card"></i>
+                <span>Débito Direto</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="directDebit" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="switch-container">
+            <div class="switch-content">
+              <div class="switch-option">
+                <i class="fas fa-envelope"></i>
+                <span>Fatura Eletrónica</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="electronicInvoice" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="switch-container">
+            <div class="switch-content">
+              <div class="switch-option">
+                <i class="fas fa-concierge-bell"></i>
+                <span>Serviços Adicionais</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="additionalServices" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Tipo de Simulação -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de Simulação</label>
+        <label class="block text-lg font-semibold text-gray-900 mb-4">Tipo de Consumo</label>
         <div class="switch-container">
           <div class="switch-content">
             <div class="switch-option">
@@ -27,7 +75,7 @@ export function createSimulatorForm() {
         <h3 class="text-lg font-semibold mb-4">Consumo de Gás Natural</h3>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label for="gasConsumption" class="block text-sm font-medium text-gray-700 mb-1">Consumo de Gás (m³)</label>
+            <label for="gasConsumption" class="block text-sm font-medium text-gray-700 mb-1">Consumo de Gás (kWh)</label>
             <input
               type="number"
               id="gasConsumption"
@@ -38,7 +86,7 @@ export function createSimulatorForm() {
             />
           </div>
           <div>
-            <label for="gasValue" class="block text-sm font-medium text-gray-700 mb-1">Valor do Gás (€/m³)</label>
+            <label for="gasValue" class="block text-sm font-medium text-gray-700 mb-1">Valor do Gás (€/kWh)</label>
             <input
               type="number"
               id="gasValue"
