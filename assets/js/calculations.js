@@ -5,22 +5,10 @@ import {
   COMPANIES,
 } from "./constants.js";
 
-/**
- * Valida se um valor é um número válido e positivo
- * @param {number} value - Valor a ser validado
- * @returns {boolean} - true se o valor for válido, false caso contrário
- */
 function isValidNumber(value) {
   return typeof value === "number" && !isNaN(value) && value >= 0;
 }
 
-/**
- * Obtém o custo de potência com base na empresa e potência contratada
- * @param {string} company - Nome da empresa (EDP, Endesa, Repsol)
- * @param {number} power - Potência contratada em kVA
- * @returns {number} - Custo da potência por kVA/dia
- * @throws {Error} - Se a empresa não for válida ou a potência for inválida
- */
 export function getPowerCost(company, power) {
   if (!COMPANIES.includes(company)) {
     throw new Error("Empresa inválida");
@@ -37,13 +25,6 @@ export function getPowerCost(company, power) {
   return powerCost;
 }
 
-/**
- * Calcula o custo fixo baseado na potência contratada
- * @param {string} company - Nome da empresa
- * @param {number} power - Potência contratada
- * @param {number} days - Número de dias do cálculo
- * @returns {number} - Custo fixo total
- */
 function calculateFixedCost(company, power, days) {
   if (!isValidNumber(days)) {
     throw new Error("Número de dias inválido");
@@ -53,16 +34,7 @@ function calculateFixedCost(company, power, days) {
   return result;
 }
 
-/**
- * Calcula o custo variável para tarifa simples
- * @param {string} company - Nome da empresa
- * @param {number} consumption - Consumo em kWh
- * @param {number} discount - Desconto aplicado
- * @returns {number} - Custo variável total
- */
-function calculateSimpleTariffCost(company, consumption, discount) {
-  let i = TARIFF_VALUES[company].simples;
-
+function calculateSimpleTariffCost(company, consumption, discount = 0) {
   if (!isValidNumber(consumption)) {
     throw new Error("Consumo inválido");
   }
@@ -71,14 +43,7 @@ function calculateSimpleTariffCost(company, consumption, discount) {
   return result;
 }
 
-/**
- * Calcula o custo variável para tarifa bi-horária
- * @param {string} company - Nome da empresa
- * @param {Object} consumption - Objeto com consumo vazio e fora vazio
- * @param {number} discount - Desconto aplicado
- * @returns {number} - Custo variável total
- */
-function calculateBiHorarioCost(company, consumption, discount) {
+function calculateBiHorarioCost(company, consumption, discount = 0) {
   if (!consumption?.vazio?.amount || !consumption?.foraVazio?.amount) {
     throw new Error("Consumo inválido para tarifa bi-horária");
   }
@@ -94,14 +59,7 @@ function calculateBiHorarioCost(company, consumption, discount) {
   return result;
 }
 
-/**
- * Calcula o custo variável para tarifa tri-horária
- * @param {string} company - Nome da empresa
- * @param {Object} consumption - Objeto com consumo ponta, cheia e vazio
- * @param {number} discount - Desconto aplicado
- * @returns {number} - Custo variável total
- */
-function calculateTriHorarioCost(company, consumption, discount) {
+function calculateTriHorarioCost(company, consumption, discount = 0) {
   if (
     !consumption?.ponta?.amount ||
     !consumption?.cheia?.amount ||
@@ -124,14 +82,6 @@ function calculateTriHorarioCost(company, consumption, discount) {
   return result;
 }
 
-/**
- * Calcula o custo do gás
- * @param {string} company - Nome da empresa
- * @param {number} consumption - Consumo de gás
- * @param {number} value - Valor do gás (opcional)
- * @param {number} discount - Desconto aplicado
- * @returns {number} - Custo do gás
- */
 function calculateGasCost(company, consumption, value = 0, discount = 0) {
   if (!isValidNumber(consumption) || consumption === 0) {
     return 0;
@@ -147,16 +97,6 @@ function calculateGasCost(company, consumption, value = 0, discount = 0) {
   return gasCost;
 }
 
-/**
- * Calcula as economias comparando diferentes fornecedores de energia
- * @param {Object} consumption - Objeto com consumo de energia
- * @param {string} tariffType - Tipo de tarifa (simples, biHorario, triHorario)
- * @param {number} power - Potência contratada
- * @param {number} calculationDays - Número de dias do cálculo
- * @param {number} energyDiscount - Desconto na energia
- * @param {number} gasDiscount - Desconto no gás
- * @returns {Array} - Array com resultados ordenados por custo total
- */
 export function calculateSavings(
   consumption,
   tariffType,
@@ -165,73 +105,52 @@ export function calculateSavings(
   energyDiscount = 0,
   gasDiscount = 0
 ) {
-  if (!isValidNumber(calculationDays)) {
-    throw new Error("Número de dias inválido");
+  if (
+    !isValidNumber(calculationDays) ||
+    !consumption ||
+    typeof consumption !== "object"
+  ) {
+    throw new Error("Parâmetros inválidos");
   }
 
-  if (!consumption || typeof consumption !== "object") {
-    throw new Error("Consumo inválido");
-  }
+  return COMPANIES.filter(
+    (company) => TARIFF_VALUES[company] && POWER_COSTS[company]
+  )
+    .map((company) => {
+      const energyCalculations = {
+        simples: () =>
+          calculateSimpleTariffCost(
+            company,
+            consumption.simples.amount,
+            energyDiscount
+          ),
+        biHorario: () =>
+          calculateBiHorarioCost(company, consumption, energyDiscount),
+        triHorario: () =>
+          calculateTriHorarioCost(company, consumption, energyDiscount),
+      };
 
-  const results = [];
+      const fixedCost = calculateFixedCost(company, power, calculationDays);
+      const energyCost =
+        energyCalculations[tariffType]?.() ??
+        (() => {
+          throw new Error(`Tipo de tarifa inválido: ${tariffType}`);
+        })();
+      const gasCost = calculateGasCost(
+        company,
+        consumption.gas?.amount || 0,
+        0,
+        gasDiscount
+      );
+      const totalCost = energyCost + fixedCost + gasCost;
 
-  for (const company of COMPANIES) {
-    // Valida se a empresa é válida
-    if (!TARIFF_VALUES[company] || !POWER_COSTS[company]) {
-      throw new Error(`Empresa inválida: ${company}`);
-    }
-
-    // Cálculo do custo de energia
-    const fixedCost = calculateFixedCost(company, power, calculationDays);
-    let energyCost;
-
-    switch (tariffType) {
-      case "simples":
-        energyCost = calculateSimpleTariffCost(
-          company,
-          consumption.simples.amount,
-          energyDiscount
-        );
-        break;
-
-      case "biHorario":
-        energyCost = calculateBiHorarioCost(
-          company,
-          consumption,
-          energyDiscount
-        );
-        break;
-
-      case "triHorario":
-        energyCost = calculateTriHorarioCost(
-          company,
-          consumption,
-          energyDiscount
-        );
-        break;
-
-      default:
-        throw new Error(`Tipo de tarifa inválido: ${tariffType}`);
-    }
-
-    const gasCost = calculateGasCost(
-      company,
-      consumption.gas?.amount || 0,
-      0,
-      gasDiscount
-    );
-    const totalCost = energyCost + fixedCost + gasCost;
-
-    results.push({
-      company,
-      total: parseFloat(totalCost.toFixed(2)),
-      energyCost: parseFloat((energyCost + fixedCost).toFixed(2)),
-      gasCost: parseFloat(gasCost.toFixed(2)),
-      isCurrent: false,
-    });
-  }
-
-  // Ordena por custo total (ascendente)
-  const sortedResults = results.sort((a, b) => a.total - b.total);
-  return sortedResults;
+      return {
+        company,
+        total: +totalCost.toFixed(2),
+        energyCost: +(energyCost + fixedCost).toFixed(2),
+        gasCost: +gasCost.toFixed(2),
+        isCurrent: false,
+      };
+    })
+    .sort((a, b) => a.total - b.total);
 }
