@@ -73,6 +73,26 @@ export function createSimulatorForm() {
       <!-- Seção de Gás Natural -->
       <div id="gasSection" class="gas-section hidden">
         <h3 class="text-lg font-semibold mb-4">Consumo de Gás Natural</h3>
+        
+        <!-- Escalão Selection -->
+        <div class="mb-4">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Escalão</label>
+          <div class="flex gap-4">
+            ${[1, 2, 3, 4].map(escalao => `
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="gasEscalao"
+                  value="${escalao}"
+                  class="form-radio h-4 w-4 text-electric"
+                  ${escalao === 1 ? 'checked' : ''}
+                />
+                <span class="ml-2">${escalao}</span>
+              </label>
+            `).join('')}
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label for="gasConsumption" class="block text-sm font-medium text-gray-700 mb-1">Consumo de Gás (kWh)</label>
@@ -96,6 +116,18 @@ export function createSimulatorForm() {
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             />
           </div>
+        </div>
+
+        <div class="mt-4">
+          <label for="gasFixedTerm" class="block text-sm font-medium text-gray-700 mb-1">Termo Fixo (€/mês)</label>
+          <input
+            type="number"
+            id="gasFixedTerm"
+            name="gasFixedTerm"
+            min="0"
+            step="0.01"
+            class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
+          />
         </div>
       </div>
 

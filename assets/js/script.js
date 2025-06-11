@@ -124,6 +124,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Add event listeners for gas escalão radio buttons
+  document.querySelectorAll('input[name="gasEscalao"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+      if (this.checked) {
+        window.updateGasEscalao(this.value);
+      }
+    });
+  });
+
   // Add event for power input
   const powerInput = document.getElementById("power");
   if (powerInput) {

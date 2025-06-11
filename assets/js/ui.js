@@ -1,4 +1,4 @@
-import { TARIFF_VALUES, COMPANIES } from "./constants.js";
+import { TARIFF_VALUES, COMPANIES, GAS_PRICES } from "./constants.js";
 import { getPowerCost } from "./calculations.js";
 
 // Function to validate and get numeric values from inputs
@@ -31,13 +31,22 @@ export function updateGasSection(includeGas) {
   if (gasSection) {
     if (includeGas) {
       gasSection.classList.remove("hidden");
+      // Get the current selected escalão
+      const selectedEscalao = document.querySelector('input[name="gasEscalao"]:checked')?.value || "1";
+      // Update gas values in provider cards
+      window.updateGasEscalao(selectedEscalao);
     } else {
       gasSection.classList.add("hidden");
       // Clear gas fields
-      const gasFields = ["gasConsumption", "gasValue"];
+      const gasFields = ["gasConsumption", "gasValue", "gasFixedTerm"];
       gasFields.forEach((field) => {
         const element = document.getElementById(field);
         if (element) element.value = "";
+      });
+      // Hide gas details in provider cards
+      const gasDetails = document.querySelectorAll('.gas-details');
+      gasDetails.forEach(detail => {
+        detail.style.display = 'none';
       });
     }
   }
@@ -142,6 +151,28 @@ export function updateCardValues(power, tariffType) {
               )} €/kVA/dia</span>
           `;
     detailsContainer.appendChild(powerDetail);
+
+    // Add gas details if gas is enabled
+    if (document.getElementById('simulationType')?.checked) {
+      const selectedEscalao = document.querySelector('input[name="gasEscalao"]:checked')?.value || "1";
+      const escalaoIndex = parseInt(selectedEscalao) - 1;
+
+      const gasEnergyDetail = document.createElement("div");
+      gasEnergyDetail.className = "detail-item gas-details";
+      gasEnergyDetail.innerHTML = `
+        <span class="detail-label">Gás Natural (Escalão <span class="gas-escalao">${selectedEscalao}</span>)</span>
+        <span class="detail-value gas-energia">${GAS_PRICES[company][escalaoIndex].energia.toFixed(4)} €/kWh</span>
+      `;
+      detailsContainer.appendChild(gasEnergyDetail);
+
+      const gasFixedTermDetail = document.createElement("div");
+      gasFixedTermDetail.className = "detail-item gas-termo-fixo-details";
+      gasFixedTermDetail.innerHTML = `
+        <span class="detail-label">Termo Fixo Gás</span>
+        <span class="detail-value gas-termo-fixo">${GAS_PRICES[company][escalaoIndex].termoFixo.toFixed(4)} €/mês</span>
+      `;
+      detailsContainer.appendChild(gasFixedTermDetail);
+    }
   });
 }
 
