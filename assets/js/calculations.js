@@ -46,7 +46,6 @@ function calculateSimpleTariffCost(company, consumption, discount = 0) {
   }
   const result =
     consumption * (TARIFF_VALUES[company].simples * (1 - discount / 100));
-  console.log(company, discount);
   return result;
 }
 
@@ -135,8 +134,9 @@ export function calculateDiscountAmount(
     case "EDP":
       if (DD && FE) {
         if (luzGas) discount.gas += 5;
-        if (power < 3.45) break;
-        discount.luz += 15;
+        if (power >= 3.45) discount.luz = 15;
+        if (tariffType === "triHorario") discount.luz = 3;
+        
       }
       break;
     case "Repsol":
