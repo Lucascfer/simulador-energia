@@ -25,12 +25,18 @@ export function getPowerCost(company, power) {
   return powerCost;
 }
 
-function calculateFixedCost(company, power, days) {
+function calculateFixedCost(company, power, days, discount = 0) {
+  if (!COMPANIES.includes(company)) {
+    throw new Error("Empresa inválida");
+  }
+  if (!isValidNumber(power)) {
+    throw new Error("Potência inválida");
+  }
   if (!isValidNumber(days)) {
     throw new Error("Número de dias inválido");
   }
   const powerCost = getPowerCost(company, power);
-  const result = days * powerCost;
+  const result = days * powerCost * (1 - discount / 100);
   return result;
 }
 
@@ -40,6 +46,7 @@ function calculateSimpleTariffCost(company, consumption, discount = 0) {
   }
   const result =
     consumption * (TARIFF_VALUES[company].simples * (1 - discount / 100));
+  console.log(company, discount);
   return result;
 }
 
@@ -82,26 +89,80 @@ function calculateTriHorarioCost(company, consumption, discount = 0) {
   return result;
 }
 
-function calculateGasCost(company, consumption, escalao, discount = 0, days = 30) {
+function calculateGasCost(
+  company,
+  consumption,
+  escalao,
+  discount = 0,
+  days = 30
+) {
   if (!isValidNumber(consumption) || consumption === 0 || !escalao) {
     return 0;
   }
 
   const escalaoIndex = parseInt(escalao) - 1;
   const gasPrices = GAS_PRICES[company][escalaoIndex];
-  
+
   if (!gasPrices) return 0;
-  
+
   const energyCost = consumption * gasPrices.energia;
   const fixedTermCost = gasPrices.termoFixo * days;
-  
+
   let totalCost = energyCost + fixedTermCost;
-  
+
   if (isValidNumber(discount) && discount > 0) {
     totalCost *= 1 - discount / 100;
   }
 
   return totalCost;
+}
+
+export function calculateDiscountAmount(
+  company,
+  tariffType,
+  power,
+  DD,
+  FE,
+  ServicosAdicionais,
+  luzGas
+) {
+  let discount = {
+    luz: 0,
+    gas: 0,
+  };
+
+  switch (company) {
+    case "EDP":
+      if (DD && FE) {
+        if (luzGas) discount.gas += 5;
+        if (power < 3.45) break;
+        discount.luz += 15;
+      }
+      break;
+    case "Repsol":
+      if (DD) discount.luz += 1;
+      if (FE) discount.luz += 1;
+      if (ServicosAdicionais) discount.luz += 1;
+      if (luzGas) {
+        discount.luz += 2;
+        discount.gas = discount.luz;
+      }
+      break;
+    case "Endesa":
+      discount.luz = 21;
+      if (DD) discount.luz += 1;
+      if (FE) discount.luz += 1;
+      if (ServicosAdicionais) discount.luz += 2;
+      if (luzGas) {
+        discount.luz += 2;
+        discount.gas = discount.luz;
+      }
+      break;
+    default:
+      throw new Error("Empresa inválida");
+  }
+
+  return discount;
 }
 
 export function calculateSavings(
@@ -119,19 +180,46 @@ export function calculateSavings(
   ) {
     throw new Error("Parâmetros inválidos");
   }
+  const directDebit = document.getElementById("directDebit")?.checked || false;
+  const electronicInvoice =
+    document.getElementById("electronicInvoice")?.checked || false;
+  const additionalServices =
+    document.getElementById("additionalServices")?.checked || false;
+  const luzGas = document.getElementById("simulationType")?.checked || false;
 
   return COMPANIES.filter(
     (company) => TARIFF_VALUES[company] && POWER_COSTS[company]
   )
     .map((company) => {
+      const discountAmount = calculateDiscountAmount(
+        company,
+        tariffType,
+        power,
+        directDebit,
+        electronicInvoice,
+        additionalServices,
+        luzGas
+      );
+
       const energyCalculations = {
         simples: () =>
-          calculateSimpleTariffCost(company, consumption.simples.amount, 0),
-        biHorario: () => calculateBiHorarioCost(company, consumption, 0),
-        triHorario: () => calculateTriHorarioCost(company, consumption, 0),
+          calculateSimpleTariffCost(
+            company,
+            consumption.simples.amount,
+            discountAmount.luz
+          ),
+        biHorario: () =>
+          calculateBiHorarioCost(company, consumption, discountAmount.luz),
+        triHorario: () =>
+          calculateTriHorarioCost(company, consumption, discountAmount.luz),
       };
 
-      const fixedCost = calculateFixedCost(company, power, calculationDays);
+      const fixedCost = calculateFixedCost(
+        company,
+        power,
+        calculationDays,
+        discountAmount.luz
+      );
       const energyCost =
         energyCalculations[tariffType]?.() ??
         (() => {
@@ -141,7 +229,7 @@ export function calculateSavings(
         company,
         gasConsumption,
         gasEscalao,
-        0,
+        discountAmount.gas,
         calculationDays
       );
       const totalCost = energyCost + fixedCost + gasCost;
