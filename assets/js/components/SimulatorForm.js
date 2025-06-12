@@ -60,7 +60,7 @@ export function createSimulatorForm() {
               id="gasConsumption"
               name="gasConsumption"
               min="0"
-              step="0.01"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             />
           </div>
@@ -71,7 +71,7 @@ export function createSimulatorForm() {
               id="gasValue"
               name="gasValue"
               min="0"
-              step="0.0001"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             />
           </div>
@@ -84,7 +84,7 @@ export function createSimulatorForm() {
             id="gasFixedTerm"
             name="gasFixedTerm"
             min="0"
-            step="0.01"
+            step="0.000001"
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
           />
         </div>
@@ -127,6 +127,7 @@ export function createSimulatorForm() {
               type="number"
               id="consumptionSimples"
               name="consumptionSimples"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               required
             />
@@ -135,7 +136,7 @@ export function createSimulatorForm() {
             <label for="valueSimples" class="block text-sm font-medium text-gray-700 mb-2">Valor por kWh (€)</label>
             <input
               type="number"
-              step="0.0001"
+              step="0.000001"
               id="valueSimples"
               name="valueSimples"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -151,7 +152,7 @@ export function createSimulatorForm() {
             name="energyDiscount"
             min="0"
             max="100"
-            step="0.01"
+            step="0.000001"
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             placeholder="Ex: 5"
           />
@@ -171,6 +172,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionBiHorarioForaVazio"
                 name="consumptionBiHorarioForaVazio"
+                step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -178,7 +180,7 @@ export function createSimulatorForm() {
               <label for="valueBiHorarioForaVazio" class="block text-sm font-medium text-gray-700 mb-2">Valor (€/kWh)</label>
               <input
                 type="number"
-                step="0.0001"
+                step="0.000001"
                 id="valueBiHorarioForaVazio"
                 name="valueBiHorarioForaVazio"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -193,7 +195,7 @@ export function createSimulatorForm() {
               name="energyDiscountForaVazio"
               min="0"
               max="100"
-              step="0.01"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               placeholder="Ex: 5"
             />
@@ -209,6 +211,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionBiHorarioVazio"
                 name="consumptionBiHorarioVazio"
+                step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -216,7 +219,7 @@ export function createSimulatorForm() {
               <label for="valueBiHorarioVazio" class="block text-sm font-medium text-gray-700 mb-2">Valor (€/kWh)</label>
               <input
                 type="number"
-                step="0.0001"
+                step="0.000001"
                 id="valueBiHorarioVazio"
                 name="valueBiHorarioVazio"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -231,7 +234,7 @@ export function createSimulatorForm() {
               name="energyDiscountVazio"
               min="0"
               max="100"
-              step="0.01"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               placeholder="Ex: 5"
             />
@@ -252,6 +255,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionTriHorarioPonta"
                 name="consumptionTriHorarioPonta"
+                step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -259,7 +263,7 @@ export function createSimulatorForm() {
               <label for="valueTriHorarioPonta" class="block text-sm font-medium text-gray-700 mb-2">Valor Ponta (€/kWh)</label>
               <input
                 type="number"
-                step="0.0001"
+                step="0.000001"
                 id="valueTriHorarioPonta"
                 name="valueTriHorarioPonta"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -274,7 +278,7 @@ export function createSimulatorForm() {
               name="energyDiscountPonta"
               min="0"
               max="100"
-              step="0.01"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               placeholder="Ex: 5"
             />
@@ -290,6 +294,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionTriHorarioCheia"
                 name="consumptionTriHorarioCheia"
+                step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -297,7 +302,7 @@ export function createSimulatorForm() {
               <label for="valueTriHorarioCheia" class="block text-sm font-medium text-gray-700 mb-2">Valor Cheia (€/kWh)</label>
               <input
                 type="number"
-                step="0.0001"
+                step="0.000001"
                 id="valueTriHorarioCheia"
                 name="valueTriHorarioCheia"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -312,7 +317,7 @@ export function createSimulatorForm() {
               name="energyDiscountCheia"
               min="0"
               max="100"
-              step="0.01"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               placeholder="Ex: 5"
             />
@@ -328,6 +333,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionTriHorarioVazio"
                 name="consumptionTriHorarioVazio"
+                step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -335,7 +341,7 @@ export function createSimulatorForm() {
               <label for="valueTriHorarioVazio" class="block text-sm font-medium text-gray-700 mb-2">Valor Vazio (€/kWh)</label>
               <input
                 type="number"
-                step="0.0001"
+                step="0.000001"
                 id="valueTriHorarioVazio"
                 name="valueTriHorarioVazio"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -350,7 +356,7 @@ export function createSimulatorForm() {
               name="energyDiscountVazio"
               min="0"
               max="100"
-              step="0.01"
+              step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               placeholder="Ex: 5"
             />
@@ -385,7 +391,7 @@ export function createSimulatorForm() {
           <label for="powerValue" class="block text-sm font-medium text-gray-700 mb-2">Valor da Potência (€/kVA)</label>
           <input
             type="number"
-            step="0.0001"
+            step="0.000001"
             id="powerValue"
             name="powerValue"
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -400,7 +406,7 @@ export function createSimulatorForm() {
             name="powerDiscount"
             min="0"
             max="100"
-            step="0.01"
+            step="0.000001"
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             placeholder="Ex: 5"
           />
@@ -416,6 +422,7 @@ export function createSimulatorForm() {
           name="calculationDays"
           value="30"
           min="1"
+          step="1"
           class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
           required
         />
