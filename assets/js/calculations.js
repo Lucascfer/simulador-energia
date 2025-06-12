@@ -9,15 +9,19 @@ function isValidNumber(value) {
   return typeof value === "number" && !isNaN(value) && value >= 0;
 }
 
-export function getPowerCost(company, power) {
+export function getPowerCost(company, power, tariffType) {
   if (!COMPANIES.includes(company)) {
     throw new Error("Empresa inválida");
   }
   if (!isValidNumber(power)) {
     throw new Error("Potência inválida");
   }
-  const powerCost = POWER_COSTS[company][power.toFixed(2)] || 0;
 
+  let powerCost;
+
+  company === "EDP"
+    ? (powerCost = POWER_COSTS[company][tariffType][power.toFixed(2)] || 0)
+    : (powerCost = POWER_COSTS[company][power.toFixed(2)] || 0);
   if (powerCost === undefined) {
     throw new Error(`Potência contratada inválida para a empresa ${company}`);
   }
@@ -25,7 +29,7 @@ export function getPowerCost(company, power) {
   return powerCost;
 }
 
-function calculateFixedCost(company, power, days, discount = 0) {
+function calculateFixedCost(company, power, days, discount = 0, tariffType) {
   if (!COMPANIES.includes(company)) {
     throw new Error("Empresa inválida");
   }
@@ -38,7 +42,7 @@ function calculateFixedCost(company, power, days, discount = 0) {
   if (company === "Repsol" || company === "EDP") {
     discount = 0;
   }
-  const powerCost = getPowerCost(company, power);
+  const powerCost = getPowerCost(company, power, tariffType);
   const result = days * powerCost * (1 - discount / 100);
   return result;
 }
@@ -150,14 +154,15 @@ function calculateGasCost(
 
   if (!gasPrices) return 0;
 
-  const energyCost = consumption * gasPrices.energia;
-  const fixedTermCost = gasPrices.termoFixo * days;
+  const energyCost = consumption * gasPrices.energia * (1 - discount / 100);
+
+  if (company === "Repsol" || company === "EDP") {
+    discount = 0; // No discounts for Repsol and EDP fixed term costs
+  }
+
+  const fixedTermCost = gasPrices.termoFixo * days * (1 - discount / 100);
 
   let totalCost = energyCost + fixedTermCost;
-
-  if (isValidNumber(discount) && discount > 0) {
-    totalCost *= 1 - discount / 100;
-  }
 
   return totalCost;
 }
@@ -274,7 +279,8 @@ export function calculateSavings(
         company,
         power,
         calculationDays,
-        discountAmount.luz
+        discountAmount.luz,
+        tariffType
       );
       const energyCost =
         energyCalculations[tariffType]?.() ??

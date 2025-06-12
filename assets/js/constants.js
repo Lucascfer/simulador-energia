@@ -115,7 +115,7 @@ export const GAS_PRICES = {
       energia: 0.119806,
     },
     {
-      termoFixo: 0.286,
+      termoFixo: "0.2860",
       energia: 0.114967,
     },
     {
