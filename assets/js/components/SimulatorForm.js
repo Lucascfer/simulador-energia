@@ -389,13 +389,13 @@ export function createSimulatorForm() {
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             required
           >
-            <option value="">Selecione...</option>
+            <option value="" disabled selected>Selecione...</option>
             <option value="1.15">1.15 kVA</option>
             <option value="2.30">2.30 kVA</option>
             <option value="3.45">3.45 kVA</option>
             <option value="4.60">4.60 kVA</option>
             <option value="5.75">5.75 kVA</option>
-            <option value="6.90" selected>6.90 kVA</option>
+            <option value="6.90">6.90 kVA</option>
             <option value="10.35">10.35 kVA</option>
             <option value="13.80">13.80 kVA</option>
             <option value="17.25">17.25 kVA</option>

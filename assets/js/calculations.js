@@ -150,14 +150,15 @@ function calculateGasCost(
 
   if (!gasPrices) return 0;
 
-  const energyCost = consumption * gasPrices.energia;
+  const energyCost = consumption * gasPrices.energia * (1 - discount / 100);
+
+  if (company === "Repsol" || company === "EDP") {
+    discount = 0; // Repsol and EDP do not apply discounts on gas fixed term costs
+  }
+
   const fixedTermCost = gasPrices.termoFixo * days;
 
   let totalCost = energyCost + fixedTermCost;
-
-  if (isValidNumber(discount) && discount > 0) {
-    totalCost *= 1 - discount / 100;
-  }
 
   return totalCost;
 }

@@ -153,7 +153,7 @@ function generateAvailableOptionsHTML(results, currentResult) {
                   isSaving ? "fa-arrow-down" : "fa-arrow-up"
                 } mr-1"></i>
                 ${isSaving ? "Economia" : "Custo adicional"}: €${Math.abs(
-        savings
+        savings.toFixed(2)
       ) }
               </span>
               <span class="text-sm font-medium ${
