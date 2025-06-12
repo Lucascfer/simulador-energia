@@ -84,8 +84,7 @@
 
 /* Estilos para as opções de tarifário */
 .tariff-options {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 1rem;
 }
 
@@ -676,4 +675,107 @@ h1 {
 .text-discounted {
     background-color: #ffd9009e; /* Gold color */
     color: #111827;
+}
+
+/* Media Queries para telas menores que 532px */
+@media screen and (max-width: 532px) {
+  /* Ajustes para o grid de consumo */
+  .consumption-section .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Ajustes para o grid de potência */
+  .consumption-power {
+    grid-template-columns: 1fr !important;
+  }
+
+  .consumption-power .col-span-2 {
+    grid-column: span 1 !important;
+  }
+
+  /* Ajustes para o grid de gás */
+  #gasSection .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Ajustes para os campos de tarifa */
+  .tariff-options {
+    flex-direction: column !important;
+    gap: 1rem !important;
+    width: 100%;
+  }
+  .tariff-option {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  /* Ajustes para o escalão do gás */
+  #gasSection .flex.gap-4 {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  #gasSection .flex.gap-4 label {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: white;
+  }
+
+  #gasSection .flex.gap-4 label:hover {
+    background-color: #f3f4f6;
+  }
+
+  /* Ajustes para os switches */
+  .billing-services-section .section-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: space-between;
+  }
+  .switch-container {
+    width: 100%;
+    min-width: 140px;
+    box-sizing: border-box;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem 0.5rem;
+    border-radius: 1rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .switch-content {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .switch-option {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 0.3rem;
+  }
+  .switch {
+    margin-top: 0.2rem;
+    margin-bottom: 0.2rem;
+    align-self: center;
+  }
+
+  /* Ajustes para os inputs e selects */
+  .input-highlight {
+    width: 100%;
+  }
+
+  /* Ajustes para os botões */
+  button[type="submit"] {
+    width: 100%;
+  }
 }

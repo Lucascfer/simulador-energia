@@ -35,6 +35,10 @@ function calculateFixedCost(company, power, days, discount = 0) {
   if (!isValidNumber(days)) {
     throw new Error("Número de dias inválido");
   }
+  if (company === "Repsol" || company === "EDP") {
+    discount = 0;
+  }
+  console.log(company, discount)
   const powerCost = getPowerCost(company, power);
   const result = days * powerCost * (1 - discount / 100);
   return result;

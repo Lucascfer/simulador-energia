@@ -92,8 +92,7 @@ function getGasDetails(company, selectedEscalao) {
 
   const gasPrices = GAS_PRICES[company][escalaoIndex];
   return {
-    energia: formatNumericValue(gasPrices.energia),
-    termoFixo: formatNumericValue(gasPrices.termoFixo),
+    energia: gasPrices.energia
   };
 }
 
@@ -115,16 +114,6 @@ function createGasDetailsElements(
     }">${gasDetails.energia.toFixed(4)} €/kWh</span>
   `;
   gasContainer.appendChild(gasEnergyDetail);
-
-  const gasFixedTermDetail = document.createElement("div");
-  gasFixedTermDetail.className = "detail-item gas-termo-fixo-details";
-  gasFixedTermDetail.innerHTML = `
-    <span class="detail-label">Termo Fixo Gás</span>
-    <span class="detail-value gas-termo-fixo ${
-      isDiscounted ? "text-discounted" : ""
-    }">${gasDetails.termoFixo.toFixed(4)} €/mês</span>
-  `;
-  gasContainer.appendChild(gasFixedTermDetail);
 
   return gasContainer;
 }
@@ -308,23 +297,6 @@ function updateCardDetails(
     });
   }
 
-  // Add power value with discount
-  const powerValue = getPowerCost(company, power) || 0;
-  if (powerValue !== undefined) {
-    // Apply energy discount to power value if exists
-    const discountedPowerValue = discount?.luz
-      ? powerValue * (1 - discount.luz / 100)
-      : powerValue;
-    fragment.appendChild(
-      createDetailElement(
-        "Potência (kVA)",
-        discountedPowerValue,
-        "€/kVA/dia",
-        !!discount?.luz
-      )
-    );
-  }
-
   // Add gas details if enabled
   if (luzGas) {
     const selectedEscalao =
@@ -336,10 +308,7 @@ function updateCardDetails(
       const discountedGasDetails = {
         energia: discount?.gas
           ? gasDetails.energia * (1 - discount.gas / 100)
-          : gasDetails.energia,
-        termoFixo: discount?.gas
-          ? gasDetails.termoFixo * (1 - discount.gas / 100)
-          : gasDetails.termoFixo,
+          : gasDetails.energia
       };
 
       const gasContainer = createGasDetailsElements(

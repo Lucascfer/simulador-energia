@@ -460,7 +460,7 @@ export function createSimulatorForm() {
                 <span>Serviços Adicionais</span>
               </div>
               <label class="switch">
-                <input type="checkbox" id="additionalServices" checked />
+                <input type="checkbox" id="additionalServices" />
                 <span class="slider"></span>
               </label>
             </div>
