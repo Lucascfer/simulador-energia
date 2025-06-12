@@ -207,7 +207,6 @@ export function calculateDiscountAmount(
       throw new Error("Empresa inválida");
   }
 
-  console.log(company, discount)
   return discount;
 }
 
@@ -290,14 +289,6 @@ export function calculateSavings(
         calculationDays
       );
       const totalCost = energyCost + fixedCost + gasCost;
-
-      console.log({
-        company,
-        total: +totalCost.toFixed(2),
-        energyCost: +(energyCost + fixedCost).toFixed(2),
-        gasCost: +gasCost.toFixed(2),
-        isCurrent: false,
-      });
 
       return {
         company,

@@ -72,9 +72,9 @@ export const TARIFF_VALUES = {
     },
     biHorario: { vazio: 0.1161, foraVazio: 0.1921 },
     triHorario: {
-      vazio: { baixo: 0.115257, alto: 0.116597 },
-      ponta: { baixo: 0.361134, alto: 0.371237 },
-      cheia: { baixo: 0.144845, alto: 0.160824 },
+      vazio: { baixa: 0.115257, alta: 0.116597 },
+      ponta: { baixa: 0.361134, alta: 0.371237 },
+      cheia: { baixa: 0.144845, alta: 0.160824 },
     },
   },
   Endesa: {
