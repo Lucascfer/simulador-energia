@@ -72,11 +72,12 @@ function hideGasDetails() {
 function createDetailElement(label, value, unit, isDiscounted = false) {
   const detail = document.createElement("div");
   detail.className = "detail-item";
+  const numericValue = parseFloat(value) || 0;
   detail.innerHTML = `
     <span class="detail-label">${label}</span>
     <span class="detail-value ${
       isDiscounted ? "text-discounted" : ""
-    }">${value.toFixed(4)} ${unit}</span>
+    }">${numericValue.toFixed(4)} ${unit}</span>
   `;
   return detail;
 }

@@ -38,22 +38,36 @@ function calculateFixedCost(company, power, days, discount = 0) {
   if (company === "Repsol" || company === "EDP") {
     discount = 0;
   }
-  console.log(company, discount)
   const powerCost = getPowerCost(company, power);
   const result = days * powerCost * (1 - discount / 100);
   return result;
 }
 
-function calculateSimpleTariffCost(company, consumption, discount = 0) {
+function calculateSimpleTariffCost(company, power, consumption, discount = 0) {
   if (!isValidNumber(consumption)) {
     throw new Error("Consumo inválido");
   }
-  const result =
-    consumption * (TARIFF_VALUES[company].simples * (1 - discount / 100));
+
+  let result;
+
+  if (company === "EDP") {
+    if (power < 3.45) {
+      result =
+        consumption *
+        (TARIFF_VALUES[company].simples.baixa * (1 - discount / 100));
+    } else {
+      result =
+        consumption *
+        (TARIFF_VALUES[company].simples.alta * (1 - discount / 100));
+    }
+  } else {
+    result =
+      consumption * (TARIFF_VALUES[company].simples * (1 - discount / 100));
+  }
   return result;
 }
 
-function calculateBiHorarioCost(company, consumption, discount = 0) {
+function calculateBiHorarioCost(company, power, consumption, discount = 0) {
   if (!consumption?.vazio?.amount || !consumption?.foraVazio?.amount) {
     throw new Error("Consumo inválido para tarifa bi-horária");
   }
@@ -69,7 +83,7 @@ function calculateBiHorarioCost(company, consumption, discount = 0) {
   return result;
 }
 
-function calculateTriHorarioCost(company, consumption, discount = 0) {
+function calculateTriHorarioCost(company, power, consumption, discount = 0) {
   if (
     !consumption?.ponta?.amount ||
     !consumption?.cheia?.amount ||
@@ -78,15 +92,43 @@ function calculateTriHorarioCost(company, consumption, discount = 0) {
     throw new Error("Consumo inválido para tarifa tri-horária");
   }
 
-  const pontaCost =
-    consumption.ponta.amount *
-    (TARIFF_VALUES[company].triHorario.ponta * (1 - discount / 100));
-  const cheiaCost =
-    consumption.cheia.amount *
-    (TARIFF_VALUES[company].triHorario.cheia * (1 - discount / 100));
-  const vazioCost =
-    consumption.vazio.amount *
-    (TARIFF_VALUES[company].triHorario.vazio * (1 - discount / 100));
+  let pontaCost = 0;
+  let cheiaCost = 0;
+  let vazioCost = 0;
+
+  if (company === "EDP") {
+    if (power <= 20.7) {
+      pontaCost =
+        consumption.ponta.amount *
+        (TARIFF_VALUES[company].triHorario.ponta.baixa * (1 - discount / 100));
+      cheiaCost =
+        consumption.cheia.amount *
+        (TARIFF_VALUES[company].triHorario.cheia.baixa * (1 - discount / 100));
+      vazioCost =
+        consumption.vazio.amount *
+        (TARIFF_VALUES[company].triHorario.vazio.baixa * (1 - discount / 100));
+    } else {
+      pontaCost =
+        consumption.ponta.amount *
+        (TARIFF_VALUES[company].triHorario.ponta.alta * (1 - discount / 100));
+      cheiaCost =
+        consumption.cheia.amount *
+        (TARIFF_VALUES[company].triHorario.cheia.alta * (1 - discount / 100));
+      vazioCost =
+        consumption.vazio.amount *
+        (TARIFF_VALUES[company].triHorario.vazio.alta * (1 - discount / 100));
+    }
+  } else {
+    pontaCost =
+      consumption.ponta.amount *
+      (TARIFF_VALUES[company].triHorario.ponta * (1 - discount / 100));
+    cheiaCost =
+      consumption.cheia.amount *
+      (TARIFF_VALUES[company].triHorario.cheia * (1 - discount / 100));
+    vazioCost =
+      consumption.vazio.amount *
+      (TARIFF_VALUES[company].triHorario.vazio * (1 - discount / 100));
+  }
 
   const result = pontaCost + cheiaCost + vazioCost;
   return result;
@@ -140,7 +182,6 @@ export function calculateDiscountAmount(
         if (luzGas) discount.gas += 5;
         if (power >= 3.45) discount.luz = 15;
         if (tariffType === "triHorario") discount.luz = 3;
-        
       }
       break;
     case "Repsol":
@@ -166,6 +207,7 @@ export function calculateDiscountAmount(
       throw new Error("Empresa inválida");
   }
 
+  console.log(company, discount)
   return discount;
 }
 
@@ -209,13 +251,24 @@ export function calculateSavings(
         simples: () =>
           calculateSimpleTariffCost(
             company,
+            power,
             consumption.simples.amount,
             discountAmount.luz
           ),
         biHorario: () =>
-          calculateBiHorarioCost(company, consumption, discountAmount.luz),
+          calculateBiHorarioCost(
+            company,
+            power,
+            consumption,
+            discountAmount.luz
+          ),
         triHorario: () =>
-          calculateTriHorarioCost(company, consumption, discountAmount.luz),
+          calculateTriHorarioCost(
+            company,
+            power,
+            consumption,
+            discountAmount.luz
+          ),
       };
 
       const fixedCost = calculateFixedCost(
@@ -237,6 +290,14 @@ export function calculateSavings(
         calculationDays
       );
       const totalCost = energyCost + fixedCost + gasCost;
+
+      console.log({
+        company,
+        total: +totalCost.toFixed(2),
+        energyCost: +(energyCost + fixedCost).toFixed(2),
+        gasCost: +gasCost.toFixed(2),
+        isCurrent: false,
+      });
 
       return {
         company,
