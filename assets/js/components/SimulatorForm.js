@@ -59,6 +59,7 @@ export function createSimulatorForm() {
               type="number"
               id="gasConsumption"
               name="gasConsumption"
+              value="100"
               min="0"
               step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
@@ -72,6 +73,7 @@ export function createSimulatorForm() {
               name="gasValue"
               min="0"
               step="0.000001"
+              placeholder="Ex: 0.0738"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             />
           </div>
@@ -85,6 +87,7 @@ export function createSimulatorForm() {
             name="gasFixedTerm"
             min="0"
             step="0.000001"
+            placeholder="Ex: 3.99"
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
           />
         </div>
@@ -127,6 +130,7 @@ export function createSimulatorForm() {
               type="number"
               id="consumptionSimples"
               name="consumptionSimples"
+              value="100"
               step="0.000001"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               required
@@ -139,6 +143,7 @@ export function createSimulatorForm() {
               step="0.000001"
               id="valueSimples"
               name="valueSimples"
+              placeholder="Ex: 0.1652"
               class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               required
             />
@@ -172,6 +177,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionBiHorarioForaVazio"
                 name="consumptionBiHorarioForaVazio"
+                value="100"
                 step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
@@ -183,6 +189,7 @@ export function createSimulatorForm() {
                 step="0.000001"
                 id="valueBiHorarioForaVazio"
                 name="valueBiHorarioForaVazio"
+                placeholder="Ex: 0.1854"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -211,6 +218,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionBiHorarioVazio"
                 name="consumptionBiHorarioVazio"
+                value="100"
                 step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
@@ -222,6 +230,7 @@ export function createSimulatorForm() {
                 step="0.000001"
                 id="valueBiHorarioVazio"
                 name="valueBiHorarioVazio"
+                placeholder="Ex: 0.1021"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -255,6 +264,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionTriHorarioPonta"
                 name="consumptionTriHorarioPonta"
+                value="100"
                 step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
@@ -266,6 +276,7 @@ export function createSimulatorForm() {
                 step="0.000001"
                 id="valueTriHorarioPonta"
                 name="valueTriHorarioPonta"
+                placeholder="Ex: 0.2154"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -294,6 +305,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionTriHorarioCheia"
                 name="consumptionTriHorarioCheia"
+                value="100"
                 step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
@@ -305,6 +317,7 @@ export function createSimulatorForm() {
                 step="0.000001"
                 id="valueTriHorarioCheia"
                 name="valueTriHorarioCheia"
+                placeholder="Ex: 0.1654"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -333,6 +346,7 @@ export function createSimulatorForm() {
                 type="number"
                 id="consumptionTriHorarioVazio"
                 name="consumptionTriHorarioVazio"
+                value="100"
                 step="0.000001"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
@@ -344,6 +358,7 @@ export function createSimulatorForm() {
                 step="0.000001"
                 id="valueTriHorarioVazio"
                 name="valueTriHorarioVazio"
+                placeholder="Ex: 0.1021"
                 class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
               />
             </div>
@@ -374,13 +389,13 @@ export function createSimulatorForm() {
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             required
           >
-            <option value="" disabled selected>Selecione...</option>
+            <option value="">Selecione...</option>
             <option value="1.15">1.15 kVA</option>
             <option value="2.30">2.30 kVA</option>
             <option value="3.45">3.45 kVA</option>
             <option value="4.60">4.60 kVA</option>
             <option value="5.75">5.75 kVA</option>
-            <option value="6.90">6.90 kVA</option>
+            <option value="6.90" selected>6.90 kVA</option>
             <option value="10.35">10.35 kVA</option>
             <option value="13.80">13.80 kVA</option>
             <option value="17.25">17.25 kVA</option>
@@ -394,6 +409,7 @@ export function createSimulatorForm() {
             step="0.000001"
             id="powerValue"
             name="powerValue"
+            placeholder="Ex: 0.3648"
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
             required
           />

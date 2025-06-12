@@ -80,19 +80,19 @@ function generateCurrentProviderSection(currentResult) {
           <div class="flex items-center">
             <span class="font-bold text-gray-800">Valores Atuais</span>
           </div>
-          <div class="text-lg font-bold">€${currentResult.total.toFixed(2)}</div>
+          <div class="text-lg font-bold">€${currentResult.total }</div>
         </div>
         <div class="flex justify-between items-center text-sm text-gray-600">
           <div>
             <i class="fas fa-bolt mr-1"></i>
-            <span>Energia: €${currentResult.energyCost.toFixed(2)}</span>
+            <span>Energia: €${currentResult.energyCost }</span>
           </div>
           ${
             currentResult.gasCost > 0
               ? `
           <div>
             <i class="fas fa-fire mr-1"></i>
-            <span>Gás: €${currentResult.gasCost.toFixed(2)}</span>
+            <span>Gás: €${currentResult.gasCost }</span>
           </div>
           `
               : ""
@@ -126,19 +126,19 @@ function generateAvailableOptionsHTML(results, currentResult) {
                   : ""
               }
             </div>
-            <div class="text-lg font-bold">€${result.total.toFixed(2)}</div>
+            <div class="text-lg font-bold">€${result.total }</div>
           </div>
           <div class="flex justify-between items-center text-sm text-gray-600">
             <div>
               <i class="fas fa-bolt mr-1"></i>
-              <span>Energia: €${result.energyCost.toFixed(2)}</span>
+              <span>Energia: €${result.energyCost }</span>
             </div>
             ${
               result.gasCost > 0
                 ? `
             <div>
               <i class="fas fa-fire mr-1"></i>
-              <span>Gás: €${result.gasCost.toFixed(2)}</span>
+              <span>Gás: €${result.gasCost }</span>
             </div>
             `
                 : ""
@@ -154,7 +154,7 @@ function generateAvailableOptionsHTML(results, currentResult) {
                 } mr-1"></i>
                 ${isSaving ? "Economia" : "Custo adicional"}: €${Math.abs(
         savings
-      ).toFixed(2)}
+      ) }
               </span>
               <span class="text-sm font-medium ${
                 isSaving ? "text-savings" : "text-red-500"
