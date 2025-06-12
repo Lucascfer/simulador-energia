@@ -11,7 +11,7 @@ export function createHeader() {
             />
           </div>
           <nav class="flex space-x-4 md:space-x-8">
-            <a href="https://www.scriptai.pt/index.html#inicio" class="text-gray-600 hover:text-gray-900 text-sm md:text-base">Início</a>
+            <a href="https://www.scriptai.pt/index3.html#inicio" class="text-gray-600 hover:text-gray-900 text-sm md:text-base">Início</a>
           </nav>
         </div>
       </div>
