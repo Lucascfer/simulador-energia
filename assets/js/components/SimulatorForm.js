@@ -78,7 +78,7 @@ export function createSimulatorForm() {
         </div>
 
         <div class="mt-4">
-          <label for="gasFixedTerm" class="block text-sm font-medium text-gray-700 mb-1">Termo Fixo (€/mês)</label>
+          <label for="gasFixedTerm" class="block text-sm font-medium text-gray-700 mb-1">Termo Fixo (€/dia)</label>
           <input
             type="number"
             id="gasFixedTerm"
@@ -388,7 +388,7 @@ export function createSimulatorForm() {
           </select>
         </div>
         <div>
-          <label for="powerValue" class="block text-sm font-medium text-gray-700 mb-2">Valor da Potência (€/kVA)</label>
+          <label for="powerValue" class="block text-sm font-medium text-gray-700 mb-2">Valor da Potência (€/dia)</label>
           <input
             type="number"
             step="0.000001"
