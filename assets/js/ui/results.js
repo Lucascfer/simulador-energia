@@ -1,8 +1,12 @@
+import { setupExportButtons } from '../components/ExportResults.js';
+
 export function displayResults(
   results,
   calculationDays,
   energyDiscount,
-  gasDiscount
+  gasDiscount,
+  energyConsumption,
+  gasConsumption
 ) {
   const container = document.getElementById("resultsContainer");
   if (!container) return;
@@ -15,9 +19,12 @@ export function displayResults(
     currentResult,
     calculationDays,
     energyDiscount,
-    gasDiscount
+    gasDiscount,
+    energyConsumption,
+    gasConsumption
   );
   animateResultsCards();
+  setupExportButtons();
 }
 
 function generateResultsHTML(
@@ -25,13 +32,27 @@ function generateResultsHTML(
   currentResult,
   calculationDays,
   energyDiscount,
-  gasDiscount
+  gasDiscount,
+  energyConsumption,
+  gasConsumption
 ) {
   return `
-    <div class="w-full">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-6">
-        <i class="fas fa-chart-bar text-electric mr-2"></i> Resultados
-      </h2>
+    <div class="w-full" 
+         data-energy-consumption='${JSON.stringify(energyConsumption)}'
+         data-gas-consumption='${gasConsumption}'>
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">
+          <i class="fas fa-chart-bar text-electric mr-2"></i> Resultados
+        </h2>
+        <div class="flex gap-2">
+          <button id="exportImage" class="px-4 py-2 bg-electric text-white rounded-lg hover:bg-electric-dark transition-colors">
+            <i class="fas fa-image mr-2"></i>Exportar Imagem
+          </button>
+          <button id="exportPDF" class="px-4 py-2 bg-electric text-white rounded-lg hover:bg-electric-dark transition-colors">
+            <i class="fas fa-file-pdf mr-2"></i>Exportar PDF
+          </button>
+        </div>
+      </div>
       
       ${generatePotentialCostsSection(
         calculationDays,
@@ -119,7 +140,8 @@ function generateAvailableOptionsHTML(results, currentResult) {
         }">
           <div class="flex justify-between items-center mb-1">
             <div class="flex items-center">
-              <span class="font-bold text-gray-800">${result.company}</span>
+              <input type="checkbox" id="export-${result.company.replace(/\s/g, '')}" data-company="${result.company}" class="mr-2 form-checkbox h-4 w-4 text-electric" checked>
+              <label for="export-${result.company.replace(/\s/g, '')}" class="font-bold text-gray-800">${result.company}</label>
               ${
                 index === 0
                   ? '<span class="ml-2 px-2 py-1 bg-savings text-white text-xs rounded-full">Melhor Opção</span>'

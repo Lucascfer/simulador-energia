@@ -1,10 +1,4 @@
-import {
-  COMPANIES,
-  POWER_COSTS,
-  TARIFF_VALUES,
-  GAS_PRICES,
-} from "./constants.js";
-import { getPowerCost, calculateSavings } from "./calculations.js";
+import { calculateSavings } from "./calculations.js";
 import {
   getNumericValue,
   updateTariffFields,
@@ -14,6 +8,7 @@ import {
 } from "./ui.js";
 import { createApp } from "./components/App.js";
 import { calculateFormValues } from "./formCalculations.js";
+import { setupExportButtons } from './components/ExportResults.js';
 
 // Inicializa a aplicação
 document.addEventListener("DOMContentLoaded", function () {
@@ -299,7 +294,15 @@ document.addEventListener("DOMContentLoaded", function () {
         isCurrent: true,
       });
 
-      displayResults(results, calculationDays, energyDiscount, gasDiscount);
+      displayResults(
+        results,
+        calculationDays,
+        energyDiscount,
+        gasDiscount,
+        consumption,
+        gasConsumption
+      );
+      setupExportButtons();
     });
   }
 });
