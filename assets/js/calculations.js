@@ -3,6 +3,7 @@ import {
   TARIFF_VALUES,
   GAS_PRICES,
   COMPANIES,
+  DISCOUNTS,
 } from "./constants.js";
 
 function isValidNumber(value) {
@@ -39,8 +40,8 @@ function calculateFixedCost(company, power, days, discount = 0, tariffType) {
   if (!isValidNumber(days)) {
     throw new Error("Número de dias inválido");
   }
-  if (company === "Repsol" || company === "EDP") {
-    discount = 0;
+  if (!DISCOUNTS[company]["powerDiscount"]) {
+    discount = 0; // No discounts for Repsol and EDP fixed term costs
   }
   const powerCost = getPowerCost(company, power, tariffType);
   const result = days * powerCost * (1 - discount / 100);
@@ -149,18 +150,24 @@ function calculateGasCost(
     return 0;
   }
 
+  let discountGas = discount;
+  let discountFixedterm = discount;
   const escalaoIndex = parseInt(escalao) - 1;
   const gasPrices = GAS_PRICES[company][escalaoIndex];
 
   if (!gasPrices) return 0;
-
-  const energyCost = consumption * gasPrices.energia * (1 - discount / 100);
-
-  if (company === "Repsol" || company === "EDP") {
-    discount = 0; // No discounts for Repsol and EDP fixed term costs
+  if (!DISCOUNTS[company]["gasDiscount"]) {
+    discountGas = 0;
   }
 
-  const fixedTermCost = gasPrices.termoFixo * days * (1 - discount / 100);
+  const energyCost = consumption * gasPrices.energia * (1 - discountGas / 100);
+
+  if (!DISCOUNTS[company]["fixedTerm"]) {
+    discountFixedterm = 0; // No discounts for Repsol and EDP fixed term costs
+  }
+
+  const fixedTermCost =
+    gasPrices.termoFixo * days * (1 - discountFixedterm / 100);
 
   let totalCost = energyCost + fixedTermCost;
 
