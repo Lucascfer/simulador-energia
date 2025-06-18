@@ -1,4 +1,4 @@
-import { TARIFF_VALUES, COMPANIES, GAS_PRICES } from "../constants.js";
+import { COMPANIES } from "../constants.js";
 import { updateCardValues } from "../ui.js";
 
 export function createProviderCards() {
