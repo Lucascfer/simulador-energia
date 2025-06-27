@@ -4,6 +4,8 @@ import {
   GAS_PRICES,
   COMPANIES,
   DISCOUNTS,
+  MORE_THEN_ONE_POWER,
+  MORE_THEN_ONE_TARIFF,
 } from "./constants.js";
 
 function isValidNumber(value) {
@@ -20,7 +22,7 @@ export function getPowerCost(company, power, tariffType) {
 
   let powerCost;
 
-  company === "EDP"
+  MORE_THEN_ONE_POWER[company]
     ? (powerCost = POWER_COSTS[company][tariffType][power.toFixed(2)] || 0)
     : (powerCost = POWER_COSTS[company][power.toFixed(2)] || 0);
   if (powerCost === undefined) {
@@ -55,7 +57,7 @@ function calculateSimpleTariffCost(company, power, consumption, discount = 0) {
 
   let result;
 
-  if (company === "EDP") {
+  if (MORE_THEN_ONE_TARIFF[company]) {
     if (power < 3.45) {
       result =
         consumption *
@@ -101,7 +103,7 @@ function calculateTriHorarioCost(company, power, consumption, discount = 0) {
   let cheiaCost = 0;
   let vazioCost = 0;
 
-  if (company === "EDP") {
+  if (MORE_THEN_ONE_TARIFF[company]) {
     if (power <= 20.7) {
       pontaCost =
         consumption.ponta.amount *

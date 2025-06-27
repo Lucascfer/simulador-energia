@@ -23,6 +23,18 @@ export const DISCOUNTS = {
   },
 };
 
+export const MORE_THEN_ONE_POWER = {
+  EDP: true,
+  Endesa: true,
+  Repsol: false,
+};
+
+export const MORE_THEN_ONE_TARIFF = {
+  EDP: true,
+  Endesa: false,
+  Repsol: false,
+};
+
 // Power costs table (€/kVA/day)
 export const POWER_COSTS = {
   EDP: {
@@ -60,16 +72,33 @@ export const POWER_COSTS = {
     },
   },
   Endesa: {
-    1.15: 0.326,
-    "2.30": 0.4303,
-    3.45: 0.5151,
-    "4.60": 0.6767,
-    5.75: 0.7958,
-    "6.90": 1.0309,
-    10.35: 1.2328,
-    "13.80": 1.6062,
-    17.25: 2.0088,
-    "20.70": 2.6082,
+    simples: {
+      1.15: 0.1646,
+      "2.30": 0.2459,
+      3.45: 0.3086,
+      "4.60": 0.4342,
+      5.75: 0.5288,
+      "6.90": 0.7069,
+      10.35: "0.8790",
+      "13.80": 1.1742,
+      17.25: 1.4899,
+      "20.70": 1.9459,
+    },
+    biHorario: {
+      3.45: 0.3054,
+      "4.60": 0.3798,
+      5.75: 0.4449,
+      "6.90": 0.5104,
+      10.35: 0.7501,
+      "13.80": 1.0285,
+      17.25: 1.2806,
+      20.7: 1.5968,
+    },
+    triHorario: {
+      27.60: 2.1484,
+      34.50: 2.6735,
+      41.40: 3.2771,
+    },
   },
   Repsol: {
     1.15: 0.1729,
@@ -100,9 +129,9 @@ export const TARIFF_VALUES = {
     },
   },
   Endesa: {
-    simples: 0.200466,
-    biHorario: { vazio: 0.249256, foraVazio: 0.17452 },
-    triHorario: { vazio: 0.164709, ponta: 0.17452, cheia: 0.17452 },
+    simples: 0.1957,
+    biHorario: { vazio: 0.1682, foraVazio: 0.2368 },
+    triHorario: { vazio: 0.1697, ponta: 0.4406, cheia: 0.1961 },
   },
   Repsol: {
     simples: 0.175459,
@@ -168,7 +197,6 @@ export const GAS_PRICES = {
     },
   ],
 };
-
 
 // Companies and their configurations
 export const CONFIG_COMPANIES = {

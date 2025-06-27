@@ -108,8 +108,8 @@ export function createSimulatorForm() {
               <div class="tariff-text">Bi-horário</div>
             </div>
           </label>
-          <label class="tariff-option">
-            <input type="radio" name="tariffType" value="triHorario" class="tariff-radio" />
+          <label class="tariff-option opacity-50">
+            <input type="radio" name="tariffType" value="triHorario" class="tariff-radio" disabled/>
             <div class="tariff-content">
               <div class="tariff-circle"></div>
               <div class="tariff-text">Tri-horário</div>
