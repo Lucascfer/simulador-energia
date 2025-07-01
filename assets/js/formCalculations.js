@@ -1,5 +1,3 @@
-import { GAS_PRICES } from "./constants.js";
-
 // Função para calcular o valor total com desconto
 function calculateValueWithDiscount(value, discount = 0) {
   if (!value || value <= 0) return 0;
@@ -76,14 +74,16 @@ export function calculateGasCost(
   consumption,
   gasValue,
   gasFixedTerm,
-  discount = 0,
-  days = 30
+  gasDiscount = 0,
+  gasFixedTermDiscount = 0,
+  gasDays = 30
 ) {
   if (!consumption || !gasValue || !gasFixedTerm) return 0;
 
-  const valueWithDiscount = calculateValueWithDiscount(gasValue, discount);
+  const valueWithDiscount = calculateValueWithDiscount(gasValue, gasDiscount);
   const energyCost = consumption * valueWithDiscount;
-  const fixedTermCost = gasFixedTerm * days;
+  const fixedTermWithDiscount = calculateValueWithDiscount(gasFixedTerm, gasFixedTermDiscount);
+  const fixedTermCost = fixedTermWithDiscount * gasDays;
 
   return energyCost + fixedTermCost;
 }
@@ -98,6 +98,8 @@ export function calculateFormValues(formData) {
     calculationDays,
     energyDiscount,
     gasDiscount,
+    gasFixedTermDiscount,
+    gasCalculationDays,
     consumption,
     gasConsumption,
     gasValue,
@@ -137,7 +139,8 @@ export function calculateFormValues(formData) {
     gasValue,
     gasFixedTerm,
     gasDiscount,
-    calculationDays
+    gasFixedTermDiscount,
+    gasCalculationDays
   );
 
   // Retorna o objeto com todos os cálculos

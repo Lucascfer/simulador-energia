@@ -146,7 +146,7 @@ function calculateGasCost(
   consumption,
   escalao,
   discount = 0,
-  days = 30
+  gasDays = 30
 ) {
   if (!isValidNumber(consumption) || consumption === 0 || !escalao) {
     return 0;
@@ -169,7 +169,7 @@ function calculateGasCost(
   }
 
   const fixedTermCost =
-    gasPrices.termoFixo * days * (1 - discountFixedterm / 100);
+    gasPrices.termoFixo * gasDays * (1 - discountFixedterm / 100);
 
   let totalCost = energyCost + fixedTermCost;
 
@@ -230,7 +230,8 @@ export function calculateSavings(
   power,
   calculationDays,
   gasConsumption = 0,
-  gasEscalao = "1"
+  gasEscalao = "1",
+  gasDays = 30
 ) {
   if (
     !isValidNumber(calculationDays) ||
@@ -301,7 +302,7 @@ export function calculateSavings(
         gasConsumption,
         gasEscalao,
         discountAmount.gas,
-        calculationDays
+        gasDays
       );
       const totalCost = energyCost + fixedCost + gasCost;
 

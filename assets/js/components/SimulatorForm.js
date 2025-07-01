@@ -77,6 +77,21 @@ export function createSimulatorForm() {
           </div>
         </div>
 
+        <!-- Descontos para Gás -->
+        <div class="mt-4">
+          <label for="gasDiscount" class="block text-sm font-medium text-gray-700 mb-1">Desconto no kWh de Gás (%)</label>
+          <input
+            type="number"
+            id="gasDiscount"
+            name="gasDiscount"
+            min="0"
+            max="100"
+            step="0.000001"
+            class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
+            placeholder="Ex: 5"
+          />
+        </div>
+
         <div class="mt-4">
           <label for="gasFixedTerm" class="block text-sm font-medium text-gray-700 mb-1">Termo Fixo (€/dia)</label>
           <input
@@ -85,6 +100,34 @@ export function createSimulatorForm() {
             name="gasFixedTerm"
             min="0"
             step="0.000001"
+            class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
+          />
+        </div>
+
+        <div class="mt-4">
+          <label for="gasFixedTermDiscount" class="block text-sm font-medium text-gray-700 mb-1">Desconto no Termo Fixo de Gás (%)</label>
+          <input
+            type="number"
+            id="gasFixedTermDiscount"
+            name="gasFixedTermDiscount"
+            min="0"
+            max="100"
+            step="0.000001"
+            class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
+            placeholder="Ex: 5"
+          />
+        </div>
+        
+        <!-- Novo campo: Período de Cálculo para Gás -->
+        <div class="mt-4">
+          <label for="gasCalculationDays" class="block text-sm font-medium text-gray-700 mb-1">Período de Cálculo do Gás (dias)</label>
+          <input
+            type="number"
+            id="gasCalculationDays"
+            name="gasCalculationDays"
+            value="30"
+            min="1"
+            step="1"
             class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric"
           />
         </div>
@@ -133,7 +176,7 @@ export function createSimulatorForm() {
             />
           </div>
           <div>
-            <label for="valueSimples" class="block text-sm font-medium text-gray-700 mb-2">Valor por kWh (€)</label>
+            <label for="valueSimples" class="block text-sm font-medium text-gray-700 mb-2">Valor por kWh (€/kWh)</label>
             <input
               type="number"
               step="0.000001"

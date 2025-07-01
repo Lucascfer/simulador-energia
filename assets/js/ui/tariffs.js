@@ -1,4 +1,4 @@
-import { TARIFF_VALUES, MORE_THEN_ONE_POWER } from "../constants.js";
+import { TARIFF_VALUES } from "../constants.js";
 
 export function getTariffDetails(company, tariffType, power) {
   if (!TARIFF_VALUES[company]) {

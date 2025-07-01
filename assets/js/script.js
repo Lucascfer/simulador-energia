@@ -8,7 +8,7 @@ import {
 } from "./ui.js";
 import { createApp } from "./components/App.js";
 import { calculateFormValues } from "./formCalculations.js";
-import { setupExportButtons } from './components/ExportResults.js';
+import { setupExportButtons } from "./components/ExportResults.js";
 
 // Inicializa a aplicação
 document.addEventListener("DOMContentLoaded", function () {
@@ -120,8 +120,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Add event listeners for gas escalão radio buttons
-  document.querySelectorAll('input[name="gasEscalao"]').forEach(radio => {
-    radio.addEventListener('change', function() {
+  document.querySelectorAll('input[name="gasEscalao"]').forEach((radio) => {
+    radio.addEventListener("change", function () {
       if (this.checked) {
         window.updateGasEscalao(this.value);
       }
@@ -141,26 +141,28 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Add event for collapsible billing services section
-  const billingServicesHeader = document.getElementById("billingServicesHeader");
+  const billingServicesHeader = document.getElementById(
+    "billingServicesHeader"
+  );
   if (billingServicesHeader) {
     billingServicesHeader.addEventListener("click", function () {
       const sectionContent = this.nextElementSibling;
-      const toggleIcon = this.querySelector('.toggle-icon');
+      const toggleIcon = this.querySelector(".toggle-icon");
 
-      if (sectionContent.classList.contains('hidden')) {
-        sectionContent.classList.remove('hidden');
-        toggleIcon.style.transform = 'rotate(90deg)';
+      if (sectionContent.classList.contains("hidden")) {
+        sectionContent.classList.remove("hidden");
+        toggleIcon.style.transform = "rotate(90deg)";
       } else {
-        sectionContent.classList.add('hidden');
-        toggleIcon.style.transform = 'rotate(0deg)';
+        sectionContent.classList.add("hidden");
+        toggleIcon.style.transform = "rotate(0deg)";
       }
     });
 
     // Initial state: ensure icon is pointing right if section is hidden
     const sectionContent = billingServicesHeader.nextElementSibling;
-    const toggleIcon = billingServicesHeader.querySelector('.toggle-icon');
-    if (sectionContent.classList.contains('hidden')) {
-      toggleIcon.style.transform = 'rotate(0deg)';
+    const toggleIcon = billingServicesHeader.querySelector(".toggle-icon");
+    if (sectionContent.classList.contains("hidden")) {
+      toggleIcon.style.transform = "rotate(0deg)";
     }
   }
 
@@ -204,6 +206,9 @@ document.addEventListener("DOMContentLoaded", function () {
             )
           : getNumericValue(TARIFF_DISCOUNT_FIELDS[tariffType], 0);
       const gasDiscount = getNumericValue("gasDiscount", 0);
+      const gasFixedTermDiscount = getNumericValue("gasFixedTermDiscount", 0);
+      const gasCalculationDays = getNumericValue("gasCalculationDays", 30);
+
       const includeGas =
         document.getElementById("simulationType")?.checked || false;
 
@@ -252,7 +257,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Get gas values if included
       const gasConsumption = includeGas ? getNumericValue("gasConsumption") : 0;
-      const gasEscalao = includeGas ? document.querySelector('input[name="gasEscalao"]:checked')?.value || "1" : "1";
+      const gasEscalao = includeGas
+        ? document.querySelector('input[name="gasEscalao"]:checked')?.value ||
+          "1"
+        : "1";
       const gasValue = includeGas ? getNumericValue("gasValue") : 0;
       const gasFixedTerm = includeGas ? getNumericValue("gasFixedTerm") : 0;
 
@@ -265,10 +273,12 @@ document.addEventListener("DOMContentLoaded", function () {
         calculationDays,
         energyDiscount,
         gasDiscount,
+        gasFixedTermDiscount,
+        gasCalculationDays,
         consumption,
         gasConsumption,
         gasValue,
-        gasFixedTerm
+        gasFixedTerm,
       });
 
       // Calculate results for other companies without discounts
@@ -278,7 +288,8 @@ document.addEventListener("DOMContentLoaded", function () {
         power,
         calculationDays,
         gasConsumption,
-        gasEscalao
+        gasEscalao,
+        gasCalculationDays
       );
 
       // Add current values to the results
@@ -305,9 +316,9 @@ document.addEventListener("DOMContentLoaded", function () {
       setupExportButtons();
       // Scroll suave para o componente de resultados
       setTimeout(() => {
-        const resultsEl = document.getElementById('resultsContainer');
+        const resultsEl = document.getElementById("resultsContainer");
         if (resultsEl) {
-          resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          resultsEl.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }, 100);
     });
@@ -322,14 +333,16 @@ document.addEventListener("DOMContentLoaded", function () {
     openExtraFormBtn.addEventListener("click", function () {
       if (bx24FormDiv.classList.contains("hidden")) {
         bx24FormDiv.classList.remove("hidden");
-        openExtraFormBtn.innerHTML = '<i class="fas fa-times"></i> Fechar formulário';
+        openExtraFormBtn.innerHTML =
+          '<i class="fas fa-times"></i> Fechar formulário';
         // Scroll suave para o formulário Bitrix24
         setTimeout(() => {
-          bx24FormDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          bx24FormDiv.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 100);
       } else {
         bx24FormDiv.classList.add("hidden");
-        openExtraFormBtn.innerHTML = '<i class="fas fa-edit"></i> Cadastrar Cliente & Contrato';
+        openExtraFormBtn.innerHTML =
+          '<i class="fas fa-edit"></i> Cadastrar Cliente & Contrato';
       }
     });
   }
@@ -340,7 +353,9 @@ document.addEventListener("DOMContentLoaded", function () {
     s.async = true;
     s.setAttribute("data-b24-form", "inline/24/oam7vz");
     s.setAttribute("data-skip-moving", "true");
-    s.src = "https://cdn.bitrix24.eu/b32877315/crm/form/loader_24.js?" + ((Date.now() / 180000) | 0);
+    s.src =
+      "https://cdn.bitrix24.eu/b32877315/crm/form/loader_24.js?" +
+      ((Date.now() / 180000) | 0);
     formDiv.appendChild(s);
   }
 });
