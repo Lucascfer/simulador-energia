@@ -303,6 +303,44 @@ document.addEventListener("DOMContentLoaded", function () {
         gasConsumption
       );
       setupExportButtons();
+      // Scroll suave para o componente de resultados
+      setTimeout(() => {
+        const resultsEl = document.getElementById('resultsContainer');
+        if (resultsEl) {
+          resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
     });
+  }
+
+  // Mostrar/esconder o formulário Bitrix24 ao clicar no botão
+  const openExtraFormBtn = document.getElementById("openExtraFormBtn");
+  const bx24FormDiv = document.getElementById("bx24_form_inline_24_oam7vz");
+  if (openExtraFormBtn && bx24FormDiv) {
+    // Começa escondido
+    bx24FormDiv.classList.add("hidden");
+    openExtraFormBtn.addEventListener("click", function () {
+      if (bx24FormDiv.classList.contains("hidden")) {
+        bx24FormDiv.classList.remove("hidden");
+        openExtraFormBtn.innerHTML = '<i class="fas fa-times"></i> Fechar formulário';
+        // Scroll suave para o formulário Bitrix24
+        setTimeout(() => {
+          bx24FormDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      } else {
+        bx24FormDiv.classList.add("hidden");
+        openExtraFormBtn.innerHTML = '<i class="fas fa-edit"></i> Cadastrar Cliente & Contrato';
+      }
+    });
+  }
+
+  var formDiv = document.getElementById("bx24_form_inline_24_oam7vz");
+  if (formDiv) {
+    var s = document.createElement("script");
+    s.async = true;
+    s.setAttribute("data-b24-form", "inline/24/oam7vz");
+    s.setAttribute("data-skip-moving", "true");
+    s.src = "https://cdn.bitrix24.eu/b32877315/crm/form/loader_24.js?" + ((Date.now() / 180000) | 0);
+    formDiv.appendChild(s);
   }
 });

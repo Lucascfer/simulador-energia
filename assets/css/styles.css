@@ -780,12 +780,43 @@ h1 {
   }
 }
 
-.switch-option span {
-    display: none;
+/* Botão extra e formulário recolhido */
+#openExtraFormBtn {
+    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+    background: linear-gradient(90deg, #fffbe6 0%, #ffe082 100%);
+    border: 2px solid #ffd700;
+    color: #bfa100;
+    transition: background 0.3s, color 0.3s, border 0.3s, box-shadow 0.3s, transform 0.2s;
+}
+#openExtraFormBtn:hover, #openExtraFormBtn:focus {
+    background: linear-gradient(90deg, #ffe082 0%, #fffbe6 100%);
+    color: #a68a00;
+    border-color: #e6c200;
+    box-shadow: 0 6px 18px rgba(191, 161, 0, 0.18);
+    transform: scale(1.04);
+}
+#openExtraFormBtn .fa-edit, #openExtraFormBtn .fa-times {
+    font-size: 1.2em;
+    color: #bfa100;
+    transition: color 0.3s;
+}
+#openExtraFormBtn:hover .fa-edit, #openExtraFormBtn:hover .fa-times {
+    color: #a68a00;
+}
+#extraFormSection {
+    animation: slideIn 0.3s;
 }
 
-@media screen and (min-width: 530px) {
-    .switch-option span {
-        display: inline-block;
+@media (max-width: 600px) {
+    #extraFormSection {
+        padding: 1rem;
+    }
+    #openExtraFormBtn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 0.75rem 0;
     }
 }

@@ -46,7 +46,15 @@ export function createApp() {
           </div>
         </main>
 
+        <!-- Botão de abrir formulário extra -->
+        <div class="flex flex-col items-center justify-center my-12">
+          <button id="openExtraFormBtn" class="bg-white text-orange-500 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition text-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-400 border-2 border-orange-500">
+            <i class="fas fa-edit"></i> Cadastrar Cliente & Contrato
+          </button>
+        </div>
         <script type="module" src="assets/js/script.js"></script>
+        <!-- Bitrix24 Formulário -->
+        <div id="bx24_form_inline_24_oam7vz"></div>
       </body>
     </html>
   `;
