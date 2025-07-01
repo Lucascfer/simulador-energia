@@ -409,7 +409,7 @@ export function createSimulatorForm() {
 
       <!-- Potência -->
       <div class="consumption-power">
-        <div>
+        <div id="powerSelectContainer">
           <label for="power" class="block text-sm font-medium text-gray-700 mb-2">Potência Contratada (kVA)</label>
           <select
             id="power"
@@ -418,8 +418,7 @@ export function createSimulatorForm() {
             required
           >
             <option value="" disabled selected>Selecione...</option>
-            <option value="1.15">1.15 kVA</option>
-            <option value="2.30">2.30 kVA</option>
+            <!-- Opções serão inseridas via JS -->
             <option value="3.45">3.45 kVA</option>
             <option value="4.60">4.60 kVA</option>
             <option value="5.75">5.75 kVA</option>

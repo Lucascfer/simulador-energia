@@ -358,4 +358,70 @@ document.addEventListener("DOMContentLoaded", function () {
       ((Date.now() / 180000) | 0);
     formDiv.appendChild(s);
   }
+
+  // Atualiza as opções do select de potência conforme a tarifa selecionada
+  function setupDynamicPowerOptions() {
+    const powerSelect = document.getElementById('power');
+    const tariffRadios = document.querySelectorAll('input[name="tariffType"]');
+    if (!powerSelect || !tariffRadios.length) return;
+    const powerOptionsSimples = [
+      { value: '1.15', label: '1.15 kVA' },
+      { value: '2.30', label: '2.30 kVA' },
+      { value: '3.45', label: '3.45 kVA' },
+      { value: '4.60', label: '4.60 kVA' },
+      { value: '5.75', label: '5.75 kVA' },
+      { value: '6.90', label: '6.90 kVA' },
+      { value: '10.35', label: '10.35 kVA' },
+      { value: '13.80', label: '13.80 kVA' },
+      { value: '17.25', label: '17.25 kVA' },
+      { value: '20.70', label: '20.70 kVA' }
+    ];
+    const powerOptionsBiHorario = [
+      { value: '3.45', label: '3.45 kVA' },
+      { value: '4.60', label: '4.60 kVA' },
+      { value: '5.75', label: '5.75 kVA' },
+      { value: '6.90', label: '6.90 kVA' },
+      { value: '10.35', label: '10.35 kVA' },
+      { value: '13.80', label: '13.80 kVA' },
+      { value: '17.25', label: '17.25 kVA' },
+      { value: '20.70', label: '20.70 kVA' }
+    ];
+    const powerOptionsTriHorario = [
+      { value: '27.60', label: '27.60 kVA' },
+      { value: '34.50', label: '34.50 kVA' },
+      { value: '41.40', label: '41.40 kVA' }
+    ];
+    function updatePowerOptions() {
+      const selectedTariff = document.querySelector('input[name="tariffType"]:checked').value;
+      let options;
+      if (selectedTariff === 'simples') {
+        options = powerOptionsSimples;
+      } else if (selectedTariff === 'biHorario') {
+        options = powerOptionsBiHorario;
+      } else if (selectedTariff === 'triHorario') {
+        options = powerOptionsTriHorario;
+      } else {
+        options = [];
+      }
+      const currentValue = powerSelect.value;
+      powerSelect.innerHTML = '<option value="" disabled selected>Selecione...</option>' +
+        options.map(opt => `<option value="${opt.value}">${opt.label}</option>`).join('');
+      // Se o valor atual ainda existir, mantém selecionado
+      if (options.some(opt => opt.value === currentValue)) {
+        powerSelect.value = currentValue;
+      }
+    }
+    tariffRadios.forEach(radio => {
+      radio.addEventListener('change', updatePowerOptions);
+    });
+    // Inicializa ao carregar
+    updatePowerOptions();
+  }
+
+  // Execute após o DOM estar pronto e o formulário estar na página
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupDynamicPowerOptions);
+  } else {
+    setupDynamicPowerOptions();
+  }
 });
