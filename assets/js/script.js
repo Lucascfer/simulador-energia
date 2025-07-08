@@ -500,7 +500,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function fileToBase64(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onload = () => resolve(reader.result.split(",")[1]);
         reader.onerror = reject;
         reader.readAsDataURL(file);
       });
@@ -541,9 +541,20 @@ document.addEventListener("DOMContentLoaded", function () {
           customFormDiv.querySelector("#valorEscalaoGas").value;
         const valorKwhGas = customFormDiv.querySelector("#valorKwhGas").value;
         const cui = customFormDiv.querySelector("#cui").value;
-        const debitoDireto = customFormDiv.querySelector("#debitoDireto").checked ? 1 : 0;
-        const faturaEletronica = customFormDiv.querySelector("#faturaEletronica").checked ? 1 : 0;
-        const validadoComercializadora = customFormDiv.querySelector("#validadoComercializadora").checked ? 1 : 0;
+        const debitoDireto = customFormDiv.querySelector("#debitoDireto")
+          .checked
+          ? 1
+          : 0;
+        const faturaEletronica = customFormDiv.querySelector(
+          "#faturaEletronica"
+        ).checked
+          ? 1
+          : 0;
+        const validadoComercializadora = customFormDiv.querySelector(
+          "#validadoComercializadora"
+        ).checked
+          ? 1
+          : 0;
         const iban = customFormDiv.querySelector("#iban").value;
         const responsavelId =
           customFormDiv.querySelector("#leadCriadoPor").value;
@@ -615,24 +626,26 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .then(() => {
             // Exibe a mensagem de sucesso somente após o envio bem-sucedido
-            const formSuccessMsg = customFormDiv.querySelector('#formSuccessMsg');
+            const formSuccessMsg =
+              customFormDiv.querySelector("#formSuccessMsg");
             if (formSuccessMsg) {
-              formSuccessMsg.style.display = 'block';
-              formSuccessMsg.style.background = '#FFD700';
-              formSuccessMsg.style.color = '#7c5700';
-              formSuccessMsg.style.fontWeight = 'bold';
-              formSuccessMsg.style.borderRadius = '2rem';
-              formSuccessMsg.style.boxShadow = '0 4px 16px rgba(0,0,0,0.10)';
-              formSuccessMsg.style.fontSize = '1.1rem';
-              formSuccessMsg.style.textAlign = 'center';
-              formSuccessMsg.style.margin = '0 auto';
-              formSuccessMsg.style.maxWidth = '400px';
-              formSuccessMsg.style.padding = '1rem 2rem';
+              formSuccessMsg.style.display = "block";
+              formSuccessMsg.style.background = "#FFD700";
+              formSuccessMsg.style.color = "#7c5700";
+              formSuccessMsg.style.fontWeight = "bold";
+              formSuccessMsg.style.borderRadius = "2rem";
+              formSuccessMsg.style.boxShadow = "0 4px 16px rgba(0,0,0,0.10)";
+              formSuccessMsg.style.fontSize = "1.1rem";
+              formSuccessMsg.style.textAlign = "center";
+              formSuccessMsg.style.margin = "0 auto";
+              formSuccessMsg.style.maxWidth = "400px";
+              formSuccessMsg.style.padding = "1rem 2rem";
             }
             setTimeout(() => {
-              if (formSuccessMsg) formSuccessMsg.style.display = 'none';
-              customFormDiv.classList.add('hidden');
-              openExtraFormBtn.innerHTML = '<i class="fas fa-edit"></i> Cadastrar Cliente & Contrato';
+              if (formSuccessMsg) formSuccessMsg.style.display = "none";
+              customFormDiv.classList.add("hidden");
+              openExtraFormBtn.innerHTML =
+                '<i class="fas fa-edit"></i> Cadastrar Cliente & Contrato';
             }, 2000);
           })
           .catch((error) => {
@@ -658,9 +671,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Garante que a mensagem de sucesso fique oculta por padrão
-    const formSuccessMsg = customFormDiv.querySelector('#formSuccessMsg');
+    const formSuccessMsg = customFormDiv.querySelector("#formSuccessMsg");
     if (formSuccessMsg) {
-      formSuccessMsg.style.display = 'none';
+      formSuccessMsg.style.display = "none";
     }
   }
 
