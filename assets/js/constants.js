@@ -78,7 +78,7 @@ export const POWER_COSTS = {
       3.45: 0.5151,
       "4.60": 0.6767,
       5.75: 0.7958,
-      "6.90": 0.9309,
+      "6.90": 1.0309,
       10.35: "1.2328",
       "13.80":  1.6062,
       17.25: 2.0088,
@@ -87,7 +87,7 @@ export const POWER_COSTS = {
     biHorario: {
       3.45: 0.4883,
       "4.60": 0.5763,
-      5.75: 0.65337,
+      5.75: 0.6533,
       "6.90": 0.7312,
       10.35: 1.0154,
       "13.80": 1.3492,
@@ -130,7 +130,7 @@ export const TARIFF_VALUES = {
   },
   Endesa: {
     simples: 0.214552,
-    biHorario: { vazio: 0.1918, foraVazio: 0.2618 },
+    biHorario: { vazio: 0.191835, foraVazio: 0.261771 },
     triHorario: { vazio: 0.1697, ponta: 0.4406, cheia: 0.1961 },
   },
   Repsol: {
