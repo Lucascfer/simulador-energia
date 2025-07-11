@@ -5,7 +5,7 @@ export function createHeader() {
         <div class="flex justify-between items-center">
           <div class="flex items-center">
             <img
-              src="images/logo-200x32.png"
+              src="images/LOGO-BRANCO.png"
               alt="Scriptai Logo"
               class="h-8"
             />

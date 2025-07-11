@@ -9,6 +9,7 @@ import {
 import { createApp } from "./components/App.js";
 import { calculateFormValues } from "./formCalculations.js";
 import { setupExportButtons } from "./components/ExportResults.js";
+import { setupClientForm } from "./clientForm.js";
 
 // Inicializa a aplicação
 document.addEventListener("DOMContentLoaded", function () {
@@ -338,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function () {
       <form id="clientRegisterForm" class="bg-white rounded-lg shadow-lg p-6 max-w-xl mx-auto mt-6">
         <h2 class="text-2xl font-bold mb-4 text-gray-900">Cadastro de Cliente</h2>
         <h3 class="text-lg font-semibold mt-4 mb-2 text-gray-900">Contato</h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div style="background: #f7fafc; border: 2px solid #d1d5db; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem;">
           <div class="mb-4">
             <label for="nome" class="block text-sm font-medium text-gray-700 mb-1">Primeiro Nome *</label>
             <input type="text" id="nome" name="nome" required class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
@@ -359,9 +360,15 @@ document.addEventListener("DOMContentLoaded", function () {
             <label for="email" class="block text-sm font-medium text-gray-700 mb-1">E-mail</label>
             <input type="email" id="email" name="email" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
           </div>
+          </div>
+          <h3 class="text-lg font-semibold mt-4 mb-2 text-gray-900">Negócio</h3>
           <div class="mb-4">
-            <label for="morada" class="block text-sm font-medium text-gray-700 mb-1">Morada</label>
-            <input type="text" id="morada" name="morada" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
+            <label for="comercializadoraAtual" class="block text-sm font-medium text-gray-700 mb-1">Comercializadora Atual</label>
+            <input type="text" id="comercializadoraAtual" name="comercializadoraAtual" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
+          </div>
+          <div class="mb-4">
+            <label for="comercializadoraMelhor" class="block text-sm font-medium text-gray-700 mb-1">Comercializadora com Melhor Proposta *</label>
+            <input required type="text" id="comercializadoraMelhor" name="comercializadoraMelhor" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
           </div>
           <div class="mb-4">
             <label for="moradaFornecimento" class="block text-sm font-medium text-gray-700 mb-1">Morada de Fornecimento</label>
@@ -370,14 +377,6 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="mb-4">
             <label for="codigoPostal" class="block text-sm font-medium text-gray-700 mb-1">Código Postal</label>
             <input type="text" id="codigoPostal" name="codigoPostal" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
-          </div>
-          <div class="mb-4">
-            <label for="comercializadoraAtual" class="block text-sm font-medium text-gray-700 mb-1">Comercializadora Atual</label>
-            <input type="text" id="comercializadoraAtual" name="comercializadoraAtual" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
-          </div>
-          <div class="mb-4">
-            <label for="comercializadoraMelhor" class="block text-sm font-medium text-gray-700 mb-1">Comercializadora com melhor proposta</label>
-            <input type="text" id="comercializadoraMelhor" name="comercializadoraMelhor" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
           </div>
           <div class="mb-4">
             <label for="oferta" class="block text-sm font-medium text-gray-700 mb-1">Oferta</label>
@@ -442,24 +441,43 @@ document.addEventListener("DOMContentLoaded", function () {
             <input type="checkbox" id="faturaEletronica" name="faturaEletronica" class="mr-2 h-5 w-5 text-electric focus:ring-electric border-gray-300 rounded" />
             <label for="faturaEletronica" class="block text-sm font-medium text-gray-700 mb-0">Fatura Eletrônica</label>
           </div>
-          <div class="mb-4 flex items-center">
-            <input type="checkbox" id="validadoComercializadora" name="validadoComercializadora" class="mr-2 h-5 w-5 text-electric focus:ring-electric border-gray-300 rounded" />
-            <label for="validadoComercializadora" class="block text-sm font-medium text-gray-700 mb-0">Validado Comercializadora</label>
-          </div>
-          <div class="mb-4">
-            <label for="iban" class="block text-sm font-medium text-gray-700 mb-1">IBAN</label>
-            <input type="text" id="iban" name="iban" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
-          </div>
-          <div class="mb-4">
-            <label for="documentos" class="block text-sm font-medium text-gray-700 mb-1">Documentos</label>
-            <input type="file" id="documentos" name="documentos" accept="image/*,application/pdf" multiple class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
-          </div>
           <div class="mb-4">
             <label for="leadCriadoPor" class="block text-sm font-medium text-gray-700 mb-1">Lead criado por *</label>
             <select id="leadCriadoPor" name="leadCriadoPor" required class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric">
               <option value="">Selecione o responsável...</option>
             </select>
           </div>
+        </div>
+        <h3 class="text-lg font-semibold mt-4 mb-2 text-gray-900">Documentos</h3>
+        <div style="background: #d1d5db; border: 2px solid #f7fafc; border-radius: 0.75rem; padding: 1.5rem; margin-bottom: 1.5rem;">
+        <div class="mb-4">
+          <label for="docCartaoCidadao" class="block text-sm font-medium text-gray-700 mb-1">Cartão de Cidadão</label>
+          <input type="file" id="docCartaoCidadao" name="docCartaoCidadao" accept="image/*,application/pdf" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
+        </div>
+        <div class="mb-4">
+          <label for="docIBAN" class="block text-sm font-medium text-gray-700 mb-1">Comprovativo de IBAN</label>
+          <input type="file" id="docIBAN" name="docIBAN" accept="image/*,application/pdf" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
+        </div>
+        <div class="mb-4">
+          <label for="docPropsta" class="block text-sm font-medium text-gray-700 mb-1">Proposta Preenchida e Assinada</label>
+          <input type="file" id="docPropsta" name="docPropsta" accept="image/*,application/pdf" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
+        </div>
+        <div class="mb-4">
+          <label for="docFatura" class="block text-sm font-medium text-gray-700 mb-1">Fatura de energia</label>
+          <input type="file" id="docFatura" name="docFatura" accept="image/*,application/pdf" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
+        </div>
+        <div class="mb-4">
+          <label for="docContrato" class="block text-sm font-medium text-gray-700 mb-1">Contrato de arrendamento ou atestado de morada</label>
+          <input type="file" id="docContrato" name="docContrato" accept="image/*,application/pdf" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
+        </div>
+        <div class="mb-4">
+          <label for="docCertidao" class="block text-sm font-medium text-gray-700 mb-1">Certidão permanente</label>
+          <input type="file" id="docCertidao" name="docCertidao" accept="image/*,application/pdf" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
+        </div>
+        <div class="mb-4">
+          <label for="documentos" class="block text-sm font-medium text-gray-700 mb-1">Documentos Extras</label>
+          <input type="file" id="documentos" name="documentos" accept="image/*,application/pdf" multiple class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
+        </div>
         </div>
         <button type="submit" class="w-full bg-electric text-white py-3 px-6 rounded-lg hover:bg-electric-dark transition-colors duration-200 mt-4">Enviar</button>
       </form>
@@ -516,7 +534,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const telefone = customFormDiv.querySelector("#telefone").value;
         const nif = customFormDiv.querySelector("#nif").value;
         const email = customFormDiv.querySelector("#email").value;
-        const morada = customFormDiv.querySelector("#morada").value;
         const moradaFornecimento = customFormDiv.querySelector(
           "#moradaFornecimento"
         ).value;
@@ -541,6 +558,7 @@ document.addEventListener("DOMContentLoaded", function () {
           customFormDiv.querySelector("#valorEscalaoGas").value;
         const valorKwhGas = customFormDiv.querySelector("#valorKwhGas").value;
         const cui = customFormDiv.querySelector("#cui").value;
+        const infosTecnicas = `Informações da Luz: Potência Contratada: ${potenciaContratada}, Valor da Potência/Dia: ${valorPotenciaDia}, Valor KW/H Luz: ${valorKwhLuz}, CPE: ${cpe}; Informações do Gás: Escalão: ${escalaoGas}, Valor Escalão Gás: ${valorEscalaoGas}, Valor KW/H Gás: ${valorKwhGas}, CUI: ${cui}`;
         const debitoDireto = customFormDiv.querySelector("#debitoDireto")
           .checked
           ? 1
@@ -550,30 +568,36 @@ document.addEventListener("DOMContentLoaded", function () {
         ).checked
           ? 1
           : 0;
-        const validadoComercializadora = customFormDiv.querySelector(
-          "#validadoComercializadora"
-        ).checked
-          ? 1
-          : 0;
-        const iban = customFormDiv.querySelector("#iban").value;
         const responsavelId =
           customFormDiv.querySelector("#leadCriadoPor").value;
         const documentosInput = customFormDiv.querySelector("#documentos");
         const documentosFiles = documentosInput.files;
+        const docCartaoCidadao =
+          customFormDiv.querySelector("#docCartaoCidadao").files[0] || null;
+        const docIBAN =
+          customFormDiv.querySelector("#docIBAN").files[0] || null;
+        const docPropsta =
+          customFormDiv.querySelector("#docPropsta").files[0] || null;
+        const docFatura =
+          customFormDiv.querySelector("#docFatura").files[0] || null;
+        const docContrato =
+          customFormDiv.querySelector("#docContrato").files[0] || null;
+        const docCertidao =
+          customFormDiv.querySelector("#docCertidao").files[0] || null;
 
-        // Primeiro fetch para criar o contato
+        // Primeiro fetch para pegar o ID do contato da comercializadora
         fetch(
-          `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.contact.add.json?FIELDS[NAME]=${nome}&FIELDS[LAST_NAME]=${apelido}&FIELDS[EMAIL][0][VALUE]=${email}&FIELDS[EMAIL][0][VALUE_TYPE]=WORK&FIELDS[PHONE][0][VALUE]=${telefone}&FIELDS[PHONE][0][VALUE_TYPE]=WORK&FIELDS[UF_CRM_1743600814084]=${morada}`,
+          `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.contact.list?FILTER[NAME]=${comercializadoraMelhor}`,
           {
-            method: "POST",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
             },
           }
         )
           .then((response) => response.json())
-          .then((data) => {
-            const contactId = data.result;
+          .then(async (data) => {
+            const comercializadoraID = data.result[0];
             // Converter arquivos para base64
             return Promise.all(
               Array.from(documentosFiles).map(async (file) => ({
@@ -581,16 +605,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 fileName: file.name,
                 fileType: file.type,
               }))
-            ).then((documentosArray) => ({ contactId, documentosArray }));
+            ).then((documentosArray) => ({
+              comercializadoraID,
+              documentosArray,
+            }));
           })
-          .then(({ contactId, documentosArray }) => {
+          .then(({ comercializadoraID, documentosArray }) => {
             // Montar a URL e o corpo para criar o negócio (deal)
             const url = `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.deal.add.json`;
             const body = {
               FIELDS: {
-                TITLE: `${nome} ${apelido}`,
-                CONTACT_ID: contactId,
-                UF_CRM_1751640985602: moradaFornecimento,
+                TITLE: `${nome} ${apelido} - ${nif}`,
+                CONTACT_ID: comercializadoraID.ID,
+                UF_CRM_1751560635722: telefone, // "contato/telefone do cliente" - campo deal
+                UF_CRM_1751639120142: email, // "contato/email do cliente" - campo deal
+                UF_CRM_1744875846819: moradaFornecimento,
                 UF_CRM_1744875971691: codigoPostal,
                 UF_CRM_1751640327698: comercializadoraAtual,
                 UF_CRM_1751640353466: comercializadoraMelhor,
@@ -598,22 +627,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 UF_CRM_1751643980492: nif,
                 UF_CRM_1743668621554: produto,
                 UF_CRM_1743668642121: oferta,
-                UF_CRM_1743668763610: potenciaContratada,
-                UF_CRM_1743668779905: valorPotenciaDia,
-                UF_CRM_1751640669908: valorKwhLuz,
-                UF_CRM_1743668821851: cpe,
-                UF_CRM_1745255229997: escalaoGas,
-                UF_CRM_1751382680171: valorEscalaoGas,
-                UF_CRM_1751382554855: valorKwhGas,
-                UF_CRM_1751640705824: cui,
+                UF_CRM_1752053109190: infosTecnicas, // Informações Técnicas
+                UF_CRM_1751900708698: docCartaoCidadao, // Cartão de Cidadão
+                UF_CRM_1751900744976: docIBAN, // Comprovativo de IBAN
+                UF_CRM_1751900777494: docPropsta, // Proposta Preenchida e Assinada
+                UF_CRM_1751900815592: docFatura, // Fatura de energia
+                UF_CRM_1751900865433: docContrato, // Contrato de arrendamento ou atestado de morada
+                UF_CRM_1751962727087: docCertidao, // Certidão permanente
                 UF_CRM_1744877268028: debitoDireto,
                 UF_CRM_1744877294531: faturaEletronica,
-                UF_CRM_1745231229282: validadoComercializadora,
-                UF_CRM_1744877357931: iban,
                 UF_CRM_1743668942049: documentosArray,
-                CATEGORY_ID: 16,
-                STAGE_ID: "C16:NEW",
-                ASSIGNED_BY_ID: responsavelId,
+                CATEGORY_ID: 16, // Energia Residencial
+                STAGE_ID: "C16:NEW", // Primeiro estágio do negócio
+                ASSIGNED_BY_ID: responsavelId, // ID do responsável pelo negócio
               },
             };
             return fetch(url, {
@@ -623,6 +649,40 @@ document.addEventListener("DOMContentLoaded", function () {
               },
               body: JSON.stringify(body),
             });
+          })
+          .then(async (response) => {
+            const data = await response.json();
+            const dealId = data.result[0]; // ID do negócio criado
+
+            // Agora cria o segundo contato (participante)
+            return fetch(
+              `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.contact.add.json?FIELDS[NAME]=${nome}&FIELDS[LAST_NAME]=${apelido}&FIELDS[EMAIL][0][VALUE]=${email}&FIELDS[EMAIL][0][VALUE_TYPE]=WORK&FIELDS[PHONE][0][VALUE]=${telefone}&FIELDS[PHONE][0][VALUE_TYPE]=WORK`,
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+              .then((res) => res.json())
+              .then((dataClient) => {
+                const clientId = dataClient.result[0];
+
+                // Adiciona o contato ao negócio
+                return fetch(
+                  `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.deal.contact.add.json`,
+                  {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      ID: dealId,
+                      CONTACT_ID: clientId,
+                    }),
+                  }
+                );
+              });
           })
           .then(() => {
             // Exibe a mensagem de sucesso somente após o envio bem-sucedido
@@ -637,7 +697,7 @@ document.addEventListener("DOMContentLoaded", function () {
               formSuccessMsg.style.boxShadow = "0 4px 16px rgba(0,0,0,0.10)";
               formSuccessMsg.style.fontSize = "1.1rem";
               formSuccessMsg.style.textAlign = "center";
-              formSuccessMsg.style.margin = "0 auto";
+              formSuccessMsg.style.margin = "10px";
               formSuccessMsg.style.maxWidth = "400px";
               formSuccessMsg.style.padding = "1rem 2rem";
             }
@@ -747,4 +807,24 @@ document.addEventListener("DOMContentLoaded", function () {
   } else {
     setupDynamicPowerOptions();
   }
+
+  // Atualiza os cards ao marcar/desmarcar checkboxes de desconto
+  [
+    "directDebit",
+    "electronicInvoice",
+    "additionalServices",
+    "debitoDireto",
+    "faturaEletronica",
+  ].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener("change", function () {
+        const power = getNumericValue("power");
+        const tariffType =
+          document.querySelector('input[name="tariffType"]:checked')?.value ||
+          "simples";
+        updateCardValues(power, tariffType);
+      });
+    }
+  });
 });

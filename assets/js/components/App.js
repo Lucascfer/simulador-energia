@@ -53,8 +53,6 @@ export function createApp() {
           </button>
         </div>
         <script type="module" src="assets/js/script.js"></script>
-        <!-- Bitrix24 Formulário -->
-        <div id="bx24_form_inline_24_oam7vz"></div>
       </body>
     </html>
   `;
