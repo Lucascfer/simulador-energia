@@ -368,7 +368,9 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="mb-4">
             <label for="comercializadoraMelhor" class="block text-sm font-medium text-gray-700 mb-1">Comercializadora com Melhor Proposta *</label>
-            <input required type="text" id="comercializadoraMelhor" name="comercializadoraMelhor" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric" />
+            <select required id="comercializadoraMelhor" name="comercializadoraMelhor" class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus:border-electric">
+              <option value="">Selecione...</option>
+            </select>
           </div>
           <div class="mb-4">
             <label for="moradaFornecimento" class="block text-sm font-medium text-gray-700 mb-1">Morada de Fornecimento</label>
@@ -529,6 +531,10 @@ document.addEventListener("DOMContentLoaded", function () {
       .querySelector("#clientRegisterForm")
       .addEventListener("submit", function (e) {
         e.preventDefault();
+        const submitBtn = customFormDiv.querySelector('button[type="submit"]');
+        const originalBtnHTML = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="loader" style="display:inline-block;width:22px;height:22px;border:3px solid #FFD700;border-top:3px solid #fff;border-radius:50%;animation:spin 1s linear infinite;vertical-align:middle;margin-right:8px;"></span>Enviando...';
         const nome = customFormDiv.querySelector("#nome").value;
         const apelido = customFormDiv.querySelector("#apelido").value;
         const telefone = customFormDiv.querySelector("#telefone").value;
@@ -652,55 +658,63 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .then(async (response) => {
             const data = await response.json();
-            const dealId = data.result[0]; // ID do negócio criado
+            const dealId = data.result; // ID do negócio criado
 
-            // Agora cria o segundo contato (participante)
+            // 1. Buscar contatos já associados ao negócio
             return fetch(
-              `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.contact.add.json?FIELDS[NAME]=${nome}&FIELDS[LAST_NAME]=${apelido}&FIELDS[EMAIL][0][VALUE]=${email}&FIELDS[EMAIL][0][VALUE_TYPE]=WORK&FIELDS[PHONE][0][VALUE]=${telefone}&FIELDS[PHONE][0][VALUE_TYPE]=WORK`,
+              `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.deal.get.json?ID=${dealId}`,
               {
-                method: "POST",
+                method: "GET",
                 headers: {
                   "Content-Type": "application/json",
                 },
               }
             )
               .then((res) => res.json())
-              .then((dataClient) => {
-                const clientId = dataClient.result[0];
-
-                // Adiciona o contato ao negócio
+              .then(async (dealData) => {
+                const existingContacts = dealData.result.CONTACT_ID;
+                console.log("Contatos existentes:", existingContacts);
+                // 2. Criar o novo contato
                 return fetch(
-                  `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.deal.contact.add.json`,
+                  `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.contact.add.json?FIELDS[NAME]=${nome}&FIELDS[LAST_NAME]=${apelido}&FIELDS[EMAIL][0][VALUE]=${email}&FIELDS[EMAIL][0][VALUE_TYPE]=WORK&FIELDS[PHONE][0][VALUE]=${telefone}&FIELDS[PHONE][0][VALUE_TYPE]=WORK`,
                   {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({
-                      ID: dealId,
-                      CONTACT_ID: clientId,
-                    }),
                   }
-                );
+                )
+                  .then((res) => res.json())
+                  .then((dataClient) => {
+                    const clientId = dataClient.result;
+                    // 3. Adicionar o novo contato ao array de contatos do negócio
+                    const updatedContacts = [existingContacts, clientId.toString()];
+                    return fetch(
+                      `https://scriptai.bitrix24.eu/rest/68/ye7rcklmis4m3p5a/crm.deal.update`,
+                      {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          ID: dealId, // ID do negócio já criado
+                          FIELDS: {
+                            CONTACT_IDS: updatedContacts
+                          },
+                        }),
+                      }
+                    );
+                  });
               });
           })
           .then(() => {
             // Exibe a mensagem de sucesso somente após o envio bem-sucedido
             const formSuccessMsg =
-              customFormDiv.querySelector("#formSuccessMsg");
-            if (formSuccessMsg) {
-              formSuccessMsg.style.display = "block";
-              formSuccessMsg.style.background = "#FFD700";
-              formSuccessMsg.style.color = "#7c5700";
-              formSuccessMsg.style.fontWeight = "bold";
-              formSuccessMsg.style.borderRadius = "2rem";
-              formSuccessMsg.style.boxShadow = "0 4px 16px rgba(0,0,0,0.10)";
-              formSuccessMsg.style.fontSize = "1.1rem";
-              formSuccessMsg.style.textAlign = "center";
-              formSuccessMsg.style.margin = "10px";
-              formSuccessMsg.style.maxWidth = "400px";
-              formSuccessMsg.style.padding = "1rem 2rem";
-            }
+              customFormDiv.querySelector("#top-success-notification");
+            // Notificação fixa no topo
+            showTopNotification('Cadastro enviado com sucesso!');
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHTML;
             setTimeout(() => {
               if (formSuccessMsg) formSuccessMsg.style.display = "none";
               customFormDiv.classList.add("hidden");
@@ -710,6 +724,8 @@ document.addEventListener("DOMContentLoaded", function () {
           })
           .catch((error) => {
             console.error("Erro:", error);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalBtnHTML;
           });
       });
 
@@ -729,6 +745,19 @@ document.addEventListener("DOMContentLoaded", function () {
         produtoSelect.appendChild(opt);
       });
     }
+
+    // Popular o select de comercializadoraMelhor com os nomes do constants.js
+    import("./constants.js").then(({ COMPANIES }) => {
+      const comercializadoraMelhorSelect = customFormDiv.querySelector("#comercializadoraMelhor");
+      if (comercializadoraMelhorSelect && Array.isArray(COMPANIES)) {
+        COMPANIES.forEach((company) => {
+          const opt = document.createElement("option");
+          opt.value = company;
+          opt.textContent = company;
+          comercializadoraMelhorSelect.appendChild(opt);
+        });
+      }
+    });
 
     // Garante que a mensagem de sucesso fique oculta por padrão
     const formSuccessMsg = customFormDiv.querySelector("#formSuccessMsg");
@@ -828,3 +857,45 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+// Adiciona o CSS do spinner ao head se não existir
+if (!document.getElementById('custom-loader-style')) {
+  const style = document.createElement('style');
+  style.id = 'custom-loader-style';
+  style.innerHTML = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`;
+  document.head.appendChild(style);
+}
+
+// Função para notificação fixa no topo
+function showTopNotification(message) {
+  let notif = document.getElementById('top-success-notification');
+  if (!notif) {
+    notif = document.createElement('div');
+    notif.id = 'top-success-notification';
+    notif.style.position = 'fixed';
+    notif.style.top = '0';
+    notif.style.left = '50%';
+    notif.style.transform = 'translateX(-50%)';
+    notif.style.background = '#FFD700';
+    notif.style.color = '#7c5700';
+    notif.style.fontWeight = 'bold';
+    notif.style.borderRadius = '0 0 1.5rem 1.5rem';
+    notif.style.boxShadow = '0 4px 16px rgba(0,0,0,0.10)';
+    notif.style.fontSize = '1.1rem';
+    notif.style.textAlign = 'center';
+    notif.style.margin = '0 auto';
+    notif.style.maxWidth = '420px';
+    notif.style.padding = '1rem 2rem';
+    notif.style.zIndex = '9999';
+    notif.style.opacity = '0';
+    notif.style.transition = 'opacity 0.4s';
+    document.body.appendChild(notif);
+  }
+  notif.textContent = message;
+  notif.style.opacity = '1';
+  notif.style.display = 'block';
+  setTimeout(() => {
+    notif.style.opacity = '0';
+    setTimeout(() => { notif.style.display = 'none'; }, 400);
+  }, 2500);
+}
