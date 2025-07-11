@@ -48,8 +48,8 @@ export function createApp() {
 
         <!-- Botão de abrir formulário extra -->
         <div class="flex flex-col items-center justify-center my-12">
-          <button id="openExtraFormBtn" class="bg-white text-orange-500 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition text-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-400 border-2 border-orange-500">
-            <i class="fas fa-edit"></i> Cadastrar Cliente & Contrato
+          <button id="openExtraFormBtn" style="background: linear-gradient(90deg, #130035 0%, #0f58d0 60%, #3e45ab 100%); border: none; font-weight: 600; box-shadow: 0 2px 8px rgba(16,0,53,0.08); color: #fff;" class="bg-white text-orange-500 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition text-lg flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-orange-400 border-2 border-orange-500">
+            <i class="fas fa-edit " style="color:#fff;"></i> Cadastrar Cliente & Contrato
           </button>
         </div>
         <script type="module" src="assets/js/script.js"></script>

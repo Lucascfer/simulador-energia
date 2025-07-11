@@ -9,7 +9,6 @@ import {
 import { createApp } from "./components/App.js";
 import { calculateFormValues } from "./formCalculations.js";
 import { setupExportButtons } from "./components/ExportResults.js";
-import { setupClientForm } from "./clientForm.js";
 
 // Inicializa a aplicação
 document.addEventListener("DOMContentLoaded", function () {
@@ -481,23 +480,22 @@ document.addEventListener("DOMContentLoaded", function () {
           <input type="file" id="documentos" name="documentos" accept="image/*,application/pdf" multiple class="input-highlight w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-electric focus-border-electric" />
         </div>
         </div>
-        <button type="submit" class="w-full bg-electric text-white py-3 px-6 rounded-lg hover:bg-electric-dark transition-colors duration-200 mt-4">Enviar</button>
+        <button type="submit" class="w-full custom-gradient-btn text-white py-3 px-6 rounded-lg transition-colors duration-200 mt-4">Enviar</button>
       </form>
-      <div id="formSuccessMsg" class="hidden text-green-600 font-semibold mt-4">Cadastro enviado com sucesso!</div>
     `;
     customFormDiv.classList.add("hidden");
     openExtraFormBtn.addEventListener("click", function () {
       if (customFormDiv.classList.contains("hidden")) {
         customFormDiv.classList.remove("hidden");
         openExtraFormBtn.innerHTML =
-          '<i class="fas fa-times"></i> Fechar formulário';
+          '<i class="fas fa-times" style="color:#fff;"></i> Fechar formulário';
         setTimeout(() => {
           customFormDiv.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 100);
       } else {
         customFormDiv.classList.add("hidden");
         openExtraFormBtn.innerHTML =
-          '<i class="fas fa-edit"></i> Cadastrar Cliente & Contrato';
+          '<i class="fas fa-edit" style="color:#fff;"></i> Cadastrar Cliente & Contrato';
       }
     });
 
@@ -862,7 +860,17 @@ document.addEventListener("DOMContentLoaded", function () {
 if (!document.getElementById('custom-loader-style')) {
   const style = document.createElement('style');
   style.id = 'custom-loader-style';
-  style.innerHTML = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`;
+  style.innerHTML = `@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+  .custom-gradient-btn {
+    background: linear-gradient(90deg, #130035 0%, #0f58d0 60%, #3e45ab 100%);
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(16,0,53,0.08);
+  }
+  .custom-gradient-btn:hover, .custom-gradient-btn:focus {
+    filter: brightness(1.08) saturate(1.1);
+    box-shadow: 0 4px 16px rgba(16,0,53,0.13);
+  }`;
   document.head.appendChild(style);
 }
 
