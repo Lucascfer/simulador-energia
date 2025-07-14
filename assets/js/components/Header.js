@@ -12,6 +12,7 @@ export function createHeader() {
           </div>
           <nav class="flex space-x-4 md:space-x-8">
             <a href="https://www.scriptai.pt/index3.html#inicio" class="text-white hover:text-yellow-300 text-sm md:text-base font-semibold transition-colors duration-200">Início</a>
+            <a onclick="fazerLogout()" class="text-white hover:text-yellow-300 text-sm md:text-base font-semibold transition-colors duration-200">Sair</a>
           </nav>
         </div>
       </div>

@@ -11,9 +11,13 @@
       window.jsPDF = window.jspdf.jsPDF;
     </script>
     <title>Simulador de Economia - Scriptai</title>
-  </head>
   <body>
-    <!-- Botão de abrir formulário extra -->
     <script type="module" src="assets/js/script.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        protegerSimulador();
+      });
+    </script>
   </body>
 </html>
