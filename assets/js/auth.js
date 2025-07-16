@@ -39,3 +39,6 @@ function fazerLogout() {
     localStorage.removeItem('email');
     window.location.href = 'login.html';
 }
+
+// Torna a função global para funcionar com onclick em HTML dinâmico
+window.fazerLogout = fazerLogout;
