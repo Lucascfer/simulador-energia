@@ -1,5 +1,5 @@
 // Companies and their configurations
-export const COMPANIES = ["Endesa", "Repsol", "EDP"];
+export const COMPANIES = ["Endesa", "Repsol"];
 
 // Companies and their configurations
 export const DISCOUNTS = {

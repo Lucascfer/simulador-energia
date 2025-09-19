@@ -47,6 +47,15 @@ function calculateFixedCost(company, power, days, discount = 0, tariffType) {
   }
   const powerCost = getPowerCost(company, power, tariffType);
   const result = days * powerCost * (1 - discount / 100);
+  
+  console.log(`[${company}] Custo Fixo - `, {
+    dias: days,
+    potencia: power,
+    custoPotencia: powerCost,
+    desconto: `${discount}%`,
+    custoFinal: result
+  });
+  
   return result;
 }
 
@@ -59,17 +68,33 @@ function calculateSimpleTariffCost(company, power, consumption, discount = 0) {
 
   if (MORE_THEN_ONE_TARIFF[company]) {
     if (power < 3.45) {
-      result =
-        consumption *
-        (TARIFF_VALUES[company].simples.baixa * (1 - discount / 100));
+      const tarifa = TARIFF_VALUES[company].simples.baixa;
+      result = consumption * (tarifa * (1 - discount / 100));
+      console.log(`[${company}] Tarifa Simples (baixa tensão) - `, {
+        consumo: consumption,
+        tarifa: tarifa,
+        desconto: `${discount}%`,
+        custoEnergia: result
+      });
     } else {
-      result =
-        consumption *
-        (TARIFF_VALUES[company].simples.alta * (1 - discount / 100));
+      const tarifa = TARIFF_VALUES[company].simples.alta;
+      result = consumption * (tarifa * (1 - discount / 100));
+      console.log(`[${company}] Tarifa Simples (alta tensão) - `, {
+        consumo: consumption,
+        tarifa: tarifa,
+        desconto: `${discount}%`,
+        custoEnergia: result
+      });
     }
   } else {
-    result =
-      consumption * (TARIFF_VALUES[company].simples * (1 - discount / 100));
+    const tarifa = TARIFF_VALUES[company].simples;
+    result = consumption * (tarifa * (1 - discount / 100));
+    console.log(`[${company}] Tarifa Simples - `, {
+      consumo: consumption,
+      tarifa: tarifa,
+      desconto: `${discount}%`,
+      custoEnergia: result
+    });
   }
   return result;
 }
@@ -79,14 +104,24 @@ function calculateBiHorarioCost(company, power, consumption, discount = 0) {
     throw new Error("Consumo inválido para tarifa bi-horária");
   }
 
-  const consumptionVazio =
-    consumption.vazio.amount *
-    (TARIFF_VALUES[company].biHorario.vazio * (1 - discount / 100));
-  const consumptionForaVazio =
-    consumption.foraVazio.amount *
-    (TARIFF_VALUES[company].biHorario.foraVazio * (1 - discount / 100));
+  const tarifaVazio = TARIFF_VALUES[company].biHorario.vazio;
+  const tarifaForaVazio = TARIFF_VALUES[company].biHorario.foraVazio;
+  
+  const consumptionVazio = consumption.vazio.amount * (tarifaVazio * (1 - discount / 100));
+  const consumptionForaVazio = consumption.foraVazio.amount * (tarifaForaVazio * (1 - discount / 100));
 
   const result = consumptionVazio + consumptionForaVazio;
+  
+  console.log(`[${company}] Tarifa Bi-Horária - `, {
+    consumoVazio: consumption.vazio.amount,
+    tarifaVazio: tarifaVazio,
+    custoVazio: consumptionVazio,
+    consumoForaVazio: consumption.foraVazio.amount,
+    tarifaForaVazio: tarifaForaVazio,
+    custoForaVazio: consumptionForaVazio,
+    desconto: `${discount}%`,
+    custoTotal: result
+  });
   return result;
 }
 
@@ -138,6 +173,18 @@ function calculateTriHorarioCost(company, power, consumption, discount = 0) {
   }
 
   const result = pontaCost + cheiaCost + vazioCost;
+  
+  console.log(`[${company}] Tarifa Tri-Horária - `, {
+    consumoPonta: consumption.ponta.amount,
+    consumoCheia: consumption.cheia.amount,
+    consumoVazio: consumption.vazio.amount,
+    custoPonta: pontaCost,
+    custoCheia: cheiaCost,
+    custoVazio: vazioCost,
+    desconto: `${discount}%`,
+    custoTotal: result
+  });
+  
   return result;
 }
 
@@ -168,10 +215,21 @@ function calculateGasCost(
     discountFixedterm = 0; // No discounts for Repsol and EDP fixed term costs
   }
 
-  const fixedTermCost =
-    gasPrices.termoFixo * gasDays * (1 - discountFixedterm / 100);
-
+  const fixedTermCost = gasPrices.termoFixo * gasDays * (1 - discountFixedterm / 100);
   let totalCost = energyCost + fixedTermCost;
+  
+  console.log(`[${company}] Cálculo Gás - `, {
+    consumo: consumption,
+    escalao: escalao,
+    precoEnergia: gasPrices.energia,
+    custoEnergia: energyCost,
+    termoFixoDiario: gasPrices.termoFixo,
+    dias: gasDays,
+    descontoEnergia: `${discountGas}%`,
+    descontoTermoFixo: `${discountFixedterm}%`,
+    custoTermoFixo: fixedTermCost,
+    custoTotal: totalCost
+  });
 
   return totalCost;
 }
@@ -260,6 +318,17 @@ export function calculateSavings(
         additionalServices,
         luzGas
       );
+  
+  console.log(`[${company}] Descontos Aplicados - `, {
+    tipoTarifa: tariffType,
+    potencia: power,
+    debitoDireto: directDebit,
+    faturaEletronica: electronicInvoice,
+    servicosAdicionais: additionalServices,
+    luzEGas: luzGas,
+    descontoLuz: `${discountAmount.luz}%`,
+    descontoGas: `${discountAmount.gas}%`
+  });
 
       const energyCalculations = {
         simples: () =>
